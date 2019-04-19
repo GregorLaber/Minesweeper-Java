@@ -56,9 +56,10 @@ class ViewGuiMinesweeper {
 
     public void startView() {
 
+        String style = "-fx-background-color: #000000";
+
 //        // Scene Beginner
 //        BorderPane beginner = new BorderPane();
-        String style = "-fx-background-color: #000000";
 //        beginner.setStyle(style);
 //        initTimer();
 //        beginner.setTop(addMenu());
@@ -73,7 +74,7 @@ class ViewGuiMinesweeper {
         advanced.setTop(addMenu());
         advanced.setCenter(addGridPane());
         advanced.setBottom(addToolBar());
-        sceneAdvanced = new Scene(advanced, 500, 450);
+        sceneAdvanced = new Scene(advanced, 750, 600);
 
 //        // Scene Professional
 //        BorderPane professional = new BorderPane();
@@ -82,14 +83,15 @@ class ViewGuiMinesweeper {
 //        professional.setTop(addMenu());
 //        professional.setCenter(addGridPane());
 //        professional.setBottom(addToolBar());
-//        sceneProfessional = new Scene(professional, 500, 450);
+//        sceneProfessional = new Scene(professional, 750, 600);
 
         // Window
-        window.setResizable(true);
         Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
         window.getIcons().add(icon);
         window.setTitle("Minesweeper");
         window.setScene(sceneAdvanced);
+//        window.setMaximized(true);
+        window.setResizable(false);
         window.show();
     }
 
