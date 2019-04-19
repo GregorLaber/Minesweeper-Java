@@ -26,12 +26,12 @@ class ViewGuiMinesweeper {
     private final Stage window = new Stage();
     private Scene sceneBeginner = null, sceneAdvanced = null, sceneProfessional = null;
 
-    private final int ROW = getDifficultyRow();
-    private final int COL = getDifficultyCol();
     private int difficulty;
+    private int ROW;
+    private int COL;
     private int numberOfBombs;
-    private final Button[][] buttonList = new Button[ROW][COL];
-    private final TextField bombNumberTextField = new TextField();
+    private Button[][] buttonList;
+    private TextField bombNumberTextField;
     private static int k = 0;
     private static int id = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
@@ -44,33 +44,52 @@ class ViewGuiMinesweeper {
 
     public ViewGuiMinesweeper(int numberOfBombs) {
 
-        setDifficulty(0);
-        initButtonList();
+        setDifficulty(1);
+        this.ROW = getDifficultyRow();
+        this.COL = getDifficultyCol();
         this.numberOfBombs = numberOfBombs;
+        this.buttonList = new Button[ROW][COL];
+        this.bombNumberTextField = new TextField(); // Displays the number of Bombs in the Field
+
+        initButtonList();
     }
 
     public void startView() {
 
-        // Scene Beginner
-        BorderPane root = new BorderPane();
+//        // Scene Beginner
+//        BorderPane beginner = new BorderPane();
         String style = "-fx-background-color: #000000";
-        root.setStyle(style);
-        initTimer();
-        root.setTop(addMenu());
-        root.setCenter(addGridPane());
-        root.setBottom(addToolBar());
-        sceneBeginner = new Scene(root, 500, 450);
+//        beginner.setStyle(style);
+//        initTimer();
+//        beginner.setTop(addMenu());
+//        beginner.setCenter(addGridPane());
+//        beginner.setBottom(addToolBar());
+//        sceneBeginner = new Scene(beginner, 500, 450);
 
         // Scene Advanced
+        BorderPane advanced = new BorderPane();
+        advanced.setStyle(style);
+        initTimer();
+        advanced.setTop(addMenu());
+        advanced.setCenter(addGridPane());
+        advanced.setBottom(addToolBar());
+        sceneAdvanced = new Scene(advanced, 500, 450);
 
-        // Scene Professional
+//        // Scene Professional
+//        BorderPane professional = new BorderPane();
+//        professional.setStyle(style);
+//        initTimer();
+//        professional.setTop(addMenu());
+//        professional.setCenter(addGridPane());
+//        professional.setBottom(addToolBar());
+//        sceneProfessional = new Scene(professional, 500, 450);
 
         // Window
-        window.setResizable(false);
+        window.setResizable(true);
         Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
         window.getIcons().add(icon);
         window.setTitle("Minesweeper");
-        window.setScene(sceneBeginner);
+        window.setScene(sceneAdvanced);
         window.show();
     }
 
@@ -158,7 +177,7 @@ class ViewGuiMinesweeper {
                 button.setId(stringId);
 
                 buttonList[i][j] = button;
-                buttonList[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 15));
+                buttonList[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 buttonList[i][j].setOnMouseClicked(this::actionPerformed);
             }
         }
@@ -203,17 +222,35 @@ class ViewGuiMinesweeper {
         }
     }
 
-    private void setDifficulty(int difficulty) {
+    public void setDifficulty(int difficulty) {
 
         switch (difficulty) {
             case 0: // Beginner
                 this.difficulty = 0;
+                window.setScene(sceneBeginner);
                 break;
             case 1: // Advanced
                 this.difficulty = 1;
+                window.setScene(sceneAdvanced);
                 break;
             case 2: // Professional
                 this.difficulty = 2;
+                window.setScene(sceneProfessional);
+                break;
+        }
+    }
+
+    public void setScene (int difficulty) {
+
+        switch (difficulty) {
+            case 0: // Beginner
+                window.setScene(sceneBeginner);
+                break;
+            case 1: // Advanced
+                window.setScene(sceneAdvanced);
+                break;
+            case 2: // Professional
+                window.setScene(sceneProfessional);
                 break;
         }
     }
@@ -258,7 +295,7 @@ class ViewGuiMinesweeper {
         beginner.setToggleGroup(group);
         advanced.setToggleGroup(group);
         professional.setToggleGroup(group);
-        beginner.setSelected(true);
+        advanced.setSelected(true);
         difficultyItem.getItems().addAll(beginner, advanced, professional);
         fileMenu.getItems().addAll(newItem, difficultyItem);
         menuBar.getMenus().addAll(fileMenu);
@@ -382,7 +419,7 @@ class ViewGuiMinesweeper {
         if (number != 0) {
             String text = Integer.toString(number);
             buttonList[row][col].setTextFill(Paint.valueOf(setTextColor(number)));
-            buttonList[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 12));
+//            buttonList[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 12));
             buttonList[row][col].setText(text);
         }
     }

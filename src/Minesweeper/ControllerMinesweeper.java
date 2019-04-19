@@ -134,9 +134,10 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
-//        model.setDifficulty(difficulty);
-//        view.setDifficulty(difficulty);
-//        newClicked();
+        model.setDifficulty(difficulty);
+        view.setDifficulty(difficulty);
+        view.setScene(difficulty);
+        newClicked();
     }
 
 

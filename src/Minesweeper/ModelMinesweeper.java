@@ -8,10 +8,10 @@ import java.util.Random;
 class ModelMinesweeper {
 
     private int difficulty;
-    private final int ROW = getDifficultyRow();
-    private final int COL = getDifficultyCol();
-    private final String[][] fieldList = new String[ROW][COL];
-    private final String[][] flagList = new String[ROW][COL];
+    private int ROW;
+    private int COL;
+    private String[][] fieldList;
+    private String[][] flagList;
     final List<Integer> bombListRow = new ArrayList<>();
     final List<Integer> bombListCol = new ArrayList<>();
     private int numberOfEmptyFields;
@@ -23,12 +23,21 @@ class ModelMinesweeper {
 
     ModelMinesweeper() {
 
-        this.difficulty = 0;
+        this.difficulty = 1;
+        this.ROW = getDifficultyRow();
+        this.COL = getDifficultyCol();
+        this.fieldList = new String[ROW][COL];
+        this.flagList = new String[ROW][COL];
+
         startSetup();
     }
 
     void startSetup() {
 
+        this.ROW = getDifficultyRow();
+        this.COL = getDifficultyCol();
+        this.fieldList = new String[ROW][COL];
+        this.flagList = new String[ROW][COL];
         numberOfEmptyFields = ROW * COL;
         bombListRow.clear();
         bombListCol.clear();
