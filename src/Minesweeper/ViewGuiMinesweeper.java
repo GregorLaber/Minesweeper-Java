@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -150,6 +151,7 @@ class ViewGuiMinesweeper {
                 button.setId(stringId);
 
                 buttonList[i][j] = button;
+                buttonList[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 15));
                 buttonList[i][j].setOnMouseClicked(this::actionPerformed);
             }
         }
@@ -165,7 +167,7 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void disableButtons() {
+    public void disableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -176,14 +178,20 @@ class ViewGuiMinesweeper {
 
     public void disableButton(int row, int col) {
 
+        buttonList[row][col].setMouseTransparent(true);
+    }
+
+    public void disableEmptyButton(int row, int col) {
+
         buttonList[row][col].setDisable(true);
     }
 
-    public void enableButtons() {
+    public void enableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
                 buttonList[i][j].setDisable(false);
+                buttonList[i][j].setMouseTransparent(false);
             }
         }
     }
@@ -367,7 +375,7 @@ class ViewGuiMinesweeper {
         if (number != 0) {
             String text = Integer.toString(number);
             buttonList[row][col].setTextFill(Paint.valueOf(setTextColor(number)));
-            buttonList[row][col].setStyle("-fx-font-weight: bold");
+            buttonList[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 12));
             buttonList[row][col].setText(text);
         }
     }
@@ -385,6 +393,8 @@ class ViewGuiMinesweeper {
                 return "#15214C";
             case 5:
                 return "#663F21";
+            case 6:
+                return "#FFB5B5";
             default:
                 return "#000000";
         }

@@ -5,8 +5,6 @@ package Minesweeper;
 
 /*TODO
    - ggf. mehrere Scences um Schwierigkeitsgrad zu ändern
-   - Nullen aufdecken
-   - Zahlen farblich markieren
    - Highscore
    - GirlMode
 
@@ -43,21 +41,25 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         // Primary Click to open up the tiles
         if (primaryClick) {
-            if (model.isFieldListEmptyAt(row, col)) {
+            if (model.isFieldListEmptyAt(row, col)) { // This tiles get a coloured number
                 int surroundingBombs = model.calculateSurroundingBombs(row, col);
                 view.setButton(null, row, col);
                 view.setButton(surroundingBombs, row, col);
-                view.disableButton(row, col);
+                if (surroundingBombs != 0) {
+                    view.disableButton(row, col);
+                }else {
+                    view.disableEmptyButton(row, col);
+                }
                 model.setNumberOfEmptyFieldsMinusOne();
                 if (model.checkWin()) {
                     view.stopTimer();
-                    view.disableButtons();
+                    view.disableAllButtons();
                     showAllBombs(false, row, col);
                     view.winningNotification();
                 }
-            } else {
+            } else { // Bomb is hit
                 view.stopTimer();
-                view.disableButtons();
+                view.disableAllButtons();
                 showAllBombs(true, row, col);
                 view.bombFieldNotification();
             }
@@ -125,7 +127,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         displayBombNumber = model.getNumberOfBombs();
         model.startSetup();
         view.startSetup(model.getNumberOfBombs());
-        view.enableButtons();
+        view.enableAllButtons();
         view.stopTimerReset();
     }
 
