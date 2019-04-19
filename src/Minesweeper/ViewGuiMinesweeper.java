@@ -23,6 +23,9 @@ import java.util.List;
 
 class ViewGuiMinesweeper {
 
+    private final Stage window = new Stage();
+    private Scene sceneBeginner = null, sceneAdvanced = null, sceneProfessional = null;
+
     private final int ROW = getDifficultyRow();
     private final int COL = getDifficultyCol();
     private int difficulty;
@@ -48,23 +51,27 @@ class ViewGuiMinesweeper {
 
     public void startView() {
 
-        Stage primaryStage = new Stage();
+        // Scene Beginner
         BorderPane root = new BorderPane();
-        primaryStage.setResizable(false);
-        Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
-        primaryStage.getIcons().add(icon);
         String style = "-fx-background-color: #000000";
         root.setStyle(style);
-
         initTimer();
         root.setTop(addMenu());
         root.setCenter(addGridPane());
         root.setBottom(addToolBar());
+        sceneBeginner = new Scene(root, 500, 450);
 
-        Scene scene = new Scene(root, 500, 450);
-        primaryStage.setTitle("Minesweeper");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        // Scene Advanced
+
+        // Scene Professional
+
+        // Window
+        window.setResizable(false);
+        Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
+        window.getIcons().add(icon);
+        window.setTitle("Minesweeper");
+        window.setScene(sceneBeginner);
+        window.show();
     }
 
     public void startSetup(int numberOfBombs) {
