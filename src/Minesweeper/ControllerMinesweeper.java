@@ -4,9 +4,6 @@ package Minesweeper;
 
 
 /*TODO
-   - am Ende auch alle Zahlen zeigen
-   - gesetzte Flaggen am Ende stehen lassen
-   - geht Timer in Professional?
    - Highscore
    - GirlMode
 
@@ -49,20 +46,20 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                 view.setButton(surroundingBombs, row, col);
                 if (surroundingBombs != 0) {
                     view.disableButton(row, col);
-                }else {
+                } else {
                     view.disableEmptyButton(row, col);
                 }
                 model.setNumberOfEmptyFieldsMinusOne();
                 if (model.checkWin()) {
                     view.stopTimer();
                     view.disableAllButtons();
-                    showAllBombs(false, row, col);
+                    openAllTiles(false, row, col);
                     view.winningNotification();
                 }
             } else { // Bomb is hit
                 view.stopTimer();
                 view.disableAllButtons();
-                showAllBombs(true, row, col);
+                openAllTiles(true, row, col);
                 view.bombFieldNotification();
             }
         } else { // Secondary Click to set a Flag
@@ -84,13 +81,40 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    private void openAllTiles(boolean redBomb, int row, int col) {
+
+        showNumberTiles();
+        showAllBombs(redBomb, row, col);
+    }
+
+    private void showNumberTiles() {
+
+        int row = model.getROW();
+        int col = model.getCOL();
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (model.isFieldListEmptyAt(i, j)) {
+
+                    int surroundingBombs = model.calculateSurroundingBombs(i, j);
+                    view.setButton(null, i, j);
+                    view.setButton(surroundingBombs, i, j);
+                }
+            }
+        }
+    }
+
     private void showAllBombs(boolean redBomb, int row, int col) {
 
         for (int i = 0; i < model.getNumberOfBombs(); i++) {
 
-            view.setButton(getRightImage(ModelMinesweeper.MINE), model.bombListRow.get(i), model.bombListCol.get(i));
+            // If there is no flag, show bomb
+            if (!(model.isFlagAt(model.bombListRow.get(i), model.bombListCol.get(i)))) {
+                view.setButton(getRightImage(ModelMinesweeper.MINE), model.bombListRow.get(i), model.bombListCol.get(i));
+            }
         }
 
+        // the clicked tile
         if (redBomb) {
             view.setButton(getRightImage(ModelMinesweeper.REDMINE), row, col);
         }

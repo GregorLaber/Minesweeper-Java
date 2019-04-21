@@ -319,6 +319,14 @@ class ModelMinesweeper {
         numberOfEmptyFields--;
     }
 
+    public int getROW() {
+        return ROW;
+    }
+
+    public int getCOL() {
+        return COL;
+    }
+
     boolean checkWin() {
 
         return (numberOfEmptyFields == numberOfBombs);
