@@ -25,3 +25,7 @@ out/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+out/production/07 Minesweeper/Minesweeper/ViewGuiMinesweeper.class
+out/production/07 Minesweeper/Minesweeper/ViewGuiMinesweeper$1.class
+out/production/07 Minesweeper/Minesweeper/ModelMinesweeper.class
+.idea/workspace.xml
