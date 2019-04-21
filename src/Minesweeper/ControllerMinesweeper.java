@@ -6,6 +6,7 @@ package Minesweeper;
 /*TODO
    - ggf. mehrere Scences um Schwierigkeitsgrad zu ändern
    - am Ende auch alle Zahlen zeigen
+   - gesetzte Flaggen am Ende stehen lassen
    - ggf. Zeile/Spalte im Profressional tauschen (Platzmangel)
    - geht Timer in Professional?
    - Highscore

@@ -58,16 +58,34 @@ class ViewGuiMinesweeper {
 
         String style = "-fx-background-color: #000000";
 
-//        // Scene Beginner
-//        BorderPane beginner = new BorderPane();
-//        beginner.setStyle(style);
-//        initTimer();
-//        beginner.setTop(addMenu());
-//        beginner.setCenter(addGridPane());
-//        beginner.setBottom(addToolBar());
-//        sceneBeginner = new Scene(beginner, 500, 450);
+        // Scenes
+//        setSceneBeginner(style);
+        setSceneAdvanced(style);
+//        setSceneProfessional(style);
 
-        // Scene Advanced
+        // Window
+        Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
+        window.getIcons().add(icon);
+        window.setTitle("Minesweeper");
+        window.setScene(sceneAdvanced);
+//        window.setMaximized(true); // For Professional Difficulty also have to switch resizable to true
+        window.setResizable(false);
+        window.show();
+    }
+
+    private void setSceneBeginner(String style) {
+
+        BorderPane beginner = new BorderPane();
+        beginner.setStyle(style);
+        initTimer();
+        beginner.setTop(addMenu());
+        beginner.setCenter(addGridPane());
+        beginner.setBottom(addToolBar());
+        sceneBeginner = new Scene(beginner, 500, 450);
+    }
+
+    private void setSceneAdvanced(String style) {
+
         BorderPane advanced = new BorderPane();
         advanced.setStyle(style);
         initTimer();
@@ -75,24 +93,17 @@ class ViewGuiMinesweeper {
         advanced.setCenter(addGridPane());
         advanced.setBottom(addToolBar());
         sceneAdvanced = new Scene(advanced, 750, 600);
+    }
 
-//        // Scene Professional
-//        BorderPane professional = new BorderPane();
-//        professional.setStyle(style);
-//        initTimer();
-//        professional.setTop(addMenu());
-//        professional.setCenter(addGridPane());
-//        professional.setBottom(addToolBar());
-//        sceneProfessional = new Scene(professional, 750, 600);
+    private void setSceneProfessional(String style) {
 
-        // Window
-        Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
-        window.getIcons().add(icon);
-        window.setTitle("Minesweeper");
-        window.setScene(sceneAdvanced);
-//        window.setMaximized(true);
-        window.setResizable(false);
-        window.show();
+        BorderPane professional = new BorderPane();
+        professional.setStyle(style);
+        initTimer();
+        professional.setTop(addMenu());
+        professional.setCenter(addGridPane());
+        professional.setBottom(addToolBar());
+        sceneProfessional = new Scene(professional, 750, 600);
     }
 
     public void startSetup(int numberOfBombs) {
@@ -242,7 +253,7 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void setScene (int difficulty) {
+    public void setScene(int difficulty) {
 
         switch (difficulty) {
             case 0: // Beginner
