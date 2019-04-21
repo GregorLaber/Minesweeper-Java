@@ -4,7 +4,9 @@ package Minesweeper;
 
 
 /*TODO
-   - ggf. mehrere Scences um Schwierigkeitsgrad zu ändern
+   - am Ende auch alle Zahlen zeigen
+   - gesetzte Flaggen am Ende stehen lassen
+   - geht Timer in Professional?
    - Highscore
    - GirlMode
 
@@ -124,19 +126,21 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     public void newClicked() {
 
         firstClick = true;
-        displayBombNumber = model.getNumberOfBombs();
         model.startSetup();
         view.startSetup(model.getNumberOfBombs());
+        displayBombNumber = model.getNumberOfBombs();
         view.enableAllButtons();
         view.stopTimerReset();
+        view.setScenes();
     }
 
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
-//        model.setDifficulty(difficulty);
-//        view.setDifficulty(difficulty);
-//        newClicked();
+        model.setDifficulty(difficulty);
+        view.setDifficulty(difficulty);
+        newClicked();
+        view.setScenes();
     }
 
 

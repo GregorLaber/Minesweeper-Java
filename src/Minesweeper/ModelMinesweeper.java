@@ -8,10 +8,10 @@ import java.util.Random;
 class ModelMinesweeper {
 
     private int difficulty;
-    private final int ROW = getDifficultyRow();
-    private final int COL = getDifficultyCol();
-    private final String[][] fieldList = new String[ROW][COL];
-    private final String[][] flagList = new String[ROW][COL];
+    private int ROW;
+    private int COL;
+    private String[][] fieldList;
+    private String[][] flagList;
     final List<Integer> bombListRow = new ArrayList<>();
     final List<Integer> bombListCol = new ArrayList<>();
     private int numberOfEmptyFields;
@@ -24,11 +24,20 @@ class ModelMinesweeper {
     ModelMinesweeper() {
 
         this.difficulty = 0;
+        this.ROW = getDifficultyRow();
+        this.COL = getDifficultyCol();
+        this.fieldList = new String[ROW][COL];
+        this.flagList = new String[ROW][COL];
+
         startSetup();
     }
 
     void startSetup() {
 
+        this.ROW = getDifficultyRow();
+        this.COL = getDifficultyCol();
+        this.fieldList = new String[ROW][COL];
+        this.flagList = new String[ROW][COL];
         numberOfEmptyFields = ROW * COL;
         bombListRow.clear();
         bombListCol.clear();
@@ -93,6 +102,14 @@ class ModelMinesweeper {
 
     private int getDifficultyRow() {
 
+        if (difficulty == 0) {
+            return 8;
+        }
+        return 16; // Case 1/2
+    }
+
+    private int getDifficultyCol() {
+
         switch (difficulty) {
             case 1:
                 return 16;
@@ -101,14 +118,6 @@ class ModelMinesweeper {
             default: // Case 0
                 return 8;
         }
-    }
-
-    private int getDifficultyCol() {
-
-        if (difficulty == 0) {
-            return 8;
-        }
-        return 16; // Case 1/2
     }
 
     private void setNumberOfBombs() {
