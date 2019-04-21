@@ -44,7 +44,7 @@ class ViewGuiMinesweeper {
 
     public ViewGuiMinesweeper(int numberOfBombs) {
 
-        setDifficulty(1);
+        setDifficulty(0);
         this.ROW = getDifficultyRow();
         this.COL = getDifficultyCol();
         this.numberOfBombs = numberOfBombs;
@@ -54,28 +54,37 @@ class ViewGuiMinesweeper {
         initButtonList();
     }
 
+    public void startSetup(int numberOfBombs) {
+
+        clearButtons();
+        this.ROW = getDifficultyRow();
+        this.COL = getDifficultyCol();
+        this.buttonList = new Button[ROW][COL];
+        initButtonList();
+        this.numberOfBombs = numberOfBombs;
+        this.bombNumberTextField = new TextField(); // Displays the number of Bombs in the Field
+        setBombNumberTextField(numberOfBombs);
+    }
+
     public void startView() {
 
-        String style = "-fx-background-color: #000000";
-
         // Scenes
-//        setSceneBeginner(style);
-        setSceneAdvanced(style);
-//        setSceneProfessional(style);
+        setSceneBeginner();
 
         // Window
         Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
         window.getIcons().add(icon);
         window.setTitle("Minesweeper");
-        window.setScene(sceneAdvanced);
+        window.setScene(sceneBeginner);
 //        window.setMaximized(true); // For Professional Difficulty also have to switch resizable to true
-        window.setResizable(false);
+        window.setResizable(true);
         window.show();
     }
 
-    private void setSceneBeginner(String style) {
+    private void setSceneBeginner() {
 
         BorderPane beginner = new BorderPane();
+        String style = "-fx-background-color: #000000";
         beginner.setStyle(style);
         initTimer();
         beginner.setTop(addMenu());
@@ -84,8 +93,9 @@ class ViewGuiMinesweeper {
         sceneBeginner = new Scene(beginner, 500, 450);
     }
 
-    private void setSceneAdvanced(String style) {
+    private void setSceneAdvanced() {
 
+        String style = "-fx-background-color: #000000";
         BorderPane advanced = new BorderPane();
         advanced.setStyle(style);
         initTimer();
@@ -95,22 +105,16 @@ class ViewGuiMinesweeper {
         sceneAdvanced = new Scene(advanced, 750, 600);
     }
 
-    private void setSceneProfessional(String style) {
+    private void setSceneProfessional() {
 
         BorderPane professional = new BorderPane();
+        String style = "-fx-background-color: #000000";
         professional.setStyle(style);
         initTimer();
         professional.setTop(addMenu());
         professional.setCenter(addGridPane());
         professional.setBottom(addToolBar());
-        sceneProfessional = new Scene(professional, 750, 600);
-    }
-
-    public void startSetup(int numberOfBombs) {
-
-        clearButtons();
-        this.numberOfBombs = numberOfBombs;
-        setBombNumberTextField(numberOfBombs);
+        sceneProfessional = new Scene(professional, 975, 700);
     }
 
     private void initTimer() {
@@ -192,6 +196,8 @@ class ViewGuiMinesweeper {
                 buttonList[i][j] = button;
                 buttonList[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 12));
                 buttonList[i][j].setOnMouseClicked(this::actionPerformed);
+                buttonList[i][j].setDisable(false);
+                buttonList[i][j].setMouseTransparent(false);
             }
         }
     }
@@ -200,8 +206,8 @@ class ViewGuiMinesweeper {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
-                buttonList[i][j].setGraphic(null);
-                buttonList[i][j].setText("");
+                this.buttonList[i][j].setGraphic(null);
+                this.buttonList[i][j].setText("");
             }
         }
     }
@@ -210,27 +216,27 @@ class ViewGuiMinesweeper {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
-                buttonList[i][j].setDisable(true);
+                this.buttonList[i][j].setDisable(true);
             }
         }
     }
 
     public void disableButton(int row, int col) {
 
-        buttonList[row][col].setMouseTransparent(true);
+        this.buttonList[row][col].setMouseTransparent(true);
     }
 
     public void disableEmptyButton(int row, int col) {
 
-        buttonList[row][col].setDisable(true);
+        this.buttonList[row][col].setDisable(true);
     }
 
     public void enableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
-                buttonList[i][j].setDisable(false);
-                buttonList[i][j].setMouseTransparent(false);
+                this.buttonList[i][j].setDisable(false);
+                this.buttonList[i][j].setMouseTransparent(false);
             }
         }
     }
@@ -240,35 +246,44 @@ class ViewGuiMinesweeper {
         switch (difficulty) {
             case 0: // Beginner
                 this.difficulty = 0;
-                window.setScene(sceneBeginner);
                 break;
             case 1: // Advanced
                 this.difficulty = 1;
-                window.setScene(sceneAdvanced);
                 break;
             case 2: // Professional
                 this.difficulty = 2;
-                window.setScene(sceneProfessional);
                 break;
         }
     }
 
-    public void setScene(int difficulty) {
+    public void setScenes() {
 
         switch (difficulty) {
             case 0: // Beginner
+                setSceneBeginner();
                 window.setScene(sceneBeginner);
                 break;
             case 1: // Advanced
+                setSceneAdvanced();
                 window.setScene(sceneAdvanced);
                 break;
             case 2: // Professional
+                setSceneProfessional();
                 window.setScene(sceneProfessional);
                 break;
         }
     }
 
     private int getDifficultyRow() {
+
+        if (difficulty == 0) {
+            return 8;
+        }
+        return 16; // Case 1/2
+    }
+
+    private int getDifficultyCol() {
+
 
         switch (difficulty) {
             case 1:
@@ -278,14 +293,6 @@ class ViewGuiMinesweeper {
             default: // Case 0
                 return 8;
         }
-    }
-
-    private int getDifficultyCol() {
-
-        if (difficulty == 0) {
-            return 8;
-        }
-        return 16; // Case 1/2
     }
 
     private void fieldNumbering(Button button) {
@@ -308,7 +315,17 @@ class ViewGuiMinesweeper {
         beginner.setToggleGroup(group);
         advanced.setToggleGroup(group);
         professional.setToggleGroup(group);
-        advanced.setSelected(true);
+        switch (difficulty) {
+            case 0:
+                beginner.setSelected(true);
+                break;
+            case 1:
+                advanced.setSelected(true);
+                break;
+            case 2:
+                professional.setSelected(true);
+                break;
+        }
         difficultyItem.getItems().addAll(beginner, advanced, professional);
         fileMenu.getItems().addAll(newItem, difficultyItem);
         menuBar.getMenus().addAll(fileMenu);
@@ -393,7 +410,6 @@ class ViewGuiMinesweeper {
 
     private void changeDifficultyClicked(int difficulty) {
 
-        System.out.println("Difficulty changed to " + difficulty);
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.changeDifficultyClicked(difficulty);
         }

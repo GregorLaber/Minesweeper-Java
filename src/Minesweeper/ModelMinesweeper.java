@@ -23,7 +23,7 @@ class ModelMinesweeper {
 
     ModelMinesweeper() {
 
-        this.difficulty = 1;
+        this.difficulty = 0;
         this.ROW = getDifficultyRow();
         this.COL = getDifficultyCol();
         this.fieldList = new String[ROW][COL];
@@ -102,6 +102,14 @@ class ModelMinesweeper {
 
     private int getDifficultyRow() {
 
+        if (difficulty == 0) {
+            return 8;
+        }
+        return 16; // Case 1/2
+    }
+
+    private int getDifficultyCol() {
+
         switch (difficulty) {
             case 1:
                 return 16;
@@ -110,14 +118,6 @@ class ModelMinesweeper {
             default: // Case 0
                 return 8;
         }
-    }
-
-    private int getDifficultyCol() {
-
-        if (difficulty == 0) {
-            return 8;
-        }
-        return 16; // Case 1/2
     }
 
     private void setNumberOfBombs() {

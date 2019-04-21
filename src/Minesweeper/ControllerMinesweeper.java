@@ -4,10 +4,8 @@ package Minesweeper;
 
 
 /*TODO
-   - ggf. mehrere Scences um Schwierigkeitsgrad zu ändern
    - am Ende auch alle Zahlen zeigen
    - gesetzte Flaggen am Ende stehen lassen
-   - ggf. Zeile/Spalte im Profressional tauschen (Platzmangel)
    - geht Timer in Professional?
    - Highscore
    - GirlMode
@@ -128,11 +126,12 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     public void newClicked() {
 
         firstClick = true;
-        displayBombNumber = model.getNumberOfBombs();
         model.startSetup();
         view.startSetup(model.getNumberOfBombs());
+        displayBombNumber = model.getNumberOfBombs();
         view.enableAllButtons();
         view.stopTimerReset();
+        view.setScenes();
     }
 
     @Override
@@ -140,8 +139,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         model.setDifficulty(difficulty);
         view.setDifficulty(difficulty);
-        view.setScene(difficulty);
         newClicked();
+        view.setScenes();
     }
 
 
