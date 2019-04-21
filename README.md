@@ -1,1 +1,2 @@
-The classic Windows Games Minesweeper written in Java. Screenshot of the Game is included
+The classic Windows Game Minesweeper.
+Written in Java with Model-View-Controller Architecture
