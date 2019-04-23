@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 
 
 /*TODO
+   - Nullen aufdecken
    - Highscore
    - GirlMode
 
