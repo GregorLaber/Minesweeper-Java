@@ -1,5 +1,6 @@
 package Minesweeper;
 
+import javafx.scene.image.Image;
 
 
 
@@ -9,7 +10,6 @@ package Minesweeper;
 
  */
 
-import javafx.scene.image.Image;
 
 public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
