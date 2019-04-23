@@ -306,7 +306,7 @@ class ViewGuiMinesweeper {
 
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("Game");
-        MenuItem newItem = new MenuItem("New Game");
+        MenuItem newGameItem = new MenuItem("New Game");
         Menu difficultyItem = new Menu("Difficulty");
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
@@ -326,11 +326,12 @@ class ViewGuiMinesweeper {
                 professional.setSelected(true);
                 break;
         }
-        difficultyItem.getItems().addAll(beginner, advanced, professional);
-        fileMenu.getItems().addAll(newItem, difficultyItem);
-        menuBar.getMenus().addAll(fileMenu);
 
-        newItem.setOnAction((ActionEvent event) -> newClicked());
+        fileMenu.getItems().add(newGameItem);
+        difficultyItem.getItems().addAll(beginner, advanced, professional);
+        menuBar.getMenus().addAll(fileMenu, difficultyItem);
+
+        newGameItem.setOnAction((ActionEvent event) -> newClicked());
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));

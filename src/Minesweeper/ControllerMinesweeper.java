@@ -6,12 +6,10 @@ import javafx.scene.image.Image;
 
 /*TODO
    - Nullen aufdecken
-   - Menü an Scene eine Ebene höher
-   - Menü abändern in zwei MenüItems
-   - Selected Difficulty überarbeiten
+   - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
+   - Menüpunkt Selected Difficulty überarbeiten
    - Highscore
    - GirlMode
-
  */
 
 
