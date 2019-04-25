@@ -8,7 +8,7 @@ import java.util.List;
 
 
 /*TODO
-   - Nullen aufdecken
+   - Zahlenfelder rund um Nullen aufdecken
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
    - Highscore
    - GirlMode
@@ -22,14 +22,17 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
     private boolean firstClick = true;
     private static int displayBombNumber = model.getNumberOfBombs();
-    private List<Integer> emptyTileRowList = new ArrayList<>();
-    private List<Integer> emptyTileColList = new ArrayList<>();
+    private final List<Integer> emptyTileRowList = new ArrayList<>();
+    private final List<Integer> emptyTileColList = new ArrayList<>();
     private static int recursionIndex = -1;
+    private final boolean debug = true; // For Debug purpose
 
     ControllerMinesweeper() {
 
         view.addViewListener(this);
-        showAllBombs(false, 0, 0); // For Debug purpose
+        if (debug) {
+            showAllBombs(false, 0, 0); // For Debug purpose
+        }
     }
 
     void startGame() {
@@ -169,9 +172,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
                 int surroundingBombs = model.calculateSurroundingBombs(emptyTileRowList.get(i), emptyTileColList.get(i));
                 if (surroundingBombs == 0) {
-                    view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
                     model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
-                } else {
+                    view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
+                } else { // useless
                     model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
                     view.setButton(null, emptyTileRowList.get(i), emptyTileColList.get(i));
                     view.setButton(surroundingBombs, emptyTileRowList.get(i), emptyTileColList.get(i));
@@ -258,7 +261,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         view.enableAllButtons();
         view.stopTimerReset();
         view.setScenes();
-        showAllBombs(false, 0, 0); // For Debug purpose
+        if (debug) {
+            showAllBombs(false, 0, 0); // For Debug purpose
+        }
     }
 
     @Override

@@ -26,12 +26,6 @@ class ModelMinesweeper {
     ModelMinesweeper() {
 
         this.difficulty = 0;
-        this.ROW = getDifficultyRow();
-        this.COL = getDifficultyCol();
-        this.fieldList = new String[ROW][COL];
-        this.flagList = new String[ROW][COL];
-        this.alreadyOpenedList = new String[ROW][COL];
-
         startSetup();
     }
 
@@ -315,8 +309,8 @@ class ModelMinesweeper {
         while (counter < numberOfBombs) {
 
             boolean found = false;
-            int randomRow = random.nextInt(ROW - 1);
-            int randomCol = random.nextInt(COL - 1);
+            int randomRow = random.nextInt(ROW);
+            int randomCol = random.nextInt(COL);
 
             if (fieldList[randomRow][randomCol].equals(MINE)) {
                 found = true;
