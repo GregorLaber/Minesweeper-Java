@@ -2,12 +2,14 @@ package Minesweeper;
 
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 
 /*TODO
    - Nullen aufdecken
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
-   - Menüpunkt Selected Difficulty überarbeiten
    - Highscore
    - GirlMode
  */
@@ -20,20 +22,22 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
     private boolean firstClick = true;
     private static int displayBombNumber = model.getNumberOfBombs();
+    private List<Integer> emptyTileRowList = new ArrayList<>();
+    private List<Integer> emptyTileColList = new ArrayList<>();
+    private static int recursionIndex = -1;
 
-    public ControllerMinesweeper() {
+    ControllerMinesweeper() {
 
         view.addViewListener(this);
+        showAllBombs(false, 0, 0); // For Debug purpose
     }
 
-    public void startGame() {
+    void startGame() {
 
         view.startView();
     }
 
     private void gameLoop(boolean primaryClick, int row, int col) {
-
-//        showAllBombs(false, 0, 0); // For Debug purpose
 
         if (firstClick) {
             firstClick = false;
@@ -42,36 +46,46 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         // Primary Click to open up the tiles
         if (primaryClick) {
+
             if (model.isFieldListEmptyAt(row, col)) { // This tiles get a coloured number
+
                 int surroundingBombs = model.calculateSurroundingBombs(row, col);
+                model.setAlreadyOpenedListAt(row, col);
                 view.setButton(null, row, col);
                 view.setButton(surroundingBombs, row, col);
                 if (surroundingBombs != 0) {
                     view.disableButton(row, col);
                 } else {
+                    // hier kommt Nullen aufdecken hin
                     view.disableEmptyButton(row, col);
+                    findSurroundingEmptyTiles(row, col);
+                    openUpEmptyTiles();
                 }
-                model.setNumberOfEmptyFieldsMinusOne();
                 if (model.checkWin()) {
                     view.stopTimer();
                     view.disableAllButtons();
                     openAllTiles(false, row, col);
                     view.winningNotification();
                 }
+
             } else { // Bomb is hit
                 view.stopTimer();
                 view.disableAllButtons();
                 openAllTiles(true, row, col);
                 view.bombFieldNotification();
             }
+
         } else { // Secondary Click to set a Flag
+
             if (model.isFlagAt(row, col)) {
+
                 displayBombNumber++;
                 if (displayBombNumber <= model.getNumberOfBombs()) {
                     view.setBombNumberTextField(displayBombNumber);
                 }
                 model.resetFlagAt(row, col);
                 view.setButton(null, row, col);
+
             } else {
                 displayBombNumber--;
                 if (displayBombNumber >= 0) {
@@ -81,6 +95,92 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                 view.setButton(getRightImage(ModelMinesweeper.FLAG), row, col);
             }
         }
+    }
+
+    /**
+     * Method to openUp multiply surrounding empty Tiles
+     *
+     * @param row position of the tile (row = x) (x,y)
+     * @param col position of the tile (col = y) (x,y)
+     */
+    private void findSurroundingEmptyTiles(int row, int col) {
+
+        int surroundingBombs;
+        boolean foundNewEmptyTile = false;
+
+
+        // Beachten calculateSurroundingBombs liefert eine -1 zurück wenn auf Index < 0 zugegriffen wird!
+        if (compareIndexRecursion(row - 1, col)) {
+            surroundingBombs = model.calculateSurroundingBombs(row - 1, col);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row - 1);
+                emptyTileColList.add(col);
+                foundNewEmptyTile = true;
+            }
+        }
+        if (compareIndexRecursion(row + 1, col)) {
+            surroundingBombs = model.calculateSurroundingBombs(row + 1, col);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row + 1);
+                emptyTileColList.add(col);
+                foundNewEmptyTile = true;
+            }
+        }
+        if (compareIndexRecursion(row, col - 1)) {
+            surroundingBombs = model.calculateSurroundingBombs(row, col - 1);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row);
+                emptyTileColList.add(col - 1);
+                foundNewEmptyTile = true;
+            }
+        }
+        if (compareIndexRecursion(row, col + 1)) {
+            surroundingBombs = model.calculateSurroundingBombs(row, col + 1);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row);
+                emptyTileColList.add(col + 1);
+                foundNewEmptyTile = true;
+            }
+        }
+
+        if (foundNewEmptyTile) {
+            recursionIndex++;
+            findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
+            recursionIndex = -1;
+        }
+    }
+
+    // compare if new indexes already exist
+    private boolean compareIndexRecursion(int row, int col) {
+
+        for (int i = 0; i < emptyTileRowList.size(); i++) {
+            if (row == emptyTileRowList.get(i) && col == emptyTileColList.get(i)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private void openUpEmptyTiles() {
+
+        for (int i = 0; i < emptyTileRowList.size(); i++) {
+            if (!model.isAlreadyOpenedAt(emptyTileRowList.get(i), emptyTileColList.get(i))) {
+
+                int surroundingBombs = model.calculateSurroundingBombs(emptyTileRowList.get(i), emptyTileColList.get(i));
+                if (surroundingBombs == 0) {
+                    view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
+                    model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
+                } else {
+                    model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
+                    view.setButton(null, emptyTileRowList.get(i), emptyTileColList.get(i));
+                    view.setButton(surroundingBombs, emptyTileRowList.get(i), emptyTileColList.get(i));
+                }
+            }
+        }
+
+        emptyTileRowList.clear();
+        emptyTileColList.clear();
     }
 
     private void openAllTiles(boolean redBomb, int row, int col) {
@@ -158,6 +258,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         view.enableAllButtons();
         view.stopTimerReset();
         view.setScenes();
+        showAllBombs(false, 0, 0); // For Debug purpose
     }
 
     @Override

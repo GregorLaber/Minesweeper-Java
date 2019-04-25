@@ -12,6 +12,7 @@ class ModelMinesweeper {
     private int COL;
     private String[][] fieldList;
     private String[][] flagList;
+    private String[][] alreadyOpenedList;
     final List<Integer> bombListRow = new ArrayList<>();
     final List<Integer> bombListCol = new ArrayList<>();
     private int numberOfEmptyFields;
@@ -20,6 +21,7 @@ class ModelMinesweeper {
     static final String REDMINE = "REDMINE";
     static final String FLAG = "FLAG";
     private static final String EMPTY = "EMPTY";
+    private static final String OPENED = "OPENED";
 
     ModelMinesweeper() {
 
@@ -28,6 +30,7 @@ class ModelMinesweeper {
         this.COL = getDifficultyCol();
         this.fieldList = new String[ROW][COL];
         this.flagList = new String[ROW][COL];
+        this.alreadyOpenedList = new String[ROW][COL];
 
         startSetup();
     }
@@ -38,6 +41,7 @@ class ModelMinesweeper {
         this.COL = getDifficultyCol();
         this.fieldList = new String[ROW][COL];
         this.flagList = new String[ROW][COL];
+        this.alreadyOpenedList = new String[ROW][COL];
         numberOfEmptyFields = ROW * COL;
         bombListRow.clear();
         bombListCol.clear();
@@ -93,9 +97,15 @@ class ModelMinesweeper {
                 flagList[i][j] = EMPTY;
             }
         }
+
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
+                alreadyOpenedList[i][j] = EMPTY;
+            }
+        }
     }
 
-    public void setDifficulty(int difficulty) {
+    void setDifficulty(int difficulty) {
 
         this.difficulty = difficulty;
     }
@@ -136,6 +146,13 @@ class ModelMinesweeper {
     }
 
     int calculateSurroundingBombs(int row, int col) {
+
+        // Exceptions
+        if (row < 0 || col < 0) {
+            return -1;
+        } else if (row >= ROW || col >= ROW) {
+            return -1;
+        }
 
         int totalSurroundBombs = 0;
 
@@ -314,16 +331,22 @@ class ModelMinesweeper {
         }
     }
 
-    public void setNumberOfEmptyFieldsMinusOne() {
+    void setAlreadyOpenedListAt(int row, int col) {
 
+        this.alreadyOpenedList[row][col] = OPENED;
         numberOfEmptyFields--;
     }
 
-    public int getROW() {
+    boolean isAlreadyOpenedAt(int row, int col) {
+
+        return (alreadyOpenedList[row][col].equals(OPENED));
+    }
+
+    int getROW() {
         return ROW;
     }
 
-    public int getCOL() {
+    int getCOL() {
         return COL;
     }
 
@@ -331,6 +354,4 @@ class ModelMinesweeper {
 
         return (numberOfEmptyFields == numberOfBombs);
     }
-
-
 }
