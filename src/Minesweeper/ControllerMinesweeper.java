@@ -8,8 +8,10 @@ import java.util.List;
 
 
 /*TODO
+   - Recursionsaufruf ist nicht komplett korrekt (nicht alle gespeicherten Felder werden abgearbeitet da abbruch früher statt findet)
    - Zahlenfelder rund um Nullen aufdecken
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
+   - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
    - Highscore
    - GirlMode
  */
@@ -101,7 +103,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     }
 
     /**
-     * Method to openUp multiply surrounding empty Tiles
+     * Recursive Method to find the surrounding null tiles.
      *
      * @param row position of the tile (row = x) (x,y)
      * @param col position of the tile (col = y) (x,y)
@@ -111,8 +113,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         int surroundingBombs;
         boolean foundNewEmptyTile = false;
 
-
-        // Beachten calculateSurroundingBombs liefert eine -1 zurück wenn auf Index < 0 zugegriffen wird!
+        // Beachten calculateSurroundingBombs liefert eine -1 zurück wenn auf (Index < 0) || (Index > ROW oder COL) zugegriffen wird!
         if (compareIndexRecursion(row - 1, col)) {
             surroundingBombs = model.calculateSurroundingBombs(row - 1, col);
             if (surroundingBombs == 0) {
@@ -151,6 +152,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
             recursionIndex = -1;
         }
+//        while (recursionIndex + 1 < emptyTileRowList.size()) {
+//            recursionIndex++;
+//            findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
+//        }
+//        recursionIndex = -1;
     }
 
     // compare if new indexes already exist
@@ -175,6 +181,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                     model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
                     view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
                 } else { // useless
+                    System.out.println("Fehler useless Code detected");
                     model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
                     view.setButton(null, emptyTileRowList.get(i), emptyTileColList.get(i));
                     view.setButton(surroundingBombs, emptyTileRowList.get(i), emptyTileColList.get(i));
