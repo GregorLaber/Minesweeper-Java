@@ -8,7 +8,6 @@ import java.util.List;
 
 
 /*TODO
-   - Recursionsaufruf ist nicht komplett korrekt (nicht alle gespeicherten Felder werden abgearbeitet da abbruch früher statt findet)
    - Zahlenfelder rund um Nullen aufdecken
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
    - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
@@ -149,17 +148,26 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         if (foundNewEmptyTile) {
             recursionIndex++;
-            findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
-            recursionIndex = -1;
+            if (recursionIndex < emptyTileRowList.size()) {
+                findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
+            }
+        } else {
+            recursionIndex++;
+            if (recursionIndex < emptyTileRowList.size()) {
+                findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
+                recursionIndex = -1;
+            }
         }
-//        while (recursionIndex + 1 < emptyTileRowList.size()) {
-//            recursionIndex++;
-//            findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
-//        }
-//        recursionIndex = -1;
+
     }
 
-    // compare if new indexes already exist
+    /**
+     * compare if new indexes already exist
+     *
+     * @param row coordinates (row/col)
+     * @param col coordinates (row/col)
+     * @return true if the input tile is not in the emptyList yet
+     */
     private boolean compareIndexRecursion(int row, int col) {
 
         for (int i = 0; i < emptyTileRowList.size(); i++) {
@@ -176,16 +184,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         for (int i = 0; i < emptyTileRowList.size(); i++) {
             if (!model.isAlreadyOpenedAt(emptyTileRowList.get(i), emptyTileColList.get(i))) {
 
-                int surroundingBombs = model.calculateSurroundingBombs(emptyTileRowList.get(i), emptyTileColList.get(i));
-                if (surroundingBombs == 0) {
-                    model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
-                    view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
-                } else { // useless
-                    System.out.println("Fehler useless Code detected");
-                    model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
-                    view.setButton(null, emptyTileRowList.get(i), emptyTileColList.get(i));
-                    view.setButton(surroundingBombs, emptyTileRowList.get(i), emptyTileColList.get(i));
-                }
+                model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
+                view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
             }
         }
 
