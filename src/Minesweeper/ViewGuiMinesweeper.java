@@ -42,7 +42,7 @@ class ViewGuiMinesweeper {
     private int minutes;
     private int seconds;
 
-    public ViewGuiMinesweeper(int numberOfBombs) {
+    ViewGuiMinesweeper(int numberOfBombs) {
 
         setDifficulty(0);
         this.ROW = getDifficultyRow();
@@ -54,7 +54,7 @@ class ViewGuiMinesweeper {
         initButtonList();
     }
 
-    public void startSetup(int numberOfBombs) {
+    void startSetup(int numberOfBombs) {
 
         clearButtons();
         this.ROW = getDifficultyRow();
@@ -66,7 +66,7 @@ class ViewGuiMinesweeper {
         setBombNumberTextField(numberOfBombs);
     }
 
-    public void startView() {
+    void startView() {
 
         // Scenes
         setSceneBeginner();
@@ -164,19 +164,19 @@ class ViewGuiMinesweeper {
         };
     }
 
-    public void startTimer() {
+    void startTimer() {
 
         labelTimer.setText("00:00");
         timer.start();
     }
 
-    public void stopTimerReset() {
+    void stopTimerReset() {
 
         timer.stop();
         labelTimer.setText("00:00");
     }
 
-    public void stopTimer() {
+    void stopTimer() {
 
         timer.stop();
     }
@@ -212,7 +212,7 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void disableAllButtons() {
+    void disableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -221,17 +221,17 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void disableButton(int row, int col) {
+    void disableButton(int row, int col) {
 
         this.buttonList[row][col].setMouseTransparent(true);
     }
 
-    public void disableEmptyButton(int row, int col) {
+    void disableEmptyButton(int row, int col) {
 
         this.buttonList[row][col].setDisable(true);
     }
 
-    public void enableAllButtons() {
+    void enableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -241,7 +241,7 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void setDifficulty(int difficulty) {
+    void setDifficulty(int difficulty) {
 
         switch (difficulty) {
             case 0: // Beginner
@@ -256,7 +256,7 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void setScenes() {
+    void setScenes() {
 
         switch (difficulty) {
             case 0: // Beginner
@@ -306,7 +306,7 @@ class ViewGuiMinesweeper {
 
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("Game");
-        MenuItem newItem = new MenuItem("New Game");
+        MenuItem newGameItem = new MenuItem("New Game");
         Menu difficultyItem = new Menu("Difficulty");
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
@@ -326,11 +326,12 @@ class ViewGuiMinesweeper {
                 professional.setSelected(true);
                 break;
         }
-        difficultyItem.getItems().addAll(beginner, advanced, professional);
-        fileMenu.getItems().addAll(newItem, difficultyItem);
-        menuBar.getMenus().addAll(fileMenu);
 
-        newItem.setOnAction((ActionEvent event) -> newClicked());
+        fileMenu.getItems().add(newGameItem);
+        difficultyItem.getItems().addAll(beginner, advanced, professional);
+        menuBar.getMenus().addAll(fileMenu, difficultyItem);
+
+        newGameItem.setOnAction((ActionEvent event) -> newClicked());
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
@@ -352,7 +353,7 @@ class ViewGuiMinesweeper {
         return new HBox(toolBar);
     }
 
-    public void setBombNumberTextField(int number) {
+    void setBombNumberTextField(int number) {
 
         String bombs = Integer.toString(number);
         bombNumberTextField.setText(bombs);
@@ -438,12 +439,12 @@ class ViewGuiMinesweeper {
         return coordinates;
     }
 
-    public void setButton(Image figure, int row, int col) {
+    void setButton(Image figure, int row, int col) {
 
         buttonList[row][col].setGraphic(new ImageView(figure));
     }
 
-    public void setButton(int number, int row, int col) {
+    void setButton(int number, int row, int col) {
 
         if (number != 0) {
             String text = Integer.toString(number);
@@ -473,12 +474,12 @@ class ViewGuiMinesweeper {
         }
     }
 
-    public void addViewListener(ViewListenerMinesweeper listener) {
+    void addViewListener(ViewListenerMinesweeper listener) {
 
         viewListenerList.add(listener);
     }
 
-    public void bombFieldNotification() {
+    void bombFieldNotification() {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Game over!");
@@ -487,7 +488,7 @@ class ViewGuiMinesweeper {
         alert.showAndWait();
     }
 
-    public void winningNotification() {
+    void winningNotification() {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("You won!");
