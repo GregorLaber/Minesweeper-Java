@@ -8,7 +8,6 @@ import java.util.List;
 
 
 /*TODO
-   - Zahlenfelder rund um Nullen aufdecken
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
    - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
    - Highscore
@@ -51,8 +50,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         // Primary Click to open up the tiles
         if (primaryClick) {
 
-            if (model.isFieldListEmptyAt(row, col)) { // This tiles get a coloured number
+            if (model.isFieldListEmptyAt(row, col)) {
 
+                // This tiles gets a coloured number
                 int surroundingBombs = model.calculateSurroundingBombs(row, col);
                 model.setAlreadyOpenedListAt(row, col);
                 view.setButton(null, row, col);
@@ -63,7 +63,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                     // hier kommt Nullen aufdecken hin
                     view.disableEmptyButton(row, col);
                     findSurroundingEmptyTiles(row, col);
-                    openUpEmptyTiles();
+                    if (emptyTileRowList.isEmpty()) {
+                        openColoredNeighbors(row, col);
+                    } else {
+                        openUpEmptyTiles();
+                    }
                 }
                 if (model.checkWin()) {
                     view.stopTimer();
@@ -155,10 +159,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             recursionIndex++;
             if (recursionIndex < emptyTileRowList.size()) {
                 findSurroundingEmptyTiles(emptyTileRowList.get(recursionIndex), emptyTileColList.get(recursionIndex));
-                recursionIndex = -1;
             }
         }
-
+        recursionIndex = -1;
     }
 
     /**
@@ -182,15 +185,191 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private void openUpEmptyTiles() {
 
         for (int i = 0; i < emptyTileRowList.size(); i++) {
-            if (!model.isAlreadyOpenedAt(emptyTileRowList.get(i), emptyTileColList.get(i))) {
+            int row = emptyTileRowList.get(i);
+            int col = emptyTileColList.get(i);
+            if (!model.isAlreadyOpenedAt(row, col)) {
 
-                model.setAlreadyOpenedListAt(emptyTileRowList.get(i), emptyTileColList.get(i));
-                view.disableEmptyButton(emptyTileRowList.get(i), emptyTileColList.get(i));
+                model.setAlreadyOpenedListAt(row, col);
+                view.disableEmptyButton(row, col);
             }
+        }
+
+        for (int i = 0; i < emptyTileRowList.size(); i++) {
+            int row = emptyTileRowList.get(i);
+            int col = emptyTileColList.get(i);
+            openColoredNeighbors(row, col);
         }
 
         emptyTileRowList.clear();
         emptyTileColList.clear();
+    }
+
+    private void openColoredNeighbors(int row, int col) {
+
+        // Maximum
+        int ROW = model.getROW();
+        int COL = model.getCOL();
+
+        if (row == 0 && col == 0) {
+
+            if (!model.isAlreadyOpenedAt(row, col + 1)) {
+                openColoredTile(row, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col)) {
+                openColoredTile(row + 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col + 1)) {
+                openColoredTile(row + 1, col + 1);
+            }
+
+        } else if (row == 0 && col == COL - 1) {
+
+            if (!model.isAlreadyOpenedAt(row, col - 1)) {
+                openColoredTile(row, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col)) {
+                openColoredTile(row + 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col - 1)) {
+                openColoredTile(row + 1, col - 1);
+            }
+
+        } else if (row == ROW - 1 && col == COL - 1) {
+
+            if (!model.isAlreadyOpenedAt(row - 1, col - 1)) {
+                openColoredTile(row - 1, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col)) {
+                openColoredTile(row - 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row, col - 1)) {
+                openColoredTile(row, col - 1);
+            }
+
+        } else if (row == ROW - 1 && col == 0) {
+
+            if (!model.isAlreadyOpenedAt(row, col + 1)) {
+                openColoredTile(row, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col)) {
+                openColoredTile(row - 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col + 1)) {
+                openColoredTile(row - 1, col + 1);
+            }
+
+        } else if (row == 0) {
+
+            if (!model.isAlreadyOpenedAt(row + 1, col - 1)) {
+                openColoredTile(row + 1, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col + 1)) {
+                openColoredTile(row + 1, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col)) {
+                openColoredTile(row + 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row, col - 1)) {
+                openColoredTile(row, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row, col + 1)) {
+                openColoredTile(row, col + 1);
+            }
+
+        } else if (col == 0) {
+
+            if (!model.isAlreadyOpenedAt(row + 1, col)) {
+                openColoredTile(row + 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col)) {
+                openColoredTile(row - 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col + 1)) {
+                openColoredTile(row - 1, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col + 1)) {
+                openColoredTile(row + 1, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row, col + 1)) {
+                openColoredTile(row, col + 1);
+            }
+
+        } else if (row == ROW - 1) {
+
+            if (!model.isAlreadyOpenedAt(row - 1, col - 1)) {
+                openColoredTile(row - 1, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row, col - 1)) {
+                openColoredTile(row, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col)) {
+                openColoredTile(row - 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row, col + 1)) {
+                openColoredTile(row, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col + 1)) {
+                openColoredTile(row - 1, col + 1);
+            }
+
+        } else if (col == COL - 1) {
+
+            if (!model.isAlreadyOpenedAt(row - 1, col - 1)) {
+                openColoredTile(row - 1, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col)) {
+                openColoredTile(row - 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col)) {
+                openColoredTile(row + 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row, col - 1)) {
+                openColoredTile(row, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col - 1)) {
+                openColoredTile(row + 1, col - 1);
+            }
+
+        } else {
+
+            if (!model.isAlreadyOpenedAt(row - 1, col - 1)) {
+                openColoredTile(row - 1, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col)) {
+                openColoredTile(row - 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row - 1, col + 1)) {
+                openColoredTile(row - 1, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row, col + 1)) {
+                openColoredTile(row, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col + 1)) {
+                openColoredTile(row + 1, col + 1);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col)) {
+                openColoredTile(row + 1, col);
+            }
+            if (!model.isAlreadyOpenedAt(row + 1, col - 1)) {
+                openColoredTile(row + 1, col - 1);
+            }
+            if (!model.isAlreadyOpenedAt(row, col - 1)) {
+                openColoredTile(row, col - 1);
+            }
+        }
+    }
+
+    private void openColoredTile(int row, int col) {
+
+        int surroundingBombs = model.calculateSurroundingBombs(row, col);
+        if (surroundingBombs != 0) {
+            model.setAlreadyOpenedListAt(row, col);
+            view.setButton(null, row, col);
+            view.setButton(surroundingBombs, row, col);
+            view.disableButton(row, col);
+        } else {
+            view.disableEmptyButton(row, col);
+        }
     }
 
     private void openAllTiles(boolean redBomb, int row, int col) {
