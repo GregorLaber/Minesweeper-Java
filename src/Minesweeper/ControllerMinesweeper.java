@@ -8,9 +8,11 @@ import java.util.List;
 
 
 /*TODO
+   - Primary click on Flag resets the flag and not open the tile
+   - Highscore
+   - Implement hint? (mit cool down)
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
    - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
-   - Highscore
    - GirlMode
  */
 
