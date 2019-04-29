@@ -25,7 +25,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private final List<Integer> emptyTileRowList = new ArrayList<>();
     private final List<Integer> emptyTileColList = new ArrayList<>();
     private static int recursionIndex = -1;
-    private final boolean debug = true; // For Debug purpose
+    private final boolean debug = false; // For Debug purpose
 
     ControllerMinesweeper() {
 
@@ -362,9 +362,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private void openColoredTile(int row, int col) {
 
         int surroundingBombs = model.calculateSurroundingBombs(row, col);
+        model.setAlreadyOpenedListAt(row, col);
+        view.setButton(null, row, col);
         if (surroundingBombs != 0) {
-            model.setAlreadyOpenedListAt(row, col);
-            view.setButton(null, row, col);
             view.setButton(surroundingBombs, row, col);
             view.disableButton(row, col);
         } else {
