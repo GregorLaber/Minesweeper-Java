@@ -8,7 +8,6 @@ import java.util.List;
 
 
 /*TODO
-   - Professional Mode überprüfen
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
    - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
    - Highscore

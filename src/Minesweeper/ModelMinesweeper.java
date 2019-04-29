@@ -144,7 +144,7 @@ class ModelMinesweeper {
         // Exceptions
         if (row < 0 || col < 0) {
             return -1;
-        } else if (row >= ROW || col >= ROW) {
+        } else if (row >= ROW || col >= COL) {
             return -1;
         }
 

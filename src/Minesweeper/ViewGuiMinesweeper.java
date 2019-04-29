@@ -56,6 +56,8 @@ class ViewGuiMinesweeper {
 
     void startSetup(int numberOfBombs) {
 
+        k = 0;
+        id = 0;
         clearButtons();
         this.ROW = getDifficultyRow();
         this.COL = getDifficultyCol();
@@ -187,7 +189,7 @@ class ViewGuiMinesweeper {
             for (int j = 0; j < COL; j++) {
 
                 Button button = new Button();
-                //fieldNumbering(button); // for Debug purpose
+//                fieldNumbering(button); // for Debug purpose
                 button.setMinSize(30, 30);
                 button.setMaxSize(30, 30);
                 String stringId = Integer.toString(id++);
