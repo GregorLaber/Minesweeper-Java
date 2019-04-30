@@ -8,7 +8,6 @@ import java.util.List;
 
 
 /*TODO
-   - Primary click on Flag resets the flag and not open the tile
    - Highscore
    - Implement hint? (mit cool down)
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
@@ -52,37 +51,49 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         // Primary Click to open up the tiles
         if (primaryClick) {
 
-            if (model.isFieldListEmptyAt(row, col)) {
+            if (model.isFlagAt(row, col)) {
 
-                // This tiles gets a coloured number
-                int surroundingBombs = model.calculateSurroundingBombs(row, col);
-                model.setAlreadyOpenedListAt(row, col);
-                view.setButton(null, row, col);
-                view.setButton(surroundingBombs, row, col);
-                if (surroundingBombs != 0) {
-                    view.disableButton(row, col);
-                } else {
-                    // hier kommt Nullen aufdecken hin
-                    view.disableEmptyButton(row, col);
-                    findSurroundingEmptyTiles(row, col);
-                    if (emptyTileRowList.isEmpty()) {
-                        openColoredNeighbors(row, col);
-                    } else {
-                        openUpEmptyTiles();
-                    }
+                displayBombNumber++;
+                if (displayBombNumber <= model.getNumberOfBombs()) {
+                    view.setBombNumberTextField(displayBombNumber);
                 }
-                if (model.checkWin()) {
+                model.resetFlagAt(row, col);
+                view.setButton(null, row, col);
+
+            } else {
+
+                if (model.isFieldListEmptyAt(row, col)) {
+
+                    // This tiles gets a coloured number
+                    int surroundingBombs = model.calculateSurroundingBombs(row, col);
+                    model.setAlreadyOpenedListAt(row, col);
+                    view.setButton(null, row, col);
+                    view.setButton(surroundingBombs, row, col);
+                    if (surroundingBombs != 0) {
+                        view.disableButton(row, col);
+                    } else {
+                        // hier kommt Nullen aufdecken hin
+                        view.disableEmptyButton(row, col);
+                        findSurroundingEmptyTiles(row, col);
+                        if (emptyTileRowList.isEmpty()) {
+                            openColoredNeighbors(row, col);
+                        } else {
+                            openUpEmptyTiles();
+                        }
+                    }
+                    if (model.checkWin()) {
+                        view.stopTimer();
+                        view.disableAllButtons();
+                        openAllTiles(false, row, col);
+                        view.winningNotification();
+                    }
+
+                } else { // Bomb is hit
                     view.stopTimer();
                     view.disableAllButtons();
-                    openAllTiles(false, row, col);
-                    view.winningNotification();
+                    openAllTiles(true, row, col);
+                    view.bombFieldNotification();
                 }
-
-            } else { // Bomb is hit
-                view.stopTimer();
-                view.disableAllButtons();
-                openAllTiles(true, row, col);
-                view.bombFieldNotification();
             }
 
         } else { // Secondary Click to set a Flag
