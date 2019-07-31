@@ -8,11 +8,13 @@ import java.util.List;
 
 
 /*TODO
+   - Change recursive Method (so every empty Tile opens up)
    - Highscore
-   - Implement hint? (mit cool down)
+   - Implement hint? (with cool down)
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
    - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
    - GirlMode
+   - Tracker (how many Games played in a row)
  */
 
 
