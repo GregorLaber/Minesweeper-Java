@@ -8,6 +8,7 @@ import java.util.List;
 
 
 /*TODO
+   - Change recursive Method (so every empty Tile opens up)
    - Highscore
    - Implement hint? (with cool down)
    - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
