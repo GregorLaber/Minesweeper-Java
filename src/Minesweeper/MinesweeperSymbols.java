@@ -2,7 +2,12 @@ package Minesweeper;
 
 import javafx.scene.image.Image;
 
-
+/**
+ *  Symbols
+ *  1. Mine
+ *  2. Redmine (detonated)
+ *  3. Flag
+ */
 class MinesweeperSymbols {
 
     public final Image MINE = new Image(getClass().getResourceAsStream("pictures/mine.png"));
