@@ -498,8 +498,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     /**
      * Methode overridden vom Interface. Ruft den Spielablauf und sagt ihm, dass primäre Klick war.
      *
-     * @param row   Index of the field (row/col)
-     * @param col   Index of the field (row/col)
+     * @param row Index of the field (row/col)
+     * @param col Index of the field (row/col)
      */
     @Override
     public void buttonClickedPrimary(int row, int col) {
@@ -510,8 +510,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     /**
      * Methode overridden vom Interface. Ruft den Spielablauf und sagt ihm, dass sekundäre Klick war.
      *
-     * @param row   Index of the field (row/col)
-     * @param col   Index of the field (row/col)
+     * @param row Index of the field (row/col)
+     * @param col Index of the field (row/col)
      */
     @Override
     public void buttonClickedSecondary(int row, int col) {
@@ -553,6 +553,5 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         newClicked();
         view.setScenes();
     }
-
 
 }
