@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Enthält das Aussehen der Anwendung. Klassisch nach MVC Architektur
+ */
 class ViewGuiMinesweeper {
 
     private final Stage window = new Stage();
@@ -32,8 +35,8 @@ class ViewGuiMinesweeper {
     private int numberOfBombs;
     private Button[][] buttonList;
     private TextField bombNumberTextField;
-    private static int k = 0;
-    private static int id = 0;
+    private static int tileNumber = 0;
+    private static int buttonID = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
 
@@ -54,10 +57,15 @@ class ViewGuiMinesweeper {
         initButtonList();
     }
 
+    /**
+     * Method refreshes game after "NEW GAME" is clicked.
+     *
+     * @param numberOfBombs to set up
+     */
     void startSetup(int numberOfBombs) {
 
-        k = 0;
-        id = 0;
+        tileNumber = 0;      //Debug purpose. Number on Tiles if method fieldNumbering is active.
+        buttonID = 0;
         clearButtons();
         this.ROW = getDifficultyRow();
         this.COL = getDifficultyCol();
@@ -68,6 +76,11 @@ class ViewGuiMinesweeper {
         setBombNumberTextField(numberOfBombs);
     }
 
+    /**
+     * Displays the GUI.
+     * Only called once. First opening of the application.
+     * Difficulty at beginning is beginner (easiest)
+     */
     void startView() {
 
         // Scenes
@@ -83,6 +96,9 @@ class ViewGuiMinesweeper {
         window.show();
     }
 
+    /**
+     * Set the Scene to beginner. Set Menu, Toolbar and in the mid the Buttons.
+     */
     private void setSceneBeginner() {
 
         BorderPane beginner = new BorderPane();
@@ -95,6 +111,9 @@ class ViewGuiMinesweeper {
         sceneBeginner = new Scene(beginner, 500, 450);
     }
 
+    /**
+     * Set the Scene to advanced. Set Menu, Toolbar and in the mid the Buttons.
+     */
     private void setSceneAdvanced() {
 
         String style = "-fx-background-color: #000000";
@@ -107,6 +126,9 @@ class ViewGuiMinesweeper {
         sceneAdvanced = new Scene(advanced, 750, 600);
     }
 
+    /**
+     * Set the Scene to professional. Set Menu, Toolbar and in the mid the Buttons.
+     */
     private void setSceneProfessional() {
 
         BorderPane professional = new BorderPane();
@@ -119,6 +141,9 @@ class ViewGuiMinesweeper {
         sceneProfessional = new Scene(professional, 975, 700);
     }
 
+    /**
+     * toolbar Timer. Initialisation, doing and stop.
+     */
     private void initTimer() {
 
         timer = new AnimationTimer() {
@@ -166,23 +191,37 @@ class ViewGuiMinesweeper {
         };
     }
 
+    /**
+     * toolbar Timer. Starts the timer at Zero.
+     */
     void startTimer() {
 
         labelTimer.setText("00:00");
         timer.start();
     }
 
+    /**
+     * toolbar Timer. Stop and Reset the Timer
+     */
     void stopTimerReset() {
 
         timer.stop();
         labelTimer.setText("00:00");
     }
 
+    /**
+     * toolbar Timer. Only Stop the Timer
+     */
     void stopTimer() {
 
         timer.stop();
     }
 
+    /**
+     * Initialise the buttons. Set Style, Font, Size, ID.
+     * ROW and COL vary depending on the difficulty.
+     * If a button is clicked the action triggers here
+     */
     private void initButtonList() {
 
         for (int i = 0; i < ROW; i++) {
@@ -192,7 +231,7 @@ class ViewGuiMinesweeper {
 //                fieldNumbering(button); // for Debug purpose
                 button.setMinSize(30, 30);
                 button.setMaxSize(30, 30);
-                String stringId = Integer.toString(id++);
+                String stringId = Integer.toString(buttonID++);
                 button.setId(stringId);
 
                 buttonList[i][j] = button;
@@ -204,6 +243,9 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * clear all the buttons
+     */
     private void clearButtons() {
 
         for (int i = 0; i < ROW; i++) {
@@ -214,6 +256,9 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * disable all buttons
+     */
     void disableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
@@ -223,16 +268,31 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * disable specific button. Method for Buttons with numbers on it after clicking.
+     *
+     * @param row index (row/col)
+     * @param col index (row/col)
+     */
     void disableButton(int row, int col) {
 
         this.buttonList[row][col].setMouseTransparent(true);
     }
 
+    /**
+     * disable specific Button. Method for empty Buttons without any number and bomb.
+     *
+     * @param row index (row/col)
+     * @param col index (row/col)
+     */
     void disableEmptyButton(int row, int col) {
 
         this.buttonList[row][col].setDisable(true);
     }
 
+    /**
+     * enables all buttons.
+     */
     void enableAllButtons() {
 
         for (int i = 0; i < ROW; i++) {
@@ -243,6 +303,11 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * method to set difficulty
+     *
+     * @param difficulty three kinds of difficulty
+     */
     void setDifficulty(int difficulty) {
 
         switch (difficulty) {
@@ -258,6 +323,9 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * set the right scene depending on difficulty.
+     */
     void setScenes() {
 
         switch (difficulty) {
@@ -276,6 +344,11 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * liefert die Anzahl der Zeilen abhängig von der Schwierigkeit
+     *
+     * @return Anzahl der Zeilen
+     */
     private int getDifficultyRow() {
 
         if (difficulty == 0) {
@@ -284,6 +357,11 @@ class ViewGuiMinesweeper {
         return 16; // Case 1/2
     }
 
+    /**
+     * liefert die Anzahl der Spalten abhängig von der Schwierigkeit
+     *
+     * @return Anzahl der Spalten
+     */
     private int getDifficultyCol() {
 
 
@@ -297,13 +375,23 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * DEBUG Methode. Dient zum nummerieren aller Buttons.
+     *
+     * @param button der Button der eine Nummer bekommt
+     */
     private void fieldNumbering(Button button) {
 
-        String text = Integer.toString(k++);
+        String text = Integer.toString(tileNumber++);
         button.setText(text);
         button.setFont(new Font("Arial Unicode MS", 11));
     }
 
+    /**
+     * Methode zum erstellen der Menubar
+     *
+     * @return menuBar
+     */
     private MenuBar addMenu() {
 
         MenuBar menuBar = new MenuBar();
@@ -341,6 +429,12 @@ class ViewGuiMinesweeper {
         return menuBar;
     }
 
+    /**
+     * Methode um die Statusleiste zu erzeugen.
+     * Von links nach rechts: BombenIcon, Textfeld mit der Anzahl der übrigen Bomben, Timer
+     *
+     * @return ToolBar
+     */
     private HBox addToolBar() {
 
         String bombs = Integer.toString(numberOfBombs);
@@ -355,12 +449,22 @@ class ViewGuiMinesweeper {
         return new HBox(toolBar);
     }
 
+    /**
+     * Methode um das Textfeld mit der Anzahl der übrigen Bomben auf den Wert vom Parameter zusetzen.
+     *
+     * @param number Anzahl die in der Statusleiste angezeigt wird
+     */
     void setBombNumberTextField(int number) {
 
         String bombs = Integer.toString(number);
         bombNumberTextField.setText(bombs);
     }
 
+    /**
+     * Methode um das Gitternetz mit den Buttons zu setzen.
+     *
+     * @return Grid
+     */
     private GridPane addGridPane() {
 
         GridPane grid = new GridPane();
@@ -383,6 +487,11 @@ class ViewGuiMinesweeper {
         g.add(b, col, row);
     }
 
+    /**
+     * Wenn ein Spielfeld-Button geklickt wird, wird der Listener benachrichtigt.
+     *
+     * @param event Links oder Rechtsklick
+     */
     private void actionPerformed(MouseEvent event) {
 
         if (event.getButton() == MouseButton.SECONDARY) {
@@ -404,6 +513,9 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * Interface Methode. Wenn NEW GAME geklickt wird, wird der Listener benachrichtigt.
+     */
     private void newClicked() {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
@@ -411,6 +523,11 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * Interface Methode. Wenn der Schwierigkeitsgrad verändert wird, wird der Listener benachrichtigt.
+     *
+     * @param difficulty Neu gesetzter Schwierigkeitsgrad
+     */
     private void changeDifficultyClicked(int difficulty) {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
@@ -419,6 +536,8 @@ class ViewGuiMinesweeper {
     }
 
     /**
+     * Methode um anhand der ID des Buttons dessen Koordinaten zu bekommen
+     *
      * @param index ID des Buttons
      * @return an Int Array of 2 Elements
      * [0] = row
@@ -441,11 +560,25 @@ class ViewGuiMinesweeper {
         return coordinates;
     }
 
+    /**
+     * Methode um dem Button an der Position (row/col) das Symbol(figure) zu setzen
+     *
+     * @param figure Bombe oder Flag
+     * @param row    Pos(row/col)
+     * @param col    Pos(row/col)
+     */
     void setButton(Image figure, int row, int col) {
 
         buttonList[row][col].setGraphic(new ImageView(figure));
     }
 
+    /**
+     * Methode um dem Button an der Position (row/col) die Nummer(number) zu setzen
+     *
+     * @param number Zahl von 1 bis 8
+     * @param row    Pos(row/col)
+     * @param col    Pos(row/col)
+     */
     void setButton(int number, int row, int col) {
 
         if (number != 0) {
@@ -456,6 +589,12 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * Je nach Nummer auf einem Button hat diese eine andere Farbe
+     *
+     * @param number Zahl die auf dem aufgedeckten Button steht
+     * @return Farbe in der die Zahl geschrieben wird
+     */
     private String setTextColor(int number) {
 
         switch (number) {
@@ -476,11 +615,19 @@ class ViewGuiMinesweeper {
         }
     }
 
+    /**
+     * Start Methode um den Listener zu registrieren
+     *
+     * @param listener Klasse die sich registriert
+     */
     void addViewListener(ViewListenerMinesweeper listener) {
 
         viewListenerList.add(listener);
     }
 
+    /**
+     * Verlierer Benachrichtigung
+     */
     void bombFieldNotification() {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -490,6 +637,9 @@ class ViewGuiMinesweeper {
         alert.showAndWait();
     }
 
+    /**
+     * Gewinner Benachrichtigung
+     */
     void winningNotification() {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -498,6 +648,5 @@ class ViewGuiMinesweeper {
         alert.setContentText("Congratulations. You won the Game.");
         alert.showAndWait();
     }
-
 
 }

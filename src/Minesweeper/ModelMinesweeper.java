@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Enthält den Datenzustand der Anwendung. Klassisch nach MVC Architektur
+ */
 class ModelMinesweeper {
 
     private int difficulty;
@@ -29,6 +32,16 @@ class ModelMinesweeper {
         startSetup();
     }
 
+    /**
+     * Methode für jeden Neustart der Anwendung.
+     * - Zeile und Spalten werden auf neuen Zustand gesetzt
+     * - Feldliste wird neu initialisiert
+     * - Flaggenliste wird neu initialisiert
+     * - Liste der bereits geöffneten Felder wird neu initialisiert
+     * - Anzahl der zu öffnenden Felder ergibt sich aus Zeile mal Spalte
+     * - Die beiden Listen für Zeile und Spalten der Bomben werden zurück gesetzt.
+     * - Danach wird das Spielfeld initialisiert. Anzahl der Minen wird berechnet und zufällig verteilt.
+     */
     void startSetup() {
 
         this.ROW = getDifficultyRow();
@@ -44,40 +57,87 @@ class ModelMinesweeper {
         setRandomBombs();
     }
 
+    /**
+     * Getter für Anzahl der Minen
+     *
+     * @return Anzahl der Minen
+     */
     int getNumberOfBombs() {
         return numberOfBombs;
     }
 
+    /**
+     * Methode um zu prüfen ob das Spielfeld an Stelle (row/col) ohne Mine ist.
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     * @return if empty true else false
+     */
     boolean isFieldListEmptyAt(int row, int col) {
 
         return (fieldList[row][col].equals(EMPTY));
     }
 
+    /**
+     * Methode um gesetzten Zustand an Pos (row/col) zu bekommen.
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     * @return Zustand von Pos (row/col)
+     */
     private String getFieldListAt(int row, int col) {
 
         return fieldList[row][col];
     }
 
+    /**
+     * Methode um an Pos (row/col) eine Mine zu setzen
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     */
     private void setBombAt(int row, int col) {
 
         fieldList[row][col] = MINE;
     }
 
+    /**
+     * Methode um herauszufinden ob an Pos (row/col) eine Flagge sitzt
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     * @return bool if flag at Pos (row/col) then true else false
+     */
     boolean isFlagAt(int row, int col) {
 
         return flagList[row][col].equals(FLAG);
     }
 
+    /**
+     * Methode um an Pos (row/col) eine Flagge zu setzen
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     */
     void setFlagAt(int row, int col) {
 
         flagList[row][col] = FLAG;
     }
 
+    /**
+     * Methode um Flagge von Feld an Pos (row/col) zu entfernen
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     */
     void resetFlagAt(int row, int col) {
 
         flagList[row][col] = EMPTY;
     }
 
+    /**
+     * Setzt Feldliste, Flaggenliste und Liste der geöffneten Felder wieder auf Standard empty.
+     */
     private void initFields() {
 
         for (int i = 0; i < ROW; i++) {
@@ -99,11 +159,23 @@ class ModelMinesweeper {
         }
     }
 
+    /**
+     * Setter für Schwierigkeitsgrad
+     *
+     * @param difficulty 0 = beginner
+     *                   1 = advanced
+     *                   2 = professional
+     */
     void setDifficulty(int difficulty) {
 
         this.difficulty = difficulty;
     }
 
+    /**
+     * Getter für Anzahl der Zeilen (Spielfeld) abhängig vom Schwierigkeitsgrad
+     *
+     * @return Anzahl der Zeilen
+     */
     private int getDifficultyRow() {
 
         if (difficulty == 0) {
@@ -112,6 +184,11 @@ class ModelMinesweeper {
         return 16; // Case 1/2
     }
 
+    /**
+     * Getter für Anzahl der Spalten (Spielfeld) abhängig vom Schwierigkeitsgrad
+     *
+     * @return Anzahl der Spalten
+     */
     private int getDifficultyCol() {
 
         switch (difficulty) {
@@ -124,6 +201,9 @@ class ModelMinesweeper {
         }
     }
 
+    /**
+     * Setzt Anzahl der Minen abhängig vom Schwierigkeitsgrad
+     */
     private void setNumberOfBombs() {
 
         switch (difficulty) {
@@ -139,6 +219,13 @@ class ModelMinesweeper {
         }
     }
 
+    /**
+     * Methode um Anhand der Pos(row/col) die Anzahl der umliegenden Minen zu ermitteln.
+     *
+     * @param row Pos(row/col)
+     * @param col Pos(row/col)
+     * @return Anzahl der umliegenden Minen
+     */
     int calculateSurroundingBombs(int row, int col) {
 
         // Exceptions
@@ -301,6 +388,9 @@ class ModelMinesweeper {
         return totalSurroundBombs;
     }
 
+    /**
+     * Methode um Minen zufällig auf das Spielfeld zu verteilen
+     */
     private void setRandomBombs() {
 
         Random random = new Random();
@@ -325,25 +415,55 @@ class ModelMinesweeper {
         }
     }
 
+    /**
+     * Setter um an der Pos(row/col) die Liste der bereits geöffneten Felder auf geöffnet zu setzen.
+     * Außerdem wird die Anzahl der gesamt geöffneten Felder um eins verringert.
+     * Wird zur Überprüfung des Gewinns benötigt.
+     *
+     * @param row Pos(row/col)
+     * @param col Pos(row/col)
+     */
     void setAlreadyOpenedListAt(int row, int col) {
 
         this.alreadyOpenedList[row][col] = OPENED;
         numberOfEmptyFields--;
     }
 
+    /**
+     * Getter um herauszufinden ob an Pos(row/col) das Feld bereits geklickt (geöffnet) wurde.
+     *
+     * @param row
+     * @param col
+     * @return
+     */
     boolean isAlreadyOpenedAt(int row, int col) {
 
         return (alreadyOpenedList[row][col].equals(OPENED));
     }
 
+    /**
+     * Getter für Zeile
+     *
+     * @return Anzahl der Zeilen
+     */
     int getROW() {
         return ROW;
     }
 
+    /**
+     * Getter für Spalte
+     *
+     * @return Anzahl der Spalten
+     */
     int getCOL() {
         return COL;
     }
 
+    /**
+     * Überprüft ob Spieler gewonnen hat.
+     *
+     * @return bool
+     */
     boolean checkWin() {
 
         return (numberOfEmptyFields == numberOfBombs);
