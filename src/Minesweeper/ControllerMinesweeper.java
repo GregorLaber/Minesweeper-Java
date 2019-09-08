@@ -42,11 +42,21 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Startet rendering der Anwendung
+     */
     void startGame() {
 
         view.startView();
     }
 
+    /**
+     * Hauptmethode des Spielflusses. Bei jedem Klick wird diese Methode gerufen.
+     *
+     * @param primaryClick Links(true) oder Rechtsklick(false)
+     * @param row          Pos(row/col)
+     * @param col          Pos(row/col)
+     */
     private void gameLoop(boolean primaryClick, int row, int col) {
 
         if (firstClick) {
@@ -82,7 +92,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                         view.disableEmptyButton(row, col);
                         findSurroundingEmptyTiles(row, col);
                         if (emptyTileRowList.isEmpty()) {
-                            openColoredNeighbors(row, col);
+                            findColoredNeighbors(row, col);
                         } else {
                             openUpEmptyTiles();
                         }
@@ -201,6 +211,10 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         return true;
     }
 
+    /**
+     * Methode um alle gesammelten leeren Felder die zu öffnen sind zu öffnen. Die Liste der zu öffnenden Felder wird
+     * in der Methode findSurroundingEmptyTiles() gefüllt.
+     */
     private void openUpEmptyTiles() {
 
         for (int i = 0; i < emptyTileRowList.size(); i++) {
@@ -216,14 +230,20 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         for (int i = 0; i < emptyTileRowList.size(); i++) {
             int row = emptyTileRowList.get(i);
             int col = emptyTileColList.get(i);
-            openColoredNeighbors(row, col);
+            findColoredNeighbors(row, col);
         }
 
         emptyTileRowList.clear();
         emptyTileColList.clear();
     }
 
-    private void openColoredNeighbors(int row, int col) {
+    /**
+     * Methode um die umliegenden Zahlenfelder anhand eines Startpunktes Pos (row/col) zu finden.
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     */
+    private void findColoredNeighbors(int row, int col) {
 
         // Maximum
         int ROW = model.getROW();
@@ -378,6 +398,12 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Methode um Zahlenfeld an Pos (row/col) zu öffnen.
+     *
+     * @param row Pos (row/col)
+     * @param col Pos (row/col)
+     */
     private void openColoredTile(int row, int col) {
 
         int surroundingBombs = model.calculateSurroundingBombs(row, col);
@@ -391,12 +417,23 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Wenn das Spiel beendet ist egal ob durch Gewinn oder Verlust werden anhand dieser Methode alle Felder geöffnet.
+     * Bei Verlust wird die getroffene Mine als rote Mine angezeigt.
+     *
+     * @param redBomb Rote Mine an Pos (row/col)
+     * @param row     Pos (row/col)
+     * @param col     Pos (row/col)
+     */
     private void openAllTiles(boolean redBomb, int row, int col) {
 
         showNumberTiles();
         showAllBombs(redBomb, row, col);
     }
 
+    /**
+     * Methode um alle Zahlenfelder aufzudecken.
+     */
     private void showNumberTiles() {
 
         int row = model.getROW();
@@ -414,6 +451,14 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Methode um alle Bomben aufzudecken. Wenn redBomb true ist wird die Mine an Pos (row/col)
+     * mit der roten Mine angezeigt.
+     *
+     * @param redBomb Bei Verlust true, bei Gewinn false
+     * @param row     Pos (row/col)
+     * @param col     Pos (row/col)
+     */
     private void showAllBombs(boolean redBomb, int row, int col) {
 
         for (int i = 0; i < model.getNumberOfBombs(); i++) {
@@ -430,6 +475,12 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Methode um anhand des Symbols aus dem Datenbestand in der View das richtige Symbol anzuzeigen.
+     *
+     * @param symbol (Flag, Mine oder Redmine)
+     * @return Image für View
+     */
     private Image getRightImage(String symbol) {
 
         switch (symbol) {
@@ -444,18 +495,34 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Methode overridden vom Interface. Ruft den Spielablauf und sagt ihm, dass primäre Klick war.
+     *
+     * @param row   Index of the field (row/col)
+     * @param col   Index of the field (row/col)
+     */
     @Override
     public void buttonClickedPrimary(int row, int col) {
 
         gameLoop(true, row, col);
     }
 
+    /**
+     * Methode overridden vom Interface. Ruft den Spielablauf und sagt ihm, dass sekundäre Klick war.
+     *
+     * @param row   Index of the field (row/col)
+     * @param col   Index of the field (row/col)
+     */
     @Override
     public void buttonClickedSecondary(int row, int col) {
 
         gameLoop(false, row, col);
     }
 
+    /**
+     * Methode overridden vom Interface. Wenn durch den NEW GAME ein neues Spiel angefordert wurde, setzt die
+     * Methode die View und das Model wieder auf Ausgangszustand für ein neues Spiel.
+     */
     @Override
     public void newClicked() {
 
@@ -471,6 +538,13 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Methode um Spiel mit einer anderen Schwierigkeit neu zu beginnen.
+     *
+     * @param difficulty 0 = beginner
+     *                   1 = advanced
+     *                   2 = professional
+     */
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
