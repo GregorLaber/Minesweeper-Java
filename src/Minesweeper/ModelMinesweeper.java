@@ -432,9 +432,9 @@ class ModelMinesweeper {
     /**
      * Getter um herauszufinden ob an Pos(row/col) das Feld bereits geklickt (geöffnet) wurde.
      *
-     * @param row
-     * @param col
-     * @return
+     * @param row Pos(row/col)
+     * @param col Pos(row/col)
+     * @return bool
      */
     boolean isAlreadyOpenedAt(int row, int col) {
 
