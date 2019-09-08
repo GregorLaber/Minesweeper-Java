@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Enthält den Datenzustand der Anwendung. Klassisch nach MVC Architektur
+ */
 class ModelMinesweeper {
 
     private int difficulty;

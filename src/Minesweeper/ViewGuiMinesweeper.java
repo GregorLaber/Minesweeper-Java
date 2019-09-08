@@ -21,6 +21,9 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Enthält das Aussehen der Anwendung. Klassisch nach MVC Architektur
+ */
 class ViewGuiMinesweeper {
 
     private final Stage window = new Stage();

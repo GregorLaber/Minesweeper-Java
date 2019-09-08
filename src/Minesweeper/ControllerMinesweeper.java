@@ -19,7 +19,9 @@ import java.util.List;
    - Tracker (how many Games played in a row)
  */
 
-
+/**
+ * Enthält die Steuerung der Anwendung. Klassisch nach MVC Architektur
+ */
 public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
     private static final ModelMinesweeper model = new ModelMinesweeper();
