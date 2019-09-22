@@ -28,7 +28,7 @@ class ModelMinesweeper {
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
     private boolean hintCooldownActive = false;
-    private long coolDownTime = 10;
+    private static final long COOL_DOWN_TIME = 10;
     private AnimationTimer timer;
     private long seconds;
 
@@ -543,7 +543,7 @@ class ModelMinesweeper {
                     if (now > lastTime + 1_000_000_000) {
                         seconds++;
                         System.out.println(seconds);
-                        if (seconds == coolDownTime) {
+                        if (seconds == COOL_DOWN_TIME) {
                             hintCooldownActive = false;
                             seconds = 0;
                             timer.stop();
