@@ -28,6 +28,7 @@ class ModelMinesweeper {
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
     private boolean hintCooldownActive = false;
+    private long coolDownTime = 10;
     private AnimationTimer timer;
     private long seconds;
 
@@ -509,14 +510,27 @@ class ModelMinesweeper {
         return coordinates;
     }
 
+    /**
+     * Getter für HintCooldownActive
+     *
+     * @return bool
+     */
     boolean isHintCooldownActive() {
         return hintCooldownActive;
     }
 
+    /**
+     * Setter für HintCooldownActive
+     *
+     * @param hintCooldownActive bool
+     */
     private void setHintCooldownActive(boolean hintCooldownActive) {
         this.hintCooldownActive = hintCooldownActive;
     }
 
+    /**
+     * Initialization for the Cooldown Timer
+     */
     private void initTimer() {
 
         this.timer = new AnimationTimer() {
@@ -529,7 +543,7 @@ class ModelMinesweeper {
                     if (now > lastTime + 1_000_000_000) {
                         seconds++;
                         System.out.println(seconds);
-                        if (seconds == 10) {
+                        if (seconds == coolDownTime) {
                             hintCooldownActive = false;
                             seconds = 0;
                             timer.stop();
@@ -557,15 +571,26 @@ class ModelMinesweeper {
         };
     }
 
-    public long getSeconds() {
+    /**
+     * Getter für Seconds
+     *
+     * @return HintCooldown in Seconds
+     */
+    long getSeconds() {
         return seconds;
     }
 
-    public void startTimer() {
+    /**
+     * Methode um HintCooldown Timer zu starten
+     */
+    void startTimer() {
         this.timer.start();
     }
 
-    public void stopTimer() {
+    /**
+     * Methode um HintCooldown Timer zu stoppen
+     */
+    void stopTimer() {
         this.timer.stop();
     }
 
