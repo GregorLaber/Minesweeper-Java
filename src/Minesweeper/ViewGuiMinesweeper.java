@@ -667,7 +667,7 @@ class ViewGuiMinesweeper {
      * Benachrichtigung für Cooldown von der Tipp funktion.
      *
      * @param firstClickDone bool
-     * @param seconds seconds of timeout
+     * @param seconds        seconds of timeout
      */
     void hintTimeoutNotification(boolean firstClickDone, long seconds) {
 

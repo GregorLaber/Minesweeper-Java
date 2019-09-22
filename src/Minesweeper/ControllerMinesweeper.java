@@ -561,7 +561,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
      */
     @Override
     public void hintClicked() {
-        System.out.println("Hint clicked");
+
         /*
         - Model check Cooldown
         if no Cooldown
@@ -570,7 +570,6 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             - Model start Cooldown
         else show Popup with Cooldown Seconds
          */
-
         if (!model.isHintCooldownActive()) {
 
             model.startTimer();
