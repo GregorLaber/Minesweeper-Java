@@ -29,4 +29,9 @@ interface ViewListenerMinesweeper {
      *                   2 = professional
      */
     void changeDifficultyClicked(int difficulty);
+
+    /**
+     * Click Action Button Get Hint clicked. Get Hint.
+     */
+    void hintClicked();
 }

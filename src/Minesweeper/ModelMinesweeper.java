@@ -1,6 +1,8 @@
 package Minesweeper;
 
 
+import javafx.animation.AnimationTimer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,6 +27,9 @@ class ModelMinesweeper {
     static final String FLAG = "FLAG";
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
+    private boolean hintCooldownActive = false;
+    private AnimationTimer timer;
+    private long seconds;
 
     ModelMinesweeper() {
 
@@ -55,6 +60,8 @@ class ModelMinesweeper {
         initFields();
         setNumberOfBombs();
         setRandomBombs();
+        this.hintCooldownActive = false;
+        this.initTimer();
     }
 
     /**
@@ -468,4 +475,98 @@ class ModelMinesweeper {
 
         return (numberOfEmptyFields == numberOfBombs);
     }
+
+    /**
+     * Methode um Koordinaten für den Hinweis zu bekommen
+     *
+     * @return an Int Array of 2 Elements
+     * [0] = row
+     * [1] = col
+     */
+    int[] getCoordinatesForHint() {
+
+        Random random = new Random();
+        boolean found = false;
+        int randomRow;
+        int randomCol;
+        int[] coordinates = new int[2];
+
+        while (!found) {
+
+            randomRow = random.nextInt(ROW);
+            randomCol = random.nextInt(COL);
+
+            if (this.isFieldListEmptyAt(randomRow, randomCol) &&
+                    !this.isAlreadyOpenedAt(randomRow, randomCol) &&
+                    !this.isFlagAt(randomRow, randomCol)) {
+
+                coordinates[0] = randomRow;
+                coordinates[1] = randomCol;
+                found = true;
+            }
+        }
+
+        return coordinates;
+    }
+
+    boolean isHintCooldownActive() {
+        return hintCooldownActive;
+    }
+
+    private void setHintCooldownActive(boolean hintCooldownActive) {
+        this.hintCooldownActive = hintCooldownActive;
+    }
+
+    private void initTimer() {
+
+        this.timer = new AnimationTimer() {
+
+            private long lastTime = 0;
+
+            @Override
+            public void handle(long now) {
+                if (lastTime != 0) {
+                    if (now > lastTime + 1_000_000_000) {
+                        seconds++;
+                        System.out.println(seconds);
+                        if (seconds == 10) {
+                            hintCooldownActive = false;
+                            seconds = 0;
+                            timer.stop();
+                        }
+                        lastTime = now;
+                    }
+                } else {
+                    lastTime = now;
+                }
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                lastTime = 0;
+                seconds = 0;
+            }
+
+            @Override
+            public void start() {
+                seconds = 0;
+                super.start();
+                hintCooldownActive = true;
+            }
+        };
+    }
+
+    public long getSeconds() {
+        return seconds;
+    }
+
+    public void startTimer() {
+        this.timer.start();
+    }
+
+    public void stopTimer() {
+        this.timer.stop();
+    }
+
 }
