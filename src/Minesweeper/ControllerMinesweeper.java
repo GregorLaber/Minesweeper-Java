@@ -572,9 +572,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         if (!model.isHintCooldownActive()) {
 
+            model.startTimer();
             int[] coordinates = model.getCoordinatesForHint();
             performOpening(coordinates[0], coordinates[1]);
-            model.startTimer();
         } else {
             // Popup with Cooldown Seconds
         }
