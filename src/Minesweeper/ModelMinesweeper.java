@@ -27,7 +27,7 @@ class ModelMinesweeper {
     static final String FLAG = "FLAG";
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
-    private boolean hintCooldownActive = false;
+    private boolean hintCooldownActive = true;
     private static final long COOL_DOWN_TIME = 10;
     private AnimationTimer timer;
     private long seconds;
@@ -61,7 +61,7 @@ class ModelMinesweeper {
         initFields();
         setNumberOfBombs();
         setRandomBombs();
-        this.hintCooldownActive = false;
+        setHintCooldownActive(true);
         this.initTimer();
     }
 
@@ -522,10 +522,10 @@ class ModelMinesweeper {
     /**
      * Setter für HintCooldownActive
      *
-     * @param hintCooldownActive bool
+     * @param bool bool
      */
-    private void setHintCooldownActive(boolean hintCooldownActive) {
-        this.hintCooldownActive = hintCooldownActive;
+    private void setHintCooldownActive(boolean bool) {
+        this.hintCooldownActive = bool;
     }
 
     /**
@@ -544,7 +544,7 @@ class ModelMinesweeper {
                         seconds++;
                         System.out.println(seconds);
                         if (seconds == COOL_DOWN_TIME) {
-                            hintCooldownActive = false;
+                            setHintCooldownActive(false);
                             seconds = 0;
                             timer.stop();
                         }
@@ -566,7 +566,7 @@ class ModelMinesweeper {
             public void start() {
                 seconds = 0;
                 super.start();
-                hintCooldownActive = true;
+                setHintCooldownActive(true);
             }
         };
     }
@@ -576,8 +576,8 @@ class ModelMinesweeper {
      *
      * @return HintCooldown in Seconds
      */
-    long getSeconds() {
-        return seconds;
+    long getTimeoutSeconds() {
+        return (COOL_DOWN_TIME - this.seconds);
     }
 
     /**

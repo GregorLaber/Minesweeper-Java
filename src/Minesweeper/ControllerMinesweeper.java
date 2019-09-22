@@ -14,7 +14,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private static final ModelMinesweeper model = new ModelMinesweeper();
     private static final ViewGuiMinesweeper view = new ViewGuiMinesweeper(model.getNumberOfBombs());
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
-    private boolean firstClick = true;
+    private boolean firstClickDone = true;
     private static int displayBombNumber = model.getNumberOfBombs();
     private final List<Integer> emptyTileRowList = new ArrayList<>();
     private final List<Integer> emptyTileColList = new ArrayList<>();
@@ -46,8 +46,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
      */
     private void gameLoop(boolean primaryClick, int row, int col) {
 
-        if (firstClick) {
-            firstClick = false;
+        if (firstClickDone) {
+            firstClickDone = false;
             view.startTimer();
             model.startTimer();
         }
@@ -526,7 +526,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void newClicked() {
 
-        firstClick = true;
+        firstClickDone = true;
+        model.stopTimer();
         model.startSetup();
         view.startSetup(model.getNumberOfBombs());
         displayBombNumber = model.getNumberOfBombs();
@@ -576,7 +577,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             int[] coordinates = model.getCoordinatesForHint();
             performOpening(coordinates[0], coordinates[1]);
         } else {
-            // Popup with Cooldown Seconds
+            // Popup with Cooldown in Seconds
+            view.hintTimeoutNotification(firstClickDone, model.getTimeoutSeconds());
         }
     }
 }

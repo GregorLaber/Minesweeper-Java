@@ -663,4 +663,23 @@ class ViewGuiMinesweeper {
         alert.showAndWait();
     }
 
+    /**
+     * Benachrichtigung für Cooldown von der Tipp funktion.
+     *
+     * @param firstClickDone bool
+     * @param seconds seconds of timeout
+     */
+    void hintTimeoutNotification(boolean firstClickDone, long seconds) {
+
+        String notificationText = (firstClickDone) ?
+                "You must first click a field" :
+                "Sorry, the hint is disabled for another " + seconds + " seconds.";
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Hint Cooldown!");
+        alert.setHeaderText(null);
+        alert.setContentText(notificationText);
+        alert.showAndWait();
+    }
+
 }
