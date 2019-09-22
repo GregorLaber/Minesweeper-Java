@@ -1,6 +1,8 @@
 package Minesweeper;
 
 
+import javafx.animation.AnimationTimer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,6 +27,10 @@ class ModelMinesweeper {
     static final String FLAG = "FLAG";
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
+    private boolean hintCooldownActive = true;
+    private static final long COOL_DOWN_TIME = 60;
+    private AnimationTimer timer;
+    private long seconds;
 
     ModelMinesweeper() {
 
@@ -55,6 +61,8 @@ class ModelMinesweeper {
         initFields();
         setNumberOfBombs();
         setRandomBombs();
+        setHintCooldownActive(true);
+        this.initTimer();
     }
 
     /**
@@ -468,4 +476,121 @@ class ModelMinesweeper {
 
         return (numberOfEmptyFields == numberOfBombs);
     }
+
+    /**
+     * Methode um Koordinaten für den Hinweis zu bekommen
+     *
+     * @return an Int Array of 2 Elements
+     * [0] = row
+     * [1] = col
+     */
+    int[] getCoordinatesForHint() {
+
+        Random random = new Random();
+        boolean found = false;
+        int randomRow;
+        int randomCol;
+        int[] coordinates = new int[2];
+
+        while (!found) {
+
+            randomRow = random.nextInt(ROW);
+            randomCol = random.nextInt(COL);
+
+            if (this.isFieldListEmptyAt(randomRow, randomCol) &&
+                    !this.isAlreadyOpenedAt(randomRow, randomCol) &&
+                    !this.isFlagAt(randomRow, randomCol)) {
+
+                coordinates[0] = randomRow;
+                coordinates[1] = randomCol;
+                found = true;
+            }
+        }
+
+        return coordinates;
+    }
+
+    /**
+     * Getter für HintCooldownActive
+     *
+     * @return bool
+     */
+    boolean isHintCooldownActive() {
+        return hintCooldownActive;
+    }
+
+    /**
+     * Setter für HintCooldownActive
+     *
+     * @param bool bool
+     */
+    private void setHintCooldownActive(boolean bool) {
+        this.hintCooldownActive = bool;
+    }
+
+    /**
+     * Initialization for the Cooldown Timer
+     */
+    private void initTimer() {
+
+        this.timer = new AnimationTimer() {
+
+            private long lastTime = 0;
+
+            @Override
+            public void handle(long now) {
+                if (lastTime != 0) {
+                    if (now > lastTime + 1_000_000_000) {
+                        seconds++;
+                        if (seconds == COOL_DOWN_TIME) {
+                            setHintCooldownActive(false);
+                            seconds = 0;
+                            timer.stop();
+                        }
+                        lastTime = now;
+                    }
+                } else {
+                    lastTime = now;
+                }
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                lastTime = 0;
+                seconds = 0;
+            }
+
+            @Override
+            public void start() {
+                seconds = 0;
+                super.start();
+                setHintCooldownActive(true);
+            }
+        };
+    }
+
+    /**
+     * Getter für Seconds
+     *
+     * @return HintCooldown in Seconds
+     */
+    long getTimeoutSeconds() {
+        return (COOL_DOWN_TIME - this.seconds);
+    }
+
+    /**
+     * Methode um HintCooldown Timer zu starten
+     */
+    void startTimer() {
+        this.timer.start();
+    }
+
+    /**
+     * Methode um HintCooldown Timer zu stoppen
+     */
+    void stopTimer() {
+        this.timer.stop();
+    }
+
 }

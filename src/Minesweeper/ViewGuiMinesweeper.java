@@ -401,6 +401,8 @@ class ViewGuiMinesweeper {
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
         RadioMenuItem professional = new RadioMenuItem("Professional");
+        Menu hintMenu = new Menu("Hint");
+        MenuItem hintItem = new MenuItem("Get Hint");
         ToggleGroup group = new ToggleGroup();
         beginner.setToggleGroup(group);
         advanced.setToggleGroup(group);
@@ -419,12 +421,14 @@ class ViewGuiMinesweeper {
 
         fileMenu.getItems().add(newGameItem);
         difficultyItem.getItems().addAll(beginner, advanced, professional);
-        menuBar.getMenus().addAll(fileMenu, difficultyItem);
+        hintMenu.getItems().add(hintItem);
+        menuBar.getMenus().addAll(fileMenu, difficultyItem, hintMenu);
 
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
+        hintItem.setOnAction((ActionEvent event) -> hintClicked());
 
         return menuBar;
     }
@@ -532,6 +536,16 @@ class ViewGuiMinesweeper {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.changeDifficultyClicked(difficulty);
+        }
+    }
+
+    /**
+     * Interface Methode. Wenn ein Hinweis angefordert wird, wird der Listener benachrichtigt.
+     */
+    private void hintClicked() {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.hintClicked();
         }
     }
 
@@ -646,6 +660,25 @@ class ViewGuiMinesweeper {
         alert.setTitle("You won!");
         alert.setHeaderText(null);
         alert.setContentText("Congratulations. You won the Game.");
+        alert.showAndWait();
+    }
+
+    /**
+     * Benachrichtigung für Cooldown von der Tipp funktion.
+     *
+     * @param firstClickDone bool
+     * @param seconds        seconds of timeout
+     */
+    void hintTimeoutNotification(boolean firstClickDone, long seconds) {
+
+        String notificationText = (firstClickDone) ?
+                "You must first click a field" :
+                "Sorry, the hint is disabled for another " + seconds + " seconds.";
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Hint Cooldown!");
+        alert.setHeaderText(null);
+        alert.setContentText(notificationText);
         alert.showAndWait();
     }
 

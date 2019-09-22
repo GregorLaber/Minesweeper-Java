@@ -6,19 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-/*TODO
-   - Change recursive Method (so every empty Tile opens up)
-   - pause button
-   - write a User manual
-   - Highscore
-   - Implement hint? (with cool down)
-   - Menü an Scene eine Ebene höher (vllt. hat erst nicht funktioniert)
-   - Benutzerdefinierter Mode (max 30 x 24) und 667 Mines
-   - GirlMode
-   - Tracker (how many Games played in a row)
- */
-
 /**
  * Enthält die Steuerung der Anwendung. Klassisch nach MVC Architektur
  */
@@ -27,7 +14,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private static final ModelMinesweeper model = new ModelMinesweeper();
     private static final ViewGuiMinesweeper view = new ViewGuiMinesweeper(model.getNumberOfBombs());
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
-    private boolean firstClick = true;
+    private boolean firstClickDone = true;
     private static int displayBombNumber = model.getNumberOfBombs();
     private final List<Integer> emptyTileRowList = new ArrayList<>();
     private final List<Integer> emptyTileColList = new ArrayList<>();
@@ -59,9 +46,10 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
      */
     private void gameLoop(boolean primaryClick, int row, int col) {
 
-        if (firstClick) {
-            firstClick = false;
+        if (firstClickDone) {
+            firstClickDone = false;
             view.startTimer();
+            model.startTimer();
         }
 
         // Primary Click to open up the tiles
@@ -80,31 +68,10 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
                 if (model.isFieldListEmptyAt(row, col)) {
 
-                    // This tiles gets a coloured number
-                    int surroundingBombs = model.calculateSurroundingBombs(row, col);
-                    model.setAlreadyOpenedListAt(row, col);
-                    view.setButton(null, row, col);
-                    view.setButton(surroundingBombs, row, col);
-                    if (surroundingBombs != 0) {
-                        view.disableButton(row, col);
-                    } else {
-                        // hier kommt Nullen aufdecken hin
-                        view.disableEmptyButton(row, col);
-                        findSurroundingEmptyTiles(row, col);
-                        if (emptyTileRowList.isEmpty()) {
-                            findColoredNeighbors(row, col);
-                        } else {
-                            openUpEmptyTiles();
-                        }
-                    }
-                    if (model.checkWin()) {
-                        view.stopTimer();
-                        view.disableAllButtons();
-                        openAllTiles(false, row, col);
-                        view.winningNotification();
-                    }
+                    performOpening(row, col);
 
                 } else { // Bomb is hit
+                    model.stopTimer();
                     view.stopTimer();
                     view.disableAllButtons();
                     openAllTiles(true, row, col);
@@ -131,6 +98,39 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                 model.setFlagAt(row, col);
                 view.setButton(getRightImage(ModelMinesweeper.FLAG), row, col);
             }
+        }
+    }
+
+    /**
+     * Methode zum Standard öffnen von Feldern
+     *
+     * @param row Pos(row/col)
+     * @param col Pos(row/col)
+     */
+    private void performOpening(int row, int col) {
+        // This tiles gets a coloured number
+        int surroundingBombs = model.calculateSurroundingBombs(row, col);
+        model.setAlreadyOpenedListAt(row, col);
+        view.setButton(null, row, col);
+        view.setButton(surroundingBombs, row, col);
+        if (surroundingBombs != 0) {
+            view.disableButton(row, col);
+        } else {
+            // hier kommt Nullen aufdecken hin
+            view.disableEmptyButton(row, col);
+            findSurroundingEmptyTiles(row, col);
+            if (emptyTileRowList.isEmpty()) {
+                findColoredNeighbors(row, col);
+            } else {
+                openUpEmptyTiles();
+            }
+        }
+        if (model.checkWin()) {
+            model.stopTimer();
+            view.stopTimer();
+            view.disableAllButtons();
+            openAllTiles(false, row, col);
+            view.winningNotification();
         }
     }
 
@@ -526,7 +526,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void newClicked() {
 
-        firstClick = true;
+        firstClickDone = true;
+        model.stopTimer();
         model.startSetup();
         view.startSetup(model.getNumberOfBombs());
         displayBombNumber = model.getNumberOfBombs();
@@ -548,10 +549,35 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
+        model.stopTimer();
         model.setDifficulty(difficulty);
         view.setDifficulty(difficulty);
         newClicked();
         view.setScenes();
     }
 
+    /**
+     * Methode um ein zufälliges Feld zu öffnen.
+     */
+    @Override
+    public void hintClicked() {
+
+        /*
+        - Model check Cooldown
+        if no Cooldown
+            - Model get field for opening
+            - Controller performOpening
+            - Model start Cooldown
+        else show Popup with Cooldown Seconds
+         */
+        if (!model.isHintCooldownActive()) {
+
+            model.startTimer();
+            int[] coordinates = model.getCoordinatesForHint();
+            performOpening(coordinates[0], coordinates[1]);
+        } else {
+            // Popup with Cooldown in Seconds
+            view.hintTimeoutNotification(firstClickDone, model.getTimeoutSeconds());
+        }
+    }
 }
