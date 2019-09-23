@@ -580,4 +580,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             view.hintTimeoutNotification(firstClickDone, model.getTimeoutSeconds());
         }
     }
+
+    @Override
+    public void pauseClicked() {
+
+    }
 }
