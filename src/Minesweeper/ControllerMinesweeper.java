@@ -581,8 +581,14 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
     }
 
+    /**
+     * Methode um Spiel zu pausieren
+     */
     @Override
     public void pauseClicked() {
 
+        System.out.println("Pause clicked");
+        view.stopTimer();
+        view.pauseNotification();
     }
 }

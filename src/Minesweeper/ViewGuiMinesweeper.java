@@ -447,8 +447,11 @@ class ViewGuiMinesweeper {
         bombNumberTextField.setText(bombs);
         bombNumberTextField.setPrefColumnCount(2);
         bombNumberTextField.setEditable(false);
-        ToolBar toolBar = new ToolBar(bombIcon, bombNumberTextField);
-        toolBar.getItems().add(labelTimer);
+        Button pauseButton = new Button("Pause");
+        pauseButton.setOnAction((ActionEvent event) -> pauseClicked());
+
+        ToolBar toolBar = new ToolBar();
+        toolBar.getItems().addAll(bombIcon, bombNumberTextField, labelTimer, pauseButton);
 
         return new HBox(toolBar);
     }
@@ -546,6 +549,16 @@ class ViewGuiMinesweeper {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.hintClicked();
+        }
+    }
+
+    /**
+     * Interface Methode. Wenn Pause angefordert wird, wird der Listener benachrichtigt.
+     */
+    private void pauseClicked() {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.pauseClicked();
         }
     }
 
@@ -680,6 +693,16 @@ class ViewGuiMinesweeper {
         alert.setHeaderText(null);
         alert.setContentText(notificationText);
         alert.showAndWait();
+    }
+
+    void pauseNotification() {
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Pause!");
+        alert.setHeaderText(null);
+        alert.setContentText("Pause");
+        alert.showAndWait();
+        timer.start();
     }
 
 }
