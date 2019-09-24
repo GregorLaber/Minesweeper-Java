@@ -19,7 +19,7 @@ interface ViewListenerMinesweeper {
     void buttonClickedSecondary(int row, int col);
 
     /**
-     * Click Action Button New clicked. Start new Game.
+     * Click Action Button "New clicked". Start new Game.
      */
     void newClicked();
 
@@ -31,7 +31,12 @@ interface ViewListenerMinesweeper {
     void changeDifficultyClicked(int difficulty);
 
     /**
-     * Click Action Button Get Hint clicked. Get Hint.
+     * Click Action Button "Get Hint" clicked. Get Hint.
      */
     void hintClicked();
+
+    /**
+     * Click Action Button "Pause" clicked.
+     */
+    void pauseClicked();
 }
