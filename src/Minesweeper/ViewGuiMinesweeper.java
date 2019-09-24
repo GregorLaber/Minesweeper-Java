@@ -146,7 +146,7 @@ class ViewGuiMinesweeper {
      */
     private void initTimer() {
 
-        timer = new AnimationTimer() {
+        this.timer = new AnimationTimer() {
 
             private long lastTime = 0;
             private String displaySeconds;
@@ -184,9 +184,9 @@ class ViewGuiMinesweeper {
             @Override
             public void stop() {
                 super.stop();
-                lastTime = 0;
-                minutes = 0;
-                seconds = 0;
+//                lastTime = 0;
+//                minutes = 0;
+//                seconds = 0;
             }
         };
     }
@@ -196,7 +196,6 @@ class ViewGuiMinesweeper {
      */
     void startTimer() {
 
-        labelTimer.setText("00:00");
         timer.start();
     }
 
@@ -207,6 +206,9 @@ class ViewGuiMinesweeper {
 
         timer.stop();
         labelTimer.setText("00:00");
+        this.initTimer();
+        this.minutes = 0;
+        this.seconds = 0;
     }
 
     /**
