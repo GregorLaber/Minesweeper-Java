@@ -48,8 +48,9 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         if (firstClickDone) {
             firstClickDone = false;
-            view.startTimer();
-            model.startTimer();
+            view.enablePauseButton();
+            view.startToolbarTimer();
+            model.startCooldownTimer();
         }
 
         // Primary Click to open up the tiles
@@ -71,8 +72,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
                     performOpening(row, col);
 
                 } else { // Bomb is hit
-                    model.stopTimer();
-                    view.stopTimer();
+                    model.stopCooldownTimer();
+                    view.stopToolbarTimer();
                     view.disableAllButtons();
                     openAllTiles(true, row, col);
                     view.bombFieldNotification();
@@ -126,8 +127,8 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             }
         }
         if (model.checkWin()) {
-            model.stopTimer();
-            view.stopTimer();
+            model.stopCooldownTimer();
+            view.stopToolbarTimer();
             view.disableAllButtons();
             openAllTiles(false, row, col);
             view.winningNotification();
@@ -527,13 +528,14 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     public void newClicked() {
 
         firstClickDone = true;
-        model.stopTimer();
+        model.stopCooldownTimer();
         model.startSetup();
         view.startSetup(model.getNumberOfBombs());
         displayBombNumber = model.getNumberOfBombs();
         view.enableAllButtons();
-        view.stopTimerReset();
+        view.stopToolbarTimerReset();
         view.setScenes();
+        view.disablePauseButton();
         if (debug) {
             showAllBombs(false, 0, 0); // For Debug purpose
         }
@@ -549,7 +551,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
-        model.stopTimer();
+        model.stopCooldownTimer();
         model.setDifficulty(difficulty);
         view.setDifficulty(difficulty);
         newClicked();
@@ -572,7 +574,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
          */
         if (!model.isHintCooldownActive()) {
 
-            model.startTimer();
+            model.startCooldownTimer();
             int[] coordinates = model.getCoordinatesForHint();
             performOpening(coordinates[0], coordinates[1]);
         } else {
@@ -587,8 +589,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void pauseClicked() {
 
-        System.out.println("Pause clicked");
-        view.stopTimer();
+        view.stopToolbarTimer();
         view.pauseNotification();
     }
 }

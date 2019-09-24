@@ -62,7 +62,7 @@ class ModelMinesweeper {
         setNumberOfBombs();
         setRandomBombs();
         setHintCooldownActive(true);
-        this.initTimer();
+        this.initCooldownTimer();
     }
 
     /**
@@ -531,7 +531,7 @@ class ModelMinesweeper {
     /**
      * Initialization for the Cooldown Timer
      */
-    private void initTimer() {
+    private void initCooldownTimer() {
 
         this.timer = new AnimationTimer() {
 
@@ -582,14 +582,14 @@ class ModelMinesweeper {
     /**
      * Methode um HintCooldown Timer zu starten
      */
-    void startTimer() {
+    void startCooldownTimer() {
         this.timer.start();
     }
 
     /**
      * Methode um HintCooldown Timer zu stoppen
      */
-    void stopTimer() {
+    void stopCooldownTimer() {
         this.timer.stop();
     }
 

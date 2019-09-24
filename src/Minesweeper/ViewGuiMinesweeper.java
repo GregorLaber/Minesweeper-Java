@@ -35,6 +35,7 @@ class ViewGuiMinesweeper {
     private int numberOfBombs;
     private Button[][] buttonList;
     private TextField bombNumberTextField;
+    private Button pauseButton;
     private static int tileNumber = 0;
     private static int buttonID = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
@@ -74,6 +75,7 @@ class ViewGuiMinesweeper {
         this.numberOfBombs = numberOfBombs;
         this.bombNumberTextField = new TextField(); // Displays the number of Bombs in the Field
         setBombNumberTextField(numberOfBombs);
+        this.disablePauseButton();
     }
 
     /**
@@ -104,7 +106,7 @@ class ViewGuiMinesweeper {
         BorderPane beginner = new BorderPane();
         String style = "-fx-background-color: #000000";
         beginner.setStyle(style);
-        initTimer();
+        initToolbarTimer();
         beginner.setTop(addMenu());
         beginner.setCenter(addGridPane());
         beginner.setBottom(addToolBar());
@@ -119,7 +121,7 @@ class ViewGuiMinesweeper {
         String style = "-fx-background-color: #000000";
         BorderPane advanced = new BorderPane();
         advanced.setStyle(style);
-        initTimer();
+        initToolbarTimer();
         advanced.setTop(addMenu());
         advanced.setCenter(addGridPane());
         advanced.setBottom(addToolBar());
@@ -134,7 +136,7 @@ class ViewGuiMinesweeper {
         BorderPane professional = new BorderPane();
         String style = "-fx-background-color: #000000";
         professional.setStyle(style);
-        initTimer();
+        initToolbarTimer();
         professional.setTop(addMenu());
         professional.setCenter(addGridPane());
         professional.setBottom(addToolBar());
@@ -144,7 +146,7 @@ class ViewGuiMinesweeper {
     /**
      * toolbar Timer. Initialisation, doing and stop.
      */
-    private void initTimer() {
+    private void initToolbarTimer() {
 
         this.timer = new AnimationTimer() {
 
@@ -186,7 +188,7 @@ class ViewGuiMinesweeper {
     /**
      * toolbar Timer. Starts the timer at Zero.
      */
-    void startTimer() {
+    void startToolbarTimer() {
 
         timer.start();
     }
@@ -194,11 +196,11 @@ class ViewGuiMinesweeper {
     /**
      * toolbar Timer. Stop and Reset the Timer
      */
-    void stopTimerReset() {
+    void stopToolbarTimerReset() {
 
         timer.stop();
         labelTimer.setText("00:00");
-        this.initTimer();
+        this.initToolbarTimer();
         this.minutes = 0;
         this.seconds = 0;
     }
@@ -206,7 +208,7 @@ class ViewGuiMinesweeper {
     /**
      * toolbar Timer. Only Stop the Timer
      */
-    void stopTimer() {
+    void stopToolbarTimer() {
 
         timer.stop();
     }
@@ -260,6 +262,8 @@ class ViewGuiMinesweeper {
                 this.buttonList[i][j].setDisable(true);
             }
         }
+
+        disablePauseButton();
     }
 
     /**
@@ -441,13 +445,30 @@ class ViewGuiMinesweeper {
         bombNumberTextField.setText(bombs);
         bombNumberTextField.setPrefColumnCount(2);
         bombNumberTextField.setEditable(false);
-        Button pauseButton = new Button("Pause");
-        pauseButton.setOnAction((ActionEvent event) -> pauseClicked());
+        this.pauseButton = new Button("Pause");
+        this.pauseButton.setOnAction((ActionEvent event) -> pauseClicked());
+        disablePauseButton();
 
         ToolBar toolBar = new ToolBar();
         toolBar.getItems().addAll(bombIcon, bombNumberTextField, labelTimer, pauseButton);
 
         return new HBox(toolBar);
+    }
+
+    /**
+     * Method to disable the Pause Button
+     */
+    void disablePauseButton() {
+
+        this.pauseButton.setDisable(true);
+    }
+
+    /**
+     * Method to enable the Pause Button
+     */
+    void enablePauseButton() {
+
+        this.pauseButton.setDisable(false);
     }
 
     /**
