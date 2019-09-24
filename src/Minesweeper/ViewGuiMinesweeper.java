@@ -180,14 +180,6 @@ class ViewGuiMinesweeper {
                     lastTime = now;
                 }
             }
-
-            @Override
-            public void stop() {
-                super.stop();
-//                lastTime = 0;
-//                minutes = 0;
-//                seconds = 0;
-            }
         };
     }
 
