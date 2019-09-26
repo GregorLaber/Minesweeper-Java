@@ -19,14 +19,9 @@ interface ViewListenerMinesweeper {
     void buttonClickedSecondary(int row, int col);
 
     /**
-     * Click Action Button "New Game". Start new Game.
+     * Click Action Button "New clicked". Start new Game.
      */
     void newClicked();
-
-    /**
-     * Click Action Button "Exit Game". Exit the Game.
-     */
-    void exitClicked();
 
     /**
      * @param difficulty 0 = beginner
