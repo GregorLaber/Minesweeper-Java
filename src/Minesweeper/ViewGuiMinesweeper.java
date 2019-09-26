@@ -96,6 +96,8 @@ class ViewGuiMinesweeper {
 //        window.setMaximized(true); // For Professional Difficulty also have to switch resizable to true
         window.setResizable(true);
         window.show();
+
+        window.setOnCloseRequest(e -> exitClicked());
     }
 
     /**
@@ -396,6 +398,7 @@ class ViewGuiMinesweeper {
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("Game");
         MenuItem newGameItem = new MenuItem("New Game");
+        MenuItem exitItem = new MenuItem("Exit Game");
         Menu difficultyItem = new Menu("Difficulty");
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
@@ -418,12 +421,13 @@ class ViewGuiMinesweeper {
                 break;
         }
 
-        fileMenu.getItems().add(newGameItem);
+        fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyItem.getItems().addAll(beginner, advanced, professional);
         hintMenu.getItems().add(hintItem);
         menuBar.getMenus().addAll(fileMenu, difficultyItem, hintMenu);
 
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
+        exitItem.setOnAction((ActionEvent event) -> exitClicked());
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
@@ -543,6 +547,16 @@ class ViewGuiMinesweeper {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.newClicked();
+        }
+    }
+
+    /**
+     * Interface Methode. Wenn EXIT GAME geklickt wird, wird der Listener benachrichtigt.
+     */
+    private void exitClicked() {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.exitClicked();
         }
     }
 
