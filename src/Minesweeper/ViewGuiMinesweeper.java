@@ -378,6 +378,7 @@ class ViewGuiMinesweeper {
      *
      * @param button der Button der eine Nummer bekommt
      */
+    @SuppressWarnings("unused")
     private void fieldNumbering(Button button) {
 
         String text = Integer.toString(tileNumber++);
