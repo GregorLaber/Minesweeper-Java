@@ -1,5 +1,6 @@
 package Minesweeper;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -539,6 +540,16 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         if (debug) {
             showAllBombs(false, 0, 0); // For Debug purpose
         }
+    }
+
+    /**
+     * Methode overridden vom Interface. Schließt die Anwendung.
+     */
+    @Override
+    public void exitClicked() {
+
+        Platform.exit();
+        System.exit(0);
     }
 
     /**
