@@ -403,8 +403,13 @@ class ViewGuiMinesweeper {
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
         RadioMenuItem professional = new RadioMenuItem("Professional");
-        Menu hintMenu = new Menu("Hint");
-        MenuItem hintItem = new MenuItem("Get Hint");
+        ImageView imageView = new ImageView(symbols.QUESTION_MARK);
+        Label hintIcon = new Label();
+        hintIcon.setGraphic(imageView);
+        hintIcon.setPickOnBounds(true);
+
+        Menu hintMenu = new Menu();
+        hintMenu.setGraphic(hintIcon);
         ToggleGroup group = new ToggleGroup();
         beginner.setToggleGroup(group);
         advanced.setToggleGroup(group);
@@ -423,7 +428,6 @@ class ViewGuiMinesweeper {
 
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyItem.getItems().addAll(beginner, advanced, professional);
-        hintMenu.getItems().add(hintItem);
         menuBar.getMenus().addAll(fileMenu, difficultyItem, hintMenu);
 
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
@@ -431,7 +435,7 @@ class ViewGuiMinesweeper {
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
-        hintItem.setOnAction((ActionEvent event) -> hintClicked());
+        hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
 
         return menuBar;
     }
