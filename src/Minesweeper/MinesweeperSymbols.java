@@ -7,10 +7,12 @@ import javafx.scene.image.Image;
  *  1. Mine
  *  2. Redmine (detonated)
  *  3. Flag
+ *  4. Question Mark (for Hint)
  */
 class MinesweeperSymbols {
 
-    public final Image MINE = new Image(getClass().getResourceAsStream("pictures/mine.png"));
-    public final Image REDMINE = new Image(getClass().getResourceAsStream("pictures/redmine.png"));
-    public final Image FLAG = new Image(getClass().getResourceAsStream("pictures/flag.png"));
+    final Image MINE = new Image(getClass().getResourceAsStream("pictures/mine.png"));
+    final Image REDMINE = new Image(getClass().getResourceAsStream("pictures/redmine.png"));
+    final Image FLAG = new Image(getClass().getResourceAsStream("pictures/flag.png"));
+    final Image QUESTION_MARK = new Image(getClass().getResourceAsStream("pictures/question-mark.png"));
 }
