@@ -395,6 +395,7 @@ class ViewGuiMinesweeper {
      */
     private MenuBar addMenu() {
 
+        // Menu
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("Game");
         MenuItem newGameItem = new MenuItem("New Game");
@@ -403,13 +404,9 @@ class ViewGuiMinesweeper {
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
         RadioMenuItem professional = new RadioMenuItem("Professional");
-        ImageView imageView = new ImageView(symbols.QUESTION_MARK);
-        Label hintIcon = new Label();
-        hintIcon.setGraphic(imageView);
-        hintIcon.setPickOnBounds(true);
-
         Menu hintMenu = new Menu();
-        hintMenu.setGraphic(hintIcon);
+
+        // Properties of Menu
         ToggleGroup group = new ToggleGroup();
         beginner.setToggleGroup(group);
         advanced.setToggleGroup(group);
@@ -425,11 +422,18 @@ class ViewGuiMinesweeper {
                 professional.setSelected(true);
                 break;
         }
+        ImageView imageView = new ImageView(symbols.QUESTION_MARK);
+        Label hintIcon = new Label();
+        hintIcon.setGraphic(imageView);
+        hintIcon.setPickOnBounds(true);
+        hintMenu.setGraphic(hintIcon);
 
+        // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyItem.getItems().addAll(beginner, advanced, professional);
         menuBar.getMenus().addAll(fileMenu, difficultyItem, hintMenu);
 
+        // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
         exitItem.setOnAction((ActionEvent event) -> exitClicked());
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
@@ -442,7 +446,7 @@ class ViewGuiMinesweeper {
 
     /**
      * Methode um die Statusleiste zu erzeugen.
-     * Von links nach rechts: BombenIcon, Textfeld mit der Anzahl der übrigen Bomben, Timer
+     * Von links nach rechts: BombenIcon, Textfeld mit der Anzahl der übrigen Bomben, Timer, Pausebutton
      *
      * @return ToolBar
      */
