@@ -28,7 +28,7 @@ class ModelMinesweeper {
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
     private boolean hintCooldownActive = true;
-    private static final long COOL_DOWN_TIME = 60;
+    private long COOL_DOWN_TIME;
     private AnimationTimer timer;
     private long seconds;
 
@@ -47,6 +47,8 @@ class ModelMinesweeper {
      * - Anzahl der zu öffnenden Felder ergibt sich aus Zeile mal Spalte
      * - Die beiden Listen für Zeile und Spalten der Bomben werden zurück gesetzt.
      * - Danach wird das Spielfeld initialisiert. Anzahl der Minen wird berechnet und zufällig verteilt.
+     * - Der Timeout des Hinweises wird anhand des Schwierigkeitsgrades auf 15, 30 oder 60 Sekunden gesetzt.
+     * - Der Timer für den Timeout des Hinweises wird initialisiert.
      */
     void startSetup() {
 
@@ -62,6 +64,7 @@ class ModelMinesweeper {
         setNumberOfBombs();
         setRandomBombs();
         setHintCooldownActive(true);
+        this.COOL_DOWN_TIME = getCOOL_DOWN_TIME();
         this.initCooldownTimer();
     }
 
@@ -206,6 +209,23 @@ class ModelMinesweeper {
                 return 30;
             default: // Case 0
                 return 8;
+        }
+    }
+
+    /**
+     * Getter für Timeout des Hinweises.
+     *
+     * @return Timeout in Seconds
+     */
+    public long getCOOL_DOWN_TIME() {
+
+        switch (difficulty) {
+            case 1:
+                return 30;
+            case 2:
+                return 60;
+            default:
+                return 15;
         }
     }
 
