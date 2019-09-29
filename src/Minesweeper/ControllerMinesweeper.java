@@ -147,7 +147,10 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         int surroundingBombs;
         boolean foundNewEmptyTile = false;
 
-        // Beachten calculateSurroundingBombs liefert eine -1 zurück wenn auf (Index < 0) || (Index > ROW oder COL) zugegriffen wird!
+        /*
+         Beachten calculateSurroundingBombs liefert eine -1 zurück wenn auf
+         (Index < 0) || (Index > ROW oder COL) zugegriffen wird!
+        */
         if (compareIndexRecursion(row - 1, col)) {
             surroundingBombs = model.calculateSurroundingBombs(row - 1, col);
             if (surroundingBombs == 0) {
@@ -176,6 +179,39 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             surroundingBombs = model.calculateSurroundingBombs(row, col + 1);
             if (surroundingBombs == 0) {
                 emptyTileRowList.add(row);
+                emptyTileColList.add(col + 1);
+                foundNewEmptyTile = true;
+            }
+        }
+        //Corners
+        if (compareIndexRecursion(row - 1, col - 1)) {
+            surroundingBombs = model.calculateSurroundingBombs(row - 1, col - 1);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row - 1);
+                emptyTileColList.add(col - 1);
+                foundNewEmptyTile = true;
+            }
+        }
+        if (compareIndexRecursion(row - 1, col + 1)) {
+            surroundingBombs = model.calculateSurroundingBombs(row - 1, col + 1);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row - 1);
+                emptyTileColList.add(col + 1);
+                foundNewEmptyTile = true;
+            }
+        }
+        if (compareIndexRecursion(row + 1, col - 1)) {
+            surroundingBombs = model.calculateSurroundingBombs(row + 1, col - 1);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row + 1);
+                emptyTileColList.add(col - 1);
+                foundNewEmptyTile = true;
+            }
+        }
+        if (compareIndexRecursion(row + 1, col + 1)) {
+            surroundingBombs = model.calculateSurroundingBombs(row + 1, col + 1);
+            if (surroundingBombs == 0) {
+                emptyTileRowList.add(row + 1);
                 emptyTileColList.add(col + 1);
                 foundNewEmptyTile = true;
             }
