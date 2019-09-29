@@ -217,7 +217,7 @@ class ModelMinesweeper {
      *
      * @return Timeout in Seconds
      */
-    public long getCOOL_DOWN_TIME() {
+    private long getCOOL_DOWN_TIME() {
 
         switch (difficulty) {
             case 1:
