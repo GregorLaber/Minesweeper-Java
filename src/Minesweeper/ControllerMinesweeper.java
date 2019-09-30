@@ -3,6 +3,7 @@ package Minesweeper;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private static final ModelMinesweeper model = new ModelMinesweeper();
     private static final ViewGuiMinesweeper view = new ViewGuiMinesweeper(model.getNumberOfBombs());
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
-    private final FileController fileController = new FileController();
+    private FileController fileController;
     private boolean firstClickDone = true;
     private static int displayBombNumber = model.getNumberOfBombs();
     private final List<Integer> emptyTileRowList = new ArrayList<>();
@@ -28,6 +29,14 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         view.addViewListener(this);
         if (debug) {
             showAllBombs(false, 0, 0); // For Debug purpose
+        }
+
+        fileController = null;
+
+        try {
+            fileController = new FileController();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
