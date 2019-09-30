@@ -15,6 +15,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private static final ModelMinesweeper model = new ModelMinesweeper();
     private static final ViewGuiMinesweeper view = new ViewGuiMinesweeper(model.getNumberOfBombs());
     private final MinesweeperSymbols symbols = new MinesweeperSymbols();
+    private final FileController fileController = new FileController();
     private boolean firstClickDone = true;
     private static int displayBombNumber = model.getNumberOfBombs();
     private final List<Integer> emptyTileRowList = new ArrayList<>();
