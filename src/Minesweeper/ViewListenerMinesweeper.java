@@ -41,6 +41,11 @@ interface ViewListenerMinesweeper {
     void hintClicked();
 
     /**
+     * Click Action Button "Show Highscore" clicked. Show Highscore List.
+     */
+    void showHighscoreClicked();
+
+    /**
      * Click Action Button "Pause" clicked.
      */
     void pauseClicked();

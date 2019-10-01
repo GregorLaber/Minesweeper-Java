@@ -641,6 +641,15 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     }
 
     /**
+     * Click Action Button "Show Highscore" clicked. Show Highscore List.
+     */
+    @Override
+    public void showHighscoreClicked() {
+
+        System.out.println("Show Highscore clicked");
+    }
+
+    /**
      * Methode um Spiel zu pausieren
      */
     @Override

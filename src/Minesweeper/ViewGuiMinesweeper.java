@@ -400,11 +400,13 @@ class ViewGuiMinesweeper {
         Menu fileMenu = new Menu("Game");
         MenuItem newGameItem = new MenuItem("New Game");
         MenuItem exitItem = new MenuItem("Exit Game");
-        Menu difficultyItem = new Menu("Difficulty");
+        Menu difficultyMenu = new Menu("Difficulty");
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
         RadioMenuItem professional = new RadioMenuItem("Professional");
-        Menu hintMenu = new Menu();
+        Menu hintMenu = new Menu(); //Only Dummy for ICON
+        Menu highscoreMenu = new Menu("Highscore");
+        MenuItem highscoreItem = new MenuItem("Show Highscore");
 
         // Properties of Menu
         ToggleGroup group = new ToggleGroup();
@@ -430,8 +432,9 @@ class ViewGuiMinesweeper {
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
-        difficultyItem.getItems().addAll(beginner, advanced, professional);
-        menuBar.getMenus().addAll(fileMenu, difficultyItem, hintMenu);
+        difficultyMenu.getItems().addAll(beginner, advanced, professional);
+        highscoreMenu.getItems().add(highscoreItem);
+        menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, highscoreMenu);
 
         // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
@@ -440,6 +443,7 @@ class ViewGuiMinesweeper {
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
         hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
+        highscoreItem.setOnAction((ActionEvent event) -> showHighscoreClicked());
 
         return menuBar;
     }
@@ -587,6 +591,16 @@ class ViewGuiMinesweeper {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.hintClicked();
+        }
+    }
+
+    /**
+     * Interface Methode. Wenn Highscore Liste angefordert wird, wird der Listener benachrichtigt.
+     */
+    private void showHighscoreClicked() {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.showHighscoreClicked();
         }
     }
 
