@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper.highscore;
 
 class Player {
 

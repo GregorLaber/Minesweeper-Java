@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 
 import javafx.animation.AnimationTimer;
@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ class ViewGuiMinesweeper {
     private static int tileNumber = 0;
     private static int buttonID = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
-    private final MinesweeperSymbols symbols = new MinesweeperSymbols();
+    private MinesweeperSymbols symbols;
 
     private AnimationTimer timer;
     private final Label labelTimer = new Label("00:00");
@@ -48,6 +49,11 @@ class ViewGuiMinesweeper {
 
     ViewGuiMinesweeper(int numberOfBombs) {
 
+        try {
+            this.symbols = new MinesweeperSymbols();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         setDifficulty(0);
         this.ROW = getDifficultyRow();
         this.COL = getDifficultyCol();
@@ -89,8 +95,7 @@ class ViewGuiMinesweeper {
         setSceneBeginner();
 
         // Window
-        Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
-        window.getIcons().add(icon);
+        window.getIcons().add(symbols.REDMINE);
         window.setTitle("Minesweeper");
         window.setScene(sceneBeginner);
 //        window.setMaximized(true); // For Professional Difficulty also have to switch resizable to true

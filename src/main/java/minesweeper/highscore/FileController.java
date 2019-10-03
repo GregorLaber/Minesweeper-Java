@@ -1,28 +1,27 @@
-package Minesweeper;
+package main.java.minesweeper.highscore;
 
 import java.io.*;
-import java.net.URL;
-import java.util.Objects;
 import java.util.Scanner;
 
 /**
  * Class for managing the Highscore File.
  */
-class FileController {
+public class FileController {
 
-    private String path = System.getProperty("user.dir") + "\\src\\Minesweeper\\highscore\\highscore.txt";
+    private String path = System.getProperty("user.dir")
+            + "\\src\\main\\resources\\highscore\\highscore.txt";
     private File file;
     private Scanner reader;
     private FileWriter writer;
 
-    FileController() {
+    public FileController() {
     }
 
     /**
      * Only Test Method. To Test the functionality
      * @throws Exception throws FileNotFoundException
      */
-    void readWrite() throws Exception {
+    public void readWrite() throws Exception {
 
         System.out.println("Path to file: ");
         System.out.println(this.path);

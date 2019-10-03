@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 
 import javafx.animation.AnimationTimer;

@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 import javafx.application.Application;
 import javafx.stage.Stage;

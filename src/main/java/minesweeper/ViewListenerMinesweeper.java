@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 interface ViewListenerMinesweeper {
 
