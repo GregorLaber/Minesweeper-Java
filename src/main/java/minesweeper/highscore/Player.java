@@ -35,4 +35,13 @@ class Player {
     public void setTime(String time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "rank=" + rank +
+                ", name='" + name + '\'' +
+                ", time='" + time + '\'' +
+                '}';
+    }
 }

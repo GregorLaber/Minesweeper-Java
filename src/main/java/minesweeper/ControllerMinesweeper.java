@@ -2,7 +2,7 @@ package main.java.minesweeper;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
-import main.java.minesweeper.highscore.FileController;
+import main.java.minesweeper.highscore.ControllerHighscore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private static final ModelMinesweeper model = new ModelMinesweeper();
     private static final ViewGuiMinesweeper view = new ViewGuiMinesweeper(model.getNumberOfBombs());
     private MinesweeperSymbols symbols;
-    private FileController fileController;
+    private ControllerHighscore controllerHighscore;
     private boolean firstClickDone = true;
     private static int displayBombNumber = model.getNumberOfBombs();
     private final List<Integer> emptyTileRowList = new ArrayList<>();
@@ -32,7 +32,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
 
         try {
-            this.fileController = new FileController();
+            this.controllerHighscore = new ControllerHighscore();
             this.symbols = new MinesweeperSymbols();
         } catch (Exception e) {
             e.printStackTrace();
@@ -647,7 +647,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         System.out.println("Show Highscore clicked");
         try {
-            fileController.readWrite();
+            this.controllerHighscore.readWrite();
         } catch (Exception e) {
             e.printStackTrace();
         }
