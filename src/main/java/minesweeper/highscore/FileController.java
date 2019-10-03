@@ -8,37 +8,36 @@ import java.util.Scanner;
  */
 public class FileController {
 
-    private String path = System.getProperty("user.dir")
-            + "\\src\\main\\resources\\highscore\\highscore.txt";
+    private String path = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscore.txt";
     private File file;
     private Scanner reader;
     private FileWriter writer;
 
-    public FileController() {
+    public FileController() throws Exception {
+
+        this.file = new File(this.path);
+        this.reader = new Scanner(this.file);
+        this.writer = new FileWriter(this.file);
     }
 
     /**
      * Only Test Method. To Test the functionality
-     * @throws Exception throws FileNotFoundException
+     *
+     * @throws Exception FileNotFoundException
      */
     public void readWrite() throws Exception {
 
         System.out.println("Path to file: ");
         System.out.println(this.path);
 
-        this.file = new File(this.path);
-
         String input = "Old Content";
-        FileWriter writer = new FileWriter(this.file);
         writer.write(input);
         writer.close();
 
-        Scanner scanner = new Scanner(this.file);
-
         System.out.println("First in File: ");
-        while (scanner.hasNextLine()) {
+        while (reader.hasNextLine()) {
 
-            System.out.println(scanner.nextLine());
+            System.out.println(reader.nextLine());
         }
 
         String output = "New Content";
@@ -46,11 +45,11 @@ public class FileController {
         writer.write(output);
         writer.close();
 
-        scanner = new Scanner(this.file);
+        reader = new Scanner(this.file);
         System.out.println("Now in File: ");
-        while (scanner.hasNextLine()) {
+        while (reader.hasNextLine()) {
 
-            System.out.println(scanner.nextLine());
+            System.out.println(reader.nextLine());
         }
 
     }
