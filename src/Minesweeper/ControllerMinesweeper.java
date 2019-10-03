@@ -35,7 +35,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         try {
             fileController = new FileController();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -647,6 +647,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     public void showHighscoreClicked() {
 
         System.out.println("Show Highscore clicked");
+        try {
+            fileController.readWrite();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
