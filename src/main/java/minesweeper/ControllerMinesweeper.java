@@ -39,7 +39,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         emptyTileRowList = new ArrayList<>();
         emptyTileColList = new ArrayList<>();
         recursionIndex = -1;
-        debug = true; // For Debug purpose
+        debug = false; // For Debug purpose
 
         view.addViewListener(this);
         if (debug) {
@@ -659,7 +659,6 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void showHighscoreClicked() {
 
-        System.out.println("Show Highscore clicked");
         try {
 //            this.controllerHighscore.readWrite();
         } catch (Exception e) {

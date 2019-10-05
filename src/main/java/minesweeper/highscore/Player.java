@@ -4,13 +4,12 @@ package main.java.minesweeper.highscore;
  * Class for storing in Highscore File
  */
 class Player {
-    //TODO add JAVADoc to Methods; modify Accessors
 
     private int rank;
     private final String name;
     private final String time;
-    private int minutes;
-    private int seconds;
+    private final int minutes;
+    private final int seconds;
 
     Player(int rank, String name, String time) {
         this.rank = rank;

@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Enthält das Aussehen der Anwendung. Klassisch nach MVC Architektur
@@ -739,8 +738,10 @@ class ViewGuiMinesweeper {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("You won!");
         alert.setHeaderText(null);
-        alert.setContentText("Congratulations. You won the Game. But you are not in Highscore. " +
-                "Next time, you can do it."); //TODO Format before But break, before Next break
+        alert.setContentText(
+                "Congratulations. You won the Game. \n" +
+                        "But you are not in Highscore. \n" +
+                        "Next time, you can do it.");
         alert.showAndWait();
     }
 
@@ -786,7 +787,7 @@ class ViewGuiMinesweeper {
         TextInputDialog dialog = new TextInputDialog();
 
         dialog.setTitle("Highscore");
-        dialog.setHeaderText("Congratulation, you won the Game and are also in the Highscore. " +
+        dialog.setHeaderText("Congratulation, you won the Game and are also in the Highscore. \n" +
                 "Please type in your name.");
         dialog.setContentText("Name:");
 

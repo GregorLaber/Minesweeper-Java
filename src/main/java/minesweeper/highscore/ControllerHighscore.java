@@ -20,38 +20,7 @@ public class ControllerHighscore {
 
         this.file = new File(path);
         this.readFile();
-        this.initialWrite();
-    }
-
-    /**
-     * Only Test Method. To Test the functionality
-     *
-     * @throws Exception FileNotFoundException
-     */
-    public void readWrite() throws Exception {
-
-        System.out.println("Path to file: ");
-        System.out.println(path);
-
-        System.out.println("First in File: ");
-        this.reader = new Scanner(this.file);
-        while (reader.hasNextLine()) {
-
-            System.out.println(reader.nextLine());
-        }
-
-        String output = "New Content";
-        writer = new FileWriter(this.file);
-        writer.write(output);
-        writer.close();
-
-        reader = new Scanner(this.file);
-        System.out.println("Now in File: ");
-        while (reader.hasNextLine()) {
-
-            System.out.println(reader.nextLine());
-        }
-
+        this.writeToHighscoreFile();
     }
 
     /**
@@ -75,11 +44,11 @@ public class ControllerHighscore {
     }
 
     /**
-     * Initial writing to the File
+     * Writing to the Highscore File
      *
      * @throws IOException Method uses FileWriter
      */
-    private void initialWrite() throws IOException { //TODO refactor MethodName. Use for every writing to File
+    private void writeToHighscoreFile() throws IOException {
 
         List<Player> playerList = model.getPlayerList();
 
@@ -105,7 +74,7 @@ public class ControllerHighscore {
 
         model.sortIntoHighscore(name, time, difficulty);
         try {
-            this.initialWrite();
+            this.writeToHighscoreFile();
         } catch (IOException e) {
             e.printStackTrace();
         }

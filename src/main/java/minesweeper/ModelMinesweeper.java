@@ -12,7 +12,7 @@ import java.util.Random;
  */
 class ModelMinesweeper {
 
-    private int difficulty; //TODO change all usages to getter
+    private int difficulty;
     private int ROW;
     private int COL;
     private String[][] fieldList;
@@ -198,7 +198,7 @@ class ModelMinesweeper {
      */
     private int getDifficultyRow() {
 
-        if (difficulty == 0) {
+        if (this.getDifficulty() == 0) {
             return 8;
         }
         return 16; // Case 1/2
@@ -211,7 +211,7 @@ class ModelMinesweeper {
      */
     private int getDifficultyCol() {
 
-        switch (difficulty) {
+        switch (this.getDifficulty()) {
             case 1:
                 return 16;
             case 2:
@@ -228,7 +228,7 @@ class ModelMinesweeper {
      */
     private long getCOOL_DOWN_TIME() {
 
-        switch (difficulty) {
+        switch (this.getDifficulty()) {
             case 1:
                 return 30;
             case 2:
@@ -243,7 +243,7 @@ class ModelMinesweeper {
      */
     private void setNumberOfBombs() {
 
-        switch (difficulty) {
+        switch (this.getDifficulty()) {
             case 0:
                 numberOfBombs = 10;
                 break;
