@@ -20,14 +20,7 @@ class ModelHighscore {
      */
     private void initializePlayerList() {
 
-        if (highscoreList.isEmpty()) {
-
-            //Create PlayerList without HighscoreList
-            for (int i = 0; i < 10; i++) {
-                playerList.add(new Player(i + 1, " ", " "));
-            }
-
-        } else if (highscoreList.size() == 10) {
+        if (highscoreList.size() <= 10) {
 
             //Read from HighscoreList to create PlayerList
             for (String s : highscoreList) {
@@ -47,7 +40,6 @@ class ModelHighscore {
 
         this.highscoreList = highscoreList;
         initializePlayerList();
-        System.out.println("File read");
     }
 
     /**
@@ -69,30 +61,58 @@ class ModelHighscore {
     void sortIntoHighscore(String name, String time, int difficulty) {
 
         int rank = 0;
+        boolean sortedIn = false;
         Player newPlayer = new Player(0, name, time);
 
         for (int i = 0; i < playerList.size(); i++) {
             if (newPlayer.getMinutes() < playerList.get(i).getMinutes()) {
                 rank = i;
+                sortedIn = true;
                 break;
             } else if (newPlayer.getMinutes() == playerList.get(i).getMinutes()
                     && newPlayer.getSeconds() < playerList.get(i).getSeconds()) {
                 rank = i;
+                sortedIn = true;
                 break;
             }
         }
 
-        newPlayer.setRank(rank + 1);
-        Player tmp = newPlayer;
-        for (int i = rank; i < playerList.size(); i++) {
+        if (!sortedIn && playerList.size() < 10) {
 
-            Player oldPlayer = playerList.set(i, tmp);
-            oldPlayer.setRank(i + 2);
-            tmp = oldPlayer;
+            newPlayer.setRank(playerList.size() + 1);
+            playerList.add(newPlayer);
+
+        } else {
+
+            newPlayer.setRank(rank + 1);
+            Player tmp = newPlayer;
+            for (int i = rank; i < playerList.size(); i++) {
+
+                Player oldPlayer = playerList.set(i, tmp);
+                oldPlayer.setRank(i + 2);
+                tmp = oldPlayer;
+                if ((i == playerList.size() - 1) && playerList.size() < 10) {
+                    tmp.setRank(i + 2);
+                    playerList.add(tmp);
+                    break;
+                }
+            }
         }
+
     }
 
+    /**
+     * Method to check if the newest won Game is in Highscore
+     *
+     * @param time       from the newest won Game
+     * @param difficulty from the Game
+     * @return bool
+     */
     boolean isNewItemInHighscore(String time, int difficulty) {
+
+        if (playerList.size() < 10) {
+            return true;
+        }
 
         String[] line = time.split("[:]");
         int minutes = Integer.parseInt(line[0]);

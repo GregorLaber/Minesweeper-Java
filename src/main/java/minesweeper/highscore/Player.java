@@ -17,11 +17,9 @@ class Player {
         this.name = name;
         this.time = time;
 
-        if (!time.equals(" ")) {
-            String[] line = time.split("[:]");
-            this.minutes = Integer.parseInt(line[0]);
-            this.seconds = Integer.parseInt(line[1]);
-        }
+        String[] line = time.split("[:]");
+        this.minutes = Integer.parseInt(line[0]);
+        this.seconds = Integer.parseInt(line[1]);
     }
 
     /**

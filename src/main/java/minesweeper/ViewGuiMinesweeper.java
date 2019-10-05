@@ -740,7 +740,7 @@ class ViewGuiMinesweeper {
         alert.setTitle("You won!");
         alert.setHeaderText(null);
         alert.setContentText("Congratulations. You won the Game. But you are not in Highscore. " +
-                "Next time, you can do it.");
+                "Next time, you can do it."); //TODO Format before But break, before Next break
         alert.showAndWait();
     }
 

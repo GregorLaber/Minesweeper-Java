@@ -103,9 +103,6 @@ public class ControllerHighscore {
      */
     public void createNewHighscoreItem(String name, String time, int difficulty) {
 
-        System.out.println("Name: " + name);
-        System.out.println("Time: " + time);
-        System.out.println("Diff: " + difficulty);
         model.sortIntoHighscore(name, time, difficulty);
         try {
             this.initialWrite();
@@ -114,6 +111,13 @@ public class ControllerHighscore {
         }
     }
 
+    /**
+     * Method to check if the newest won Game is in Highscore
+     *
+     * @param time       from the newest won Game
+     * @param difficulty from the Game
+     * @return bool
+     */
     public boolean isNewItemInHighscore(String time, int difficulty) {
         return model.isNewItemInHighscore(time, difficulty);
     }
