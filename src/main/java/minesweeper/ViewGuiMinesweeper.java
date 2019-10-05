@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Enthält das Aussehen der Anwendung. Klassisch nach MVC Architektur
@@ -218,6 +219,15 @@ class ViewGuiMinesweeper {
     void stopToolbarTimer() {
 
         timer.stop();
+    }
+
+    /**
+     * Getter for Time. For the Highscore.
+     *
+     * @return Time in MM:SS
+     */
+    String getLabelTimer() {
+        return labelTimer.getText();
     }
 
     /**
@@ -729,7 +739,8 @@ class ViewGuiMinesweeper {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("You won!");
         alert.setHeaderText(null);
-        alert.setContentText("Congratulations. You won the Game.");
+        alert.setContentText("Congratulations. You won the Game. But you are not in Highscore. " +
+                "Next time, you can do it.");
         alert.showAndWait();
     }
 
@@ -752,6 +763,9 @@ class ViewGuiMinesweeper {
         alert.showAndWait();
     }
 
+    /**
+     * Notification for the Pause
+     */
     void pauseNotification() {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -760,6 +774,35 @@ class ViewGuiMinesweeper {
         alert.setContentText("Pause");
         alert.showAndWait();
         timer.start();
+    }
+
+    /**
+     * Notification to ask the User for his/her Name
+     *
+     * @return Name of the User
+     */
+    String highscoreNotification() {
+
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle("Highscore");
+        dialog.setHeaderText("Congratulation, you won the Game and are also in the Highscore. " +
+                "Please type in your name.");
+        dialog.setContentText("Name:");
+
+        while (true) {
+
+            //TODO handle reject
+            String result = dialog.showAndWait().orElse(null);
+            if (!result.isEmpty()) {
+                return result;
+            } else if (result == null) {
+                return "User";
+            } else {
+                highscoreNotification();
+            }
+        }
+
     }
 
 }

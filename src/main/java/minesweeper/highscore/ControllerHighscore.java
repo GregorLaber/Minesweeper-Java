@@ -6,14 +6,9 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Class for managing the Highscore File.
+ * Class for managing the Highscore and File.
  */
 public class ControllerHighscore {
-
-    /*TODO
-        - im Moment wird File vor dem ersten Aufruf gelöscht
-        - Problemlösung könnte sein reader und writer jedesmal neu das File zuzuordnen
-     */
 
     private static final String path = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscore.txt";
     private static final ModelHighscore model = new ModelHighscore();
@@ -23,10 +18,9 @@ public class ControllerHighscore {
 
     public ControllerHighscore() throws Exception {
 
-        this.file = new File(this.path);
-        this.reader = new Scanner(this.file);
-        this.writer = new FileWriter(this.file);
+        this.file = new File(path);
         this.readFile();
+        this.initialWrite();
     }
 
     /**
@@ -37,13 +31,10 @@ public class ControllerHighscore {
     public void readWrite() throws Exception {
 
         System.out.println("Path to file: ");
-        System.out.println(this.path);
-
-        String input = "Old Content";
-        writer.write(input);
-        writer.close();
+        System.out.println(path);
 
         System.out.println("First in File: ");
+        this.reader = new Scanner(this.file);
         while (reader.hasNextLine()) {
 
             System.out.println(reader.nextLine());
@@ -63,9 +54,17 @@ public class ControllerHighscore {
 
     }
 
+    /**
+     * Read the Highscore File at the Starting of the Application
+     */
     private void readFile() {
 
         List<String> fileContent = new ArrayList<>();
+        try {
+            this.reader = new Scanner(this.file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         while (reader.hasNextLine()) {
 
@@ -73,6 +72,50 @@ public class ControllerHighscore {
         }
         model.setHighscoreList(fileContent);
 
+    }
+
+    /**
+     * Initial writing to the File
+     *
+     * @throws IOException Method uses FileWriter
+     */
+    private void initialWrite() throws IOException { //TODO refactor MethodName. Use for every writing to File
+
+        List<Player> playerList = model.getPlayerList();
+
+        if (playerList.size() != 0) {
+            this.writer = new FileWriter(this.file);
+            for (Player player : playerList) {
+                this.writer.write(player.toString());
+                this.writer.write("\n");
+            }
+            this.writer.close();
+        }
+
+    }
+
+    /**
+     * Method to create a New Item in the Highscore Table.
+     *
+     * @param name       of the Player
+     * @param time       of the Player
+     * @param difficulty of the Game
+     */
+    public void createNewHighscoreItem(String name, String time, int difficulty) {
+
+        System.out.println("Name: " + name);
+        System.out.println("Time: " + time);
+        System.out.println("Diff: " + difficulty);
+        model.sortIntoHighscore(name, time, difficulty);
+        try {
+            this.initialWrite();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isNewItemInHighscore(String time, int difficulty) {
+        return model.isNewItemInHighscore(time, difficulty);
     }
 
 }

@@ -1,47 +1,90 @@
 package main.java.minesweeper.highscore;
 
+/**
+ * Class for storing in Highscore File
+ */
 class Player {
+    //TODO add JAVADoc to Methods; modify Accessors
 
     private int rank;
-    private String name;
-    private String time;
+    private final String name;
+    private final String time;
+    private int minutes;
+    private int seconds;
 
-    public Player(int rank, String name, String time) {
+    Player(int rank, String name, String time) {
         this.rank = rank;
         this.name = name;
         this.time = time;
+
+        if (!time.equals(" ")) {
+            String[] line = time.split("[:]");
+            this.minutes = Integer.parseInt(line[0]);
+            this.seconds = Integer.parseInt(line[1]);
+        }
     }
 
-    public int getRank() {
+    /**
+     * Getter for Rank
+     *
+     * @return rank in Highscore
+     */
+    private int getRank() {
         return rank;
     }
 
-    public void setRank(int rank) {
+    /**
+     * Setter for Rank
+     *
+     * @param rank in Highscore
+     */
+    void setRank(int rank) {
         this.rank = rank;
     }
 
-    public String getName() {
+    /**
+     * Getter for Name
+     *
+     * @return Name of the Player
+     */
+    private String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTime() {
+    /**
+     * Getter for Time Format(00:00)
+     *
+     * @return time as String
+     */
+    private String getTime() {
         return time;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    /**
+     * Getter for Minutes of the Time
+     *
+     * @return int minutes
+     */
+    int getMinutes() {
+        return minutes;
     }
 
+    /**
+     * Getter for Seconds of the Time
+     *
+     * @return int seconds
+     */
+    int getSeconds() {
+        return seconds;
+    }
+
+    /**
+     * Method is used to write Player to the Highscore File
+     *
+     * @return Player in Format Player(rank|name|time(mm:ss))
+     */
     @Override
     public String toString() {
-        return "Player{" +
-                "rank=" + rank +
-                ", name='" + name + '\'' +
-                ", time='" + time + '\'' +
-                '}';
+        return (getRank() + "|" + getName() + "|" + getTime());
     }
 }

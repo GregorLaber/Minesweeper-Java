@@ -13,29 +13,37 @@ import java.util.List;
  */
 public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
-    private static final ModelMinesweeper model = new ModelMinesweeper();
-    private static final ViewGuiMinesweeper view = new ViewGuiMinesweeper(model.getNumberOfBombs());
+    private static ModelMinesweeper model;
+    private static ViewGuiMinesweeper view;
     private MinesweeperSymbols symbols;
     private ControllerHighscore controllerHighscore;
-    private boolean firstClickDone = true;
-    private static int displayBombNumber = model.getNumberOfBombs();
-    private final List<Integer> emptyTileRowList = new ArrayList<>();
-    private final List<Integer> emptyTileColList = new ArrayList<>();
-    private static int recursionIndex = -1;
-    private final boolean debug = false; // For Debug purpose
+    private boolean firstClickDone;
+    private static int displayBombNumber;
+    private final List<Integer> emptyTileRowList;
+    private final List<Integer> emptyTileColList;
+    private static int recursionIndex;
+    private final boolean debug; // For Debug purpose
 
     ControllerMinesweeper() {
 
-        view.addViewListener(this);
-        if (debug) {
-            showAllBombs(false, 0, 0); // For Debug purpose
-        }
-
+        model = new ModelMinesweeper();
+        view = new ViewGuiMinesweeper(model.getNumberOfBombs());
         try {
             this.controllerHighscore = new ControllerHighscore();
             this.symbols = new MinesweeperSymbols();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        firstClickDone = true;
+        displayBombNumber = model.getNumberOfBombs();
+        emptyTileRowList = new ArrayList<>();
+        emptyTileColList = new ArrayList<>();
+        recursionIndex = -1;
+        debug = true; // For Debug purpose
+
+        view.addViewListener(this);
+        if (debug) {
+            showAllBombs(false, 0, 0); // For Debug purpose
         }
     }
 
@@ -138,10 +146,16 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
         if (model.checkWin()) {
             model.stopCooldownTimer();
+            String time = view.getLabelTimer();
             view.stopToolbarTimer();
             view.disableAllButtons();
             openAllTiles(false, row, col);
-            view.winningNotification();
+            if (controllerHighscore.isNewItemInHighscore(time, model.getDifficulty())) {
+                String name = view.highscoreNotification();
+                controllerHighscore.createNewHighscoreItem(name, time, model.getDifficulty());
+            } else {
+                view.winningNotification();
+            }
         }
     }
 
@@ -647,7 +661,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         System.out.println("Show Highscore clicked");
         try {
-            this.controllerHighscore.readWrite();
+//            this.controllerHighscore.readWrite();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -12,7 +12,7 @@ import java.util.Random;
  */
 class ModelMinesweeper {
 
-    private int difficulty;
+    private int difficulty; //TODO change all usages to getter
     private int ROW;
     private int COL;
     private String[][] fieldList;
@@ -180,6 +180,15 @@ class ModelMinesweeper {
     void setDifficulty(int difficulty) {
 
         this.difficulty = difficulty;
+    }
+
+    /**
+     * Getter for Difficulty
+     *
+     * @return int 0 = beginner, 1 = advanced, 2 = professional
+     */
+    int getDifficulty() {
+        return difficulty;
     }
 
     /**
