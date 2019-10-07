@@ -1,7 +1,7 @@
 # directory
 .idea/
 out/
-highscore.txt
+highscore/
 
 # Compiled class file
 *.class
