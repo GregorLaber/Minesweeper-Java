@@ -9,7 +9,7 @@ import java.util.List;
 class ModelHighscore {
 
     private List<String> highscoreList = new ArrayList<>();
-    private List<Player> playerList = new ArrayList<>();
+    private final List<Player> playerList = new ArrayList<>();
 
     ModelHighscore() {
     }

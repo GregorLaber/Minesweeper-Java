@@ -1,15 +1,13 @@
 package main.java.minesweeper.highscore;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
-import javafx.util.Callback;
 
 import java.util.List;
 
@@ -37,14 +35,45 @@ class ViewHighscore {
         timeColumn.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getTime()));
 
         table.setItems(data);
+        //noinspection unchecked
         table.getColumns().addAll(rankColumn, nameColumn, timeColumn);
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         GridPane content = new GridPane();
         content.add(table, 0, 0);
+        content.setMaxWidth(Double.MAX_VALUE);
 
-        alert.getDialogPane().setExpandableContent(content);
+        alert.getDialogPane().setContent(content);
         alert.showAndWait();
+
+    }
+
+    /**
+     * Notification to ask the User for his/her Name
+     *
+     * @return Name of the User
+     */
+    String highscoreNotification() {
+
+        TextInputDialog dialog = new TextInputDialog();
+
+        dialog.setTitle("Highscore");
+        dialog.setHeaderText("Congratulation, you won the Game and are also in the Highscore. \n" +
+                "Please type in your name.");
+        dialog.setContentText("Name:");
+
+        while (true) {
+
+            //TODO handle reject
+            String result = dialog.showAndWait().orElse(null);
+            if (!result.isEmpty()) {
+                return result;
+            } else if (result == null) {
+                return "User";
+            } else {
+                highscoreNotification();
+            }
+        }
 
     }
 

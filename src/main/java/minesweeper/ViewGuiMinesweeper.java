@@ -487,6 +487,16 @@ class ViewGuiMinesweeper {
     }
 
     /**
+     * Method to see if the Pausebutton is disabled
+     *
+     * @return true if the Button is disabled
+     */
+    boolean isPauseButtonDisabled() {
+
+        return this.pauseButton.isDisabled();
+    }
+
+    /**
      * Method to disable the Pause Button
      */
     void disablePauseButton() {
@@ -775,35 +785,6 @@ class ViewGuiMinesweeper {
         alert.setContentText("Pause");
         alert.showAndWait();
         timer.start();
-    }
-
-    /**
-     * Notification to ask the User for his/her Name
-     *
-     * @return Name of the User
-     */
-    String highscoreNotification() {
-
-        TextInputDialog dialog = new TextInputDialog();
-
-        dialog.setTitle("Highscore");
-        dialog.setHeaderText("Congratulation, you won the Game and are also in the Highscore. \n" +
-                "Please type in your name.");
-        dialog.setContentText("Name:");
-
-        while (true) {
-
-            //TODO handle reject
-            String result = dialog.showAndWait().orElse(null);
-            if (!result.isEmpty()) {
-                return result;
-            } else if (result == null) {
-                return "User";
-            } else {
-                highscoreNotification();
-            }
-        }
-
     }
 
 }

@@ -24,6 +24,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     private static int recursionIndex;
     private final boolean debug; // For Debug purpose
 
+    @SuppressWarnings("ConstantConditions")
     ControllerMinesweeper() {
 
         model = new ModelMinesweeper();
@@ -151,7 +152,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             view.disableAllButtons();
             openAllTiles(false, row, col);
             if (controllerHighscore.isNewItemInHighscore(time, model.getDifficulty())) {
-                String name = view.highscoreNotification();
+                String name = controllerHighscore.highscoreNotification();
                 controllerHighscore.createNewHighscoreItem(name, time, model.getDifficulty());
             } else {
                 view.winningNotification();
@@ -660,7 +661,13 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     public void showHighscoreClicked() {
 
         try {
-            controllerHighscore.showHighscore();
+            if (view.isPauseButtonDisabled()) {
+                controllerHighscore.showHighscore();
+            } else {
+                view.stopToolbarTimer();
+                controllerHighscore.showHighscore();
+                view.startToolbarTimer();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

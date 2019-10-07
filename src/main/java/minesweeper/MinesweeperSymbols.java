@@ -14,7 +14,6 @@ import java.io.FileNotFoundException;
  */
 class MinesweeperSymbols {
 
-    private String path = System.getProperty("user.dir") + "\\out\\production\\07 Minesweeper\\main\\resources\\images\\";
     final Image MINE;
     final Image REDMINE;
     final Image FLAG;
@@ -22,6 +21,7 @@ class MinesweeperSymbols {
 
     MinesweeperSymbols() throws FileNotFoundException {
 
+        String path = System.getProperty("user.dir") + "\\out\\production\\07 Minesweeper\\main\\resources\\images\\";
         this.MINE = new Image(new FileInputStream(path + "mine.png"));
         this.REDMINE = new Image(new FileInputStream(path + "redmine.png"));
         this.FLAG = new Image(new FileInputStream(path + "flag.png"));

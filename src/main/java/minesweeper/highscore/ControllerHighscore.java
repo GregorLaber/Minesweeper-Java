@@ -13,9 +13,8 @@ public class ControllerHighscore {
     private static final String path = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscore.txt";
     private static final ModelHighscore model = new ModelHighscore();
     private static final ViewHighscore view = new ViewHighscore();
-    private File file;
+    private final File file;
     private Scanner reader;
-    private FileWriter writer;
 
     public ControllerHighscore() throws Exception {
 
@@ -54,12 +53,12 @@ public class ControllerHighscore {
         List<Player> playerList = model.getPlayerList();
 
         if (playerList.size() != 0) {
-            this.writer = new FileWriter(this.file);
+            FileWriter writer = new FileWriter(this.file);
             for (Player player : playerList) {
-                this.writer.write(player.toString());
-                this.writer.write("\n");
+                writer.write(player.toString());
+                writer.write("\n");
             }
-            this.writer.close();
+            writer.close();
         }
 
     }
@@ -98,6 +97,14 @@ public class ControllerHighscore {
     public void showHighscore() {
 
         view.showHighscore(model.getPlayerList());
+    }
+
+    /**
+     * Method to call the view. Ask the user about his/her name.
+     */
+    public String highscoreNotification() {
+
+        return view.highscoreNotification();
     }
 
 }
