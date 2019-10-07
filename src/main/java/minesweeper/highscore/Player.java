@@ -26,7 +26,7 @@ class Player {
      *
      * @return rank in Highscore
      */
-    private int getRank() {
+    int getRank() {
         return rank;
     }
 
@@ -44,7 +44,7 @@ class Player {
      *
      * @return Name of the Player
      */
-    private String getName() {
+    String getName() {
         return name;
     }
 
@@ -53,7 +53,7 @@ class Player {
      *
      * @return time as String
      */
-    private String getTime() {
+    String getTime() {
         return time;
     }
 

@@ -660,7 +660,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     public void showHighscoreClicked() {
 
         try {
-//            this.controllerHighscore.readWrite();
+            controllerHighscore.showHighscore();
         } catch (Exception e) {
             e.printStackTrace();
         }

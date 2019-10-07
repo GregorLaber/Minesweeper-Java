@@ -12,6 +12,7 @@ public class ControllerHighscore {
 
     private static final String path = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscore.txt";
     private static final ModelHighscore model = new ModelHighscore();
+    private static final ViewHighscore view = new ViewHighscore();
     private File file;
     private Scanner reader;
     private FileWriter writer;
@@ -89,6 +90,14 @@ public class ControllerHighscore {
      */
     public boolean isNewItemInHighscore(String time, int difficulty) {
         return model.isNewItemInHighscore(time, difficulty);
+    }
+
+    /**
+     * Method to call the view to display the Highscore table
+     */
+    public void showHighscore() {
+
+        view.showHighscore(model.getPlayerList());
     }
 
 }
