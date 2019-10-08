@@ -420,7 +420,9 @@ class ViewGuiMinesweeper {
         RadioMenuItem professional = new RadioMenuItem("Professional");
         Menu hintMenu = new Menu(); //Only Dummy for ICON
         Menu highscoreMenu = new Menu("Highscore");
-        MenuItem highscoreItem = new MenuItem("Show Highscore");
+        MenuItem highscoreItemBeginner = new MenuItem("Show Beginner");
+        MenuItem highscoreItemAdvanced = new MenuItem("Show Advanced");
+        MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
 
         // Properties of Menu
         ToggleGroup group = new ToggleGroup();
@@ -447,7 +449,7 @@ class ViewGuiMinesweeper {
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyMenu.getItems().addAll(beginner, advanced, professional);
-        highscoreMenu.getItems().add(highscoreItem);
+        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional);
         menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, highscoreMenu);
 
         // Click Events
@@ -457,7 +459,9 @@ class ViewGuiMinesweeper {
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
         hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
-        highscoreItem.setOnAction((ActionEvent event) -> showHighscoreClicked());
+        highscoreItemBeginner.setOnAction((ActionEvent event) -> showHighscoreClicked(0));
+        highscoreItemAdvanced.setOnAction((ActionEvent event) -> showHighscoreClicked(1));
+        highscoreItemProfessional.setOnAction((ActionEvent event) -> showHighscoreClicked(2));
 
         return menuBar;
     }
@@ -621,10 +625,10 @@ class ViewGuiMinesweeper {
     /**
      * Interface Methode. Wenn Highscore Liste angefordert wird, wird der Listener benachrichtigt.
      */
-    private void showHighscoreClicked() {
+    private void showHighscoreClicked(int difficulty) {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
-            viewListener.showHighscoreClicked();
+            viewListener.showHighscoreClicked(difficulty);
         }
     }
 

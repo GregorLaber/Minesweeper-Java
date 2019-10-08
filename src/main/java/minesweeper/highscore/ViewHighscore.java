@@ -13,6 +13,10 @@ import java.util.List;
 
 class ViewHighscore {
 
+    /**
+     * Popup with Highscore table as content.
+     * @param playerList is the Data that will be displayed. Depending in Difficulty.
+     */
     void showHighscore(List<Player> playerList) {
 
         ObservableList<Player> data = FXCollections.observableArrayList();

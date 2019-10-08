@@ -1,6 +1,9 @@
 package main.java.minesweeper.highscore;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,15 +13,18 @@ import java.util.Scanner;
  */
 public class ControllerHighscore {
 
-    private static final String path = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscore.txt";
     private static final ModelHighscore model = new ModelHighscore();
     private static final ViewHighscore view = new ViewHighscore();
-    private final File file;
-    private Scanner reader;
+    private final List<File> files = new ArrayList<>();
 
     public ControllerHighscore() throws Exception {
 
-        this.file = new File(path);
+        String pathBeginner = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreBeginner.txt";
+        String pathAdvanced = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreAdvanced.txt";
+        String pathProfessional = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreProfessional.txt";
+        files.add(new File(pathBeginner));
+        files.add(new File(pathAdvanced));
+        files.add(new File(pathProfessional));
         this.readFile();
         this.writeToHighscoreFile();
     }
@@ -28,18 +34,27 @@ public class ControllerHighscore {
      */
     private void readFile() {
 
-        List<String> fileContent = new ArrayList<>();
-        try {
-            this.reader = new Scanner(this.file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        ArrayList[] listArray = new ArrayList[3];
+        for (int i = 0; i < listArray.length; i++) {
+            listArray[i] = new ArrayList<String>();
         }
 
-        while (reader.hasNextLine()) {
+        for (int i = 0; i < listArray.length; i++) {
 
-            fileContent.add(reader.nextLine());
+            Scanner reader = null;
+            try {
+                reader = new Scanner(files.get(i));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            while (reader.hasNextLine()) {
+
+                listArray[i].add(reader.nextLine());
+            }
         }
-        model.setHighscoreList(fileContent);
+
+        model.setHighscoreList(listArray);
 
     }
 
@@ -50,16 +65,22 @@ public class ControllerHighscore {
      */
     private void writeToHighscoreFile() throws IOException {
 
-        List<Player> playerList = model.getPlayerList();
-
-        if (playerList.size() != 0) {
-            FileWriter writer = new FileWriter(this.file);
-            for (Player player : playerList) {
-                writer.write(player.toString());
-                writer.write("\n");
-            }
-            writer.close();
+        ArrayList<Player>[] playerList = new ArrayList[3];
+        for (int i = 0; i < model.getPlayerList().length; i++) {
+            playerList[i] = model.getPlayerList()[i];
         }
+
+        for (int i = 0; i < playerList.length; i++) {
+            if (playerList[i].size() != 0) {
+                FileWriter writer = new FileWriter(files.get(i));
+                for (Player player : playerList[i]) {
+                    writer.write(player.toString());
+                    writer.write("\n");
+                }
+                writer.close();
+            }
+        }
+
 
     }
 
@@ -94,9 +115,10 @@ public class ControllerHighscore {
     /**
      * Method to call the view to display the Highscore table
      */
-    public void showHighscore() {
+    public void showHighscore(int difficulty) {
 
-        view.showHighscore(model.getPlayerList());
+        ArrayList<Player>[] playerList = model.getPlayerList();
+        view.showHighscore(playerList[difficulty]);
     }
 
     /**

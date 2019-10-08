@@ -658,14 +658,14 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
      * Click Action Button "Show Highscore" clicked. Show Highscore List.
      */
     @Override
-    public void showHighscoreClicked() {
+    public void showHighscoreClicked(int difficulty) {
 
         try {
             if (view.isPauseButtonDisabled()) {
-                controllerHighscore.showHighscore();
+                controllerHighscore.showHighscore(difficulty);
             } else {
                 view.stopToolbarTimer();
-                controllerHighscore.showHighscore();
+                controllerHighscore.showHighscore(difficulty);
                 view.startToolbarTimer();
             }
         } catch (Exception e) {

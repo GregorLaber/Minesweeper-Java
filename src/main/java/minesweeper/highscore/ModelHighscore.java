@@ -1,6 +1,7 @@
 package main.java.minesweeper.highscore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -8,10 +9,15 @@ import java.util.List;
  */
 class ModelHighscore {
 
-    private List<String> highscoreList = new ArrayList<>();
-    private final List<Player> playerList = new ArrayList<>();
+    //    private List<String> highscoreList = new ArrayList<>();
+    private ArrayList[] highscoreList = new ArrayList[3];
+    //    private final List<Player> playerList = new ArrayList<>();
+    private ArrayList<Player>[] playerList = new ArrayList[3];
 
     ModelHighscore() {
+
+        Arrays.fill(highscoreList, new ArrayList<String>());
+        Arrays.fill(playerList, new ArrayList<Player>());
     }
 
     /**
@@ -20,25 +26,33 @@ class ModelHighscore {
      */
     private void initializePlayerList() {
 
-        if (highscoreList.size() <= 10) {
+        for (int i = 0; i < highscoreList.length; i++) {
+            List<String> stringList = highscoreList[i];
+            ArrayList<Player> players = new ArrayList<>();
 
-            //Read from HighscoreList to create PlayerList
-            for (String s : highscoreList) {
-                String[] line = s.split("[|]");
-                playerList.add(new Player(Integer.parseInt(line[0]), line[1], line[2]));
+            if (stringList.size() <= 10) {
+
+                //Read from HighscoreList to create PlayerList
+                for (int j = 0; j < stringList.size(); j++) {
+                    String s = stringList.get(j);
+                    String[] line = s.split("[|]");
+                    players.add(new Player(Integer.parseInt(line[0]), line[1], line[2]));
+                }
+                this.playerList[i] = players;
+                stringList.clear();
             }
-
         }
+
     }
 
     /**
      * Setter for HighscoreList
      *
-     * @param highscoreList Content of the Highscore File
+     * @param listArray Content of the Highscore File
      */
-    void setHighscoreList(List<String> highscoreList) {
+    void setHighscoreList(ArrayList[] listArray) {
 
-        this.highscoreList = highscoreList;
+        System.arraycopy(listArray, 0, this.highscoreList, 0, listArray.length);
         initializePlayerList();
     }
 
@@ -47,7 +61,7 @@ class ModelHighscore {
      *
      * @return List<Player>
      */
-    List<Player> getPlayerList() {
+    ArrayList<Player>[] getPlayerList() {
         return playerList;
     }
 
@@ -59,6 +73,8 @@ class ModelHighscore {
      * @param difficulty Difficulty
      */
     void sortIntoHighscore(String name, String time, int difficulty) {
+
+        List<Player> playerList = this.playerList[difficulty];
 
         int rank = 0;
         boolean sortedIn = false;
@@ -109,6 +125,8 @@ class ModelHighscore {
      * @return bool
      */
     boolean isNewItemInHighscore(String time, int difficulty) {
+
+        List<Player> playerList = this.playerList[difficulty];
 
         if (playerList.size() < 10) {
             return true;

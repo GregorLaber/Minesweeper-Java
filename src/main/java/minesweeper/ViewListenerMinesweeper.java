@@ -43,7 +43,7 @@ interface ViewListenerMinesweeper {
     /**
      * Click Action Button "Show Highscore" clicked. Show Highscore List.
      */
-    void showHighscoreClicked();
+    void showHighscoreClicked(int difficulty);
 
     /**
      * Click Action Button "Pause" clicked.
