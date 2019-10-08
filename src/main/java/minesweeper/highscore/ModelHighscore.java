@@ -7,12 +7,11 @@ import java.util.List;
 /**
  * Model Class for Highscore
  */
+@SuppressWarnings("unchecked")
 class ModelHighscore {
 
-    //    private List<String> highscoreList = new ArrayList<>();
-    private ArrayList[] highscoreList = new ArrayList[3];
-    //    private final List<Player> playerList = new ArrayList<>();
-    private ArrayList<Player>[] playerList = new ArrayList[3];
+    private final ArrayList<String>[] highscoreList = new ArrayList[3];
+    private final ArrayList<Player>[] playerList = new ArrayList[3];
 
     ModelHighscore() {
 
@@ -33,8 +32,7 @@ class ModelHighscore {
             if (stringList.size() <= 10) {
 
                 //Read from HighscoreList to create PlayerList
-                for (int j = 0; j < stringList.size(); j++) {
-                    String s = stringList.get(j);
+                for (String s : stringList) {
                     String[] line = s.split("[|]");
                     players.add(new Player(Integer.parseInt(line[0]), line[1], line[2]));
                 }

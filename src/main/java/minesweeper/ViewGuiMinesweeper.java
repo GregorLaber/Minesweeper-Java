@@ -158,8 +158,6 @@ class ViewGuiMinesweeper {
         this.timer = new AnimationTimer() {
 
             private long lastTime = 0;
-            private String displaySeconds;
-            private String displayMinutes;
 
             @Override
             public void handle(long now) {
@@ -171,12 +169,14 @@ class ViewGuiMinesweeper {
                             seconds = 0;
                         }
 
+                        String displaySeconds;
                         if (seconds < 10) {
                             displaySeconds = "0" + seconds;
                         } else {
                             displaySeconds = Integer.toString(seconds);
                         }
 
+                        String displayMinutes;
                         if (minutes < 10) {
                             displayMinutes = "0" + minutes;
                         } else {
@@ -691,7 +691,6 @@ class ViewGuiMinesweeper {
         if (number != 0) {
             String text = Integer.toString(number);
             buttonList[row][col].setTextFill(Paint.valueOf(setTextColor(number)));
-//            buttonList[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 12));
             buttonList[row][col].setText(text);
         }
     }

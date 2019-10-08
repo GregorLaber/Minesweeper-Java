@@ -32,9 +32,11 @@ public class ControllerHighscore {
     /**
      * Read the Highscore File at the Starting of the Application
      */
+    @SuppressWarnings("unchecked")
     private void readFile() {
 
         ArrayList[] listArray = new ArrayList[3];
+        //noinspection ExplicitArrayFilling //sonst ist der Inhalt der Highscore Tabelle falsch
         for (int i = 0; i < listArray.length; i++) {
             listArray[i] = new ArrayList<String>();
         }
@@ -63,6 +65,7 @@ public class ControllerHighscore {
      *
      * @throws IOException Method uses FileWriter
      */
+    @SuppressWarnings("unchecked")
     private void writeToHighscoreFile() throws IOException {
 
         ArrayList<Player>[] playerList = new ArrayList[3];
