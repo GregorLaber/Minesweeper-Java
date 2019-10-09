@@ -660,16 +660,29 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void showHighscoreClicked(int difficulty) {
 
-        try {
-            if (view.isPauseButtonDisabled()) {
-                controllerHighscore.showHighscore(difficulty);
-            } else {
-                view.stopToolbarTimer();
-                controllerHighscore.showHighscore(difficulty);
-                view.startToolbarTimer();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if (view.isPauseButtonDisabled()) {
+            controllerHighscore.showHighscore(difficulty);
+        } else {
+            view.stopToolbarTimer();
+            controllerHighscore.showHighscore(difficulty);
+            view.startToolbarTimer();
+        }
+
+    }
+
+    /**
+     * Click Action Button "Delete Highscore" clicked. Delete specific table or all.
+     */
+    @Override
+    public void deleteHighscoreClicked() {
+
+        if (view.isPauseButtonDisabled()) {
+            controllerHighscore.deleteHighscoreDialog();
+        } else {
+            view.stopToolbarTimer();
+            controllerHighscore.deleteHighscoreDialog();
+            view.startToolbarTimer();
         }
     }
 

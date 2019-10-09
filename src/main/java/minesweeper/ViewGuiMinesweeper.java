@@ -423,6 +423,7 @@ class ViewGuiMinesweeper {
         MenuItem highscoreItemBeginner = new MenuItem("Show Beginner");
         MenuItem highscoreItemAdvanced = new MenuItem("Show Advanced");
         MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
+        MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
 
         // Properties of Menu
         ToggleGroup group = new ToggleGroup();
@@ -449,7 +450,7 @@ class ViewGuiMinesweeper {
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyMenu.getItems().addAll(beginner, advanced, professional);
-        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional);
+        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional, highscoreItemDelete);
         menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, highscoreMenu);
 
         // Click Events
@@ -462,6 +463,7 @@ class ViewGuiMinesweeper {
         highscoreItemBeginner.setOnAction((ActionEvent event) -> showHighscoreClicked(0));
         highscoreItemAdvanced.setOnAction((ActionEvent event) -> showHighscoreClicked(1));
         highscoreItemProfessional.setOnAction((ActionEvent event) -> showHighscoreClicked(2));
+        highscoreItemDelete.setOnAction((ActionEvent event) -> deleteHighscoreClicked());
 
         return menuBar;
     }
@@ -629,6 +631,16 @@ class ViewGuiMinesweeper {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.showHighscoreClicked(difficulty);
+        }
+    }
+
+    /**
+     * Interface Methode. Wenn Button geklickt wird, wird der Listener benachrichtigt.
+     */
+    private void deleteHighscoreClicked() {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.deleteHighscoreClicked();
         }
     }
 

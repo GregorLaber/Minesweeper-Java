@@ -46,6 +46,11 @@ interface ViewListenerMinesweeper {
     void showHighscoreClicked(int difficulty);
 
     /**
+     * Click Action Button "Delete Highscore" clicked. Delete specific table or all.
+     */
+    void deleteHighscoreClicked();
+
+    /**
      * Click Action Button "Pause" clicked.
      */
     void pauseClicked();

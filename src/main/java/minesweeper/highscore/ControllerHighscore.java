@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  * Class for managing the Highscore and File.
  */
-public class ControllerHighscore {
+public class ControllerHighscore implements ViewListenerHighscore {
 
     private static final ModelHighscore model = new ModelHighscore();
     private static final ViewHighscore view = new ViewHighscore();
@@ -27,6 +27,7 @@ public class ControllerHighscore {
         files.add(new File(pathProfessional));
         this.readFile();
         this.writeToHighscoreFile();
+        view.addViewListener(this);
     }
 
     /**
@@ -121,7 +122,7 @@ public class ControllerHighscore {
     public void showHighscore(int difficulty) {
 
         ArrayList<Player>[] playerList = model.getPlayerList();
-        view.showHighscore(playerList[difficulty]);
+        view.showHighscore(playerList[difficulty], difficulty);
     }
 
     /**
@@ -130,6 +131,57 @@ public class ControllerHighscore {
     public String highscoreNotification() {
 
         return view.highscoreNotification();
+    }
+
+    /**
+     * Dialog for delete one or all Highscore tables
+     */
+    public void deleteHighscoreDialog() {
+
+        view.deleteHighscoreDialog();
+    }
+
+    /**
+     * Click Action Button "Delete Highscore" clicked. Delete specific table or all.
+     *
+     * @param table which table is to delete.<br>
+     *              Value:<br>
+     *              0, 1, 2 = beginner, advanced, professional.<br>
+     *              3 = all three tables will be deleted.
+     */
+    @Override
+    public void deleteHighscoreClicked(int table) {
+
+        model.deletePlayerList(table);
+        try {
+            this.clearHighscoreFile(table);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * Performs the delete on the File
+     *
+     * @param file which file is to clear.<br>
+     *             Value:<br>
+     *             0, 1, 2 = beginner, advanced, professional.<br>
+     *             3 = all three files will be cleared.
+     */
+    private void clearHighscoreFile(int file) throws IOException {
+
+        if (file == 3) {
+            for (File delete : files) {
+                FileWriter writer = new FileWriter(delete);
+                writer.write("");
+                writer.close();
+            }
+        } else {
+            FileWriter writer = new FileWriter(files.get(file));
+            writer.write("");
+            writer.close();
+        }
     }
 
 }

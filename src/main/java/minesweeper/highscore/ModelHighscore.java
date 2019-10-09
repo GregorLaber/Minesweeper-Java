@@ -141,4 +141,23 @@ class ModelHighscore {
         }
     }
 
+    /**
+     * Method to delete specific or all tables.
+     *
+     * @param table which table is to delete.<br>
+     *              Value:<br>
+     *              0, 1, 2 = beginner, advanced, professional.<br>
+     *              3 = all three tables will be deleted.
+     */
+    void deletePlayerList(int table) {
+
+        if (table == 3) {
+            for (ArrayList<Player> list : playerList) {
+                list.clear();
+            }
+        } else {
+            this.playerList[table].clear();
+        }
+    }
+
 }
