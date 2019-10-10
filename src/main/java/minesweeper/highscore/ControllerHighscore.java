@@ -44,17 +44,18 @@ public class ControllerHighscore implements ViewListenerHighscore {
 
         for (int i = 0; i < listArray.length; i++) {
 
-            Scanner reader = null;
             try {
-                reader = new Scanner(files.get(i));
+                Scanner reader = new Scanner(files.get(i));
+
+                while (reader.hasNextLine()) {
+
+                    listArray[i].add(reader.nextLine());
+                }
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-            while (reader.hasNextLine()) {
-
-                listArray[i].add(reader.nextLine());
-            }
         }
 
         model.setHighscoreList(listArray);

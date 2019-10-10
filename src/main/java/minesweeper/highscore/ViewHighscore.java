@@ -70,9 +70,12 @@ class ViewHighscore {
     }
 
     /**
-     * Notification to ask the User for his/her Name
+     * Notification to ask the User for his/her Name<br>
+     * - If the dialog is closed/rejected without any Input the method return "Player".<br>
+     * - If the ok button is pressed without any input a new Dialog pop up.<br>
+     * - If the user writes type something in the textfield, the method returns this input.
      *
-     * @return Name of the User
+     * @return Name of the User or default Name: Player
      */
     String highscoreNotification() {
 
@@ -83,19 +86,16 @@ class ViewHighscore {
                 "Please type in your name.");
         dialog.setContentText("Name:");
 
-        while (true) {
-
-            //TODO handle reject
-            String result = dialog.showAndWait().orElse(null);
-            if (!result.isEmpty()) {
-                return result;
-            } else if (result == null) {
-                return "User";
-            } else {
-                highscoreNotification();
-            }
+        String result = dialog.showAndWait().orElse(null);
+        if ((result != null && !result.isEmpty())) {
+            return result;
+        } else if (result == null) {
+            return "Player";
+        } else {
+            highscoreNotification();
         }
 
+        return "Player";
     }
 
     /**
