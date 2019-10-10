@@ -88,7 +88,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
                 if (model.isFieldListEmptyAt(row, col)) {
 
-                    performOpening(row, col);
+                    performOpening(row, col, false);
 
                 } else { // Bomb is hit
                     model.stopCooldownTimer();
@@ -124,15 +124,16 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     /**
      * Methode zum Standard öffnen von Feldern
      *
-     * @param row Pos(row/col)
-     * @param col Pos(row/col)
+     * @param row             Pos(row/col)
+     * @param col             Pos(row/col)
+     * @param backgroundColor to mark the hint opened tile
      */
-    private void performOpening(int row, int col) {
+    private void performOpening(int row, int col, boolean backgroundColor) {
         // This tiles gets a coloured number
         int surroundingBombs = model.calculateSurroundingBombs(row, col);
         model.setAlreadyOpenedListAt(row, col);
         view.setButton(null, row, col);
-        view.setButton(surroundingBombs, row, col);
+        view.setButton(surroundingBombs, row, col, backgroundColor);
         if (surroundingBombs != 0) {
             view.disableButton(row, col);
         } else {
@@ -472,7 +473,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         model.setAlreadyOpenedListAt(row, col);
         view.setButton(null, row, col);
         if (surroundingBombs != 0) {
-            view.setButton(surroundingBombs, row, col);
+            view.setButton(surroundingBombs, row, col, false);
             view.disableButton(row, col);
         } else {
             view.disableEmptyButton(row, col);
@@ -507,7 +508,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
                     int surroundingBombs = model.calculateSurroundingBombs(i, j);
                     view.setButton(null, i, j);
-                    view.setButton(surroundingBombs, i, j);
+                    view.setButton(surroundingBombs, i, j, false);
                 }
             }
         }
@@ -647,7 +648,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
             model.startCooldownTimer();
             int[] coordinates = model.getCoordinatesForHint();
-            performOpening(coordinates[0], coordinates[1]);
+            performOpening(coordinates[0], coordinates[1], true);
         } else {
             // Popup with Cooldown in Seconds
             view.hintTimeoutNotification(firstClickDone, model.getTimeoutSeconds());
