@@ -3,6 +3,7 @@ package main.java.minesweeper;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,9 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -698,12 +698,16 @@ class ViewGuiMinesweeper {
      * @param row    Pos(row/col)
      * @param col    Pos(row/col)
      */
-    void setButton(int number, int row, int col) {
+    void setButton(int number, int row, int col, boolean backgroundColor) {
 
         if (number != 0) {
             String text = Integer.toString(number);
             buttonList[row][col].setTextFill(Paint.valueOf(setTextColor(number)));
             buttonList[row][col].setText(text);
+            if (backgroundColor) {
+                buttonList[row][col].setBackground(new Background(new BackgroundFill(Color.web("FFFF00"),
+                        CornerRadii.EMPTY, Insets.EMPTY)));
+            }
         }
     }
 
