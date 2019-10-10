@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 
 import javafx.animation.AnimationTimer;
@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ class ViewGuiMinesweeper {
     private static int tileNumber = 0;
     private static int buttonID = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
-    private final MinesweeperSymbols symbols = new MinesweeperSymbols();
+    private MinesweeperSymbols symbols;
 
     private AnimationTimer timer;
     private final Label labelTimer = new Label("00:00");
@@ -48,6 +49,11 @@ class ViewGuiMinesweeper {
 
     ViewGuiMinesweeper(int numberOfBombs) {
 
+        try {
+            this.symbols = new MinesweeperSymbols();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         setDifficulty(0);
         this.ROW = getDifficultyRow();
         this.COL = getDifficultyCol();
@@ -89,8 +95,7 @@ class ViewGuiMinesweeper {
         setSceneBeginner();
 
         // Window
-        Image icon = new Image(getClass().getResourceAsStream("pictures/redmineIcon.png"));
-        window.getIcons().add(icon);
+        window.getIcons().add(symbols.REDMINE);
         window.setTitle("Minesweeper");
         window.setScene(sceneBeginner);
 //        window.setMaximized(true); // For Professional Difficulty also have to switch resizable to true
@@ -153,8 +158,6 @@ class ViewGuiMinesweeper {
         this.timer = new AnimationTimer() {
 
             private long lastTime = 0;
-            private String displaySeconds;
-            private String displayMinutes;
 
             @Override
             public void handle(long now) {
@@ -166,12 +169,14 @@ class ViewGuiMinesweeper {
                             seconds = 0;
                         }
 
+                        String displaySeconds;
                         if (seconds < 10) {
                             displaySeconds = "0" + seconds;
                         } else {
                             displaySeconds = Integer.toString(seconds);
                         }
 
+                        String displayMinutes;
                         if (minutes < 10) {
                             displayMinutes = "0" + minutes;
                         } else {
@@ -213,6 +218,15 @@ class ViewGuiMinesweeper {
     void stopToolbarTimer() {
 
         timer.stop();
+    }
+
+    /**
+     * Getter for Time. For the Highscore.
+     *
+     * @return Time in MM:SS
+     */
+    String getLabelTimer() {
+        return labelTimer.getText();
     }
 
     /**
@@ -400,11 +414,16 @@ class ViewGuiMinesweeper {
         Menu fileMenu = new Menu("Game");
         MenuItem newGameItem = new MenuItem("New Game");
         MenuItem exitItem = new MenuItem("Exit Game");
-        Menu difficultyItem = new Menu("Difficulty");
+        Menu difficultyMenu = new Menu("Difficulty");
         RadioMenuItem beginner = new RadioMenuItem("Beginner");
         RadioMenuItem advanced = new RadioMenuItem("Advanced");
         RadioMenuItem professional = new RadioMenuItem("Professional");
-        Menu hintMenu = new Menu();
+        Menu hintMenu = new Menu(); //Only Dummy for ICON
+        Menu highscoreMenu = new Menu("Highscore");
+        MenuItem highscoreItemBeginner = new MenuItem("Show Beginner");
+        MenuItem highscoreItemAdvanced = new MenuItem("Show Advanced");
+        MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
+        MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
 
         // Properties of Menu
         ToggleGroup group = new ToggleGroup();
@@ -430,8 +449,9 @@ class ViewGuiMinesweeper {
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
-        difficultyItem.getItems().addAll(beginner, advanced, professional);
-        menuBar.getMenus().addAll(fileMenu, difficultyItem, hintMenu);
+        difficultyMenu.getItems().addAll(beginner, advanced, professional);
+        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional, highscoreItemDelete);
+        menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, highscoreMenu);
 
         // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
@@ -440,6 +460,10 @@ class ViewGuiMinesweeper {
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
         hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
+        highscoreItemBeginner.setOnAction((ActionEvent event) -> showHighscoreClicked(0));
+        highscoreItemAdvanced.setOnAction((ActionEvent event) -> showHighscoreClicked(1));
+        highscoreItemProfessional.setOnAction((ActionEvent event) -> showHighscoreClicked(2));
+        highscoreItemDelete.setOnAction((ActionEvent event) -> deleteHighscoreClicked());
 
         return menuBar;
     }
@@ -466,6 +490,16 @@ class ViewGuiMinesweeper {
         toolBar.getItems().addAll(bombIcon, bombNumberTextField, labelTimer, pauseButton);
 
         return new HBox(toolBar);
+    }
+
+    /**
+     * Method to see if the Pausebutton is disabled
+     *
+     * @return true if the Button is disabled
+     */
+    boolean isPauseButtonDisabled() {
+
+        return this.pauseButton.isDisabled();
     }
 
     /**
@@ -591,6 +625,26 @@ class ViewGuiMinesweeper {
     }
 
     /**
+     * Interface Methode. Wenn Highscore Liste angefordert wird, wird der Listener benachrichtigt.
+     */
+    private void showHighscoreClicked(int difficulty) {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.showHighscoreClicked(difficulty);
+        }
+    }
+
+    /**
+     * Interface Methode. Wenn Button geklickt wird, wird der Listener benachrichtigt.
+     */
+    private void deleteHighscoreClicked() {
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.deleteHighscoreClicked();
+        }
+    }
+
+    /**
      * Interface Methode. Wenn Pause angefordert wird, wird der Listener benachrichtigt.
      */
     private void pauseClicked() {
@@ -649,7 +703,6 @@ class ViewGuiMinesweeper {
         if (number != 0) {
             String text = Integer.toString(number);
             buttonList[row][col].setTextFill(Paint.valueOf(setTextColor(number)));
-//            buttonList[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 12));
             buttonList[row][col].setText(text);
         }
     }
@@ -710,7 +763,10 @@ class ViewGuiMinesweeper {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("You won!");
         alert.setHeaderText(null);
-        alert.setContentText("Congratulations. You won the Game.");
+        alert.setContentText(
+                "Congratulations. You won the Game. \n" +
+                        "But you are not in Highscore. \n" +
+                        "Next time, you can do it.");
         alert.showAndWait();
     }
 
@@ -733,6 +789,9 @@ class ViewGuiMinesweeper {
         alert.showAndWait();
     }
 
+    /**
+     * Notification for the Pause
+     */
     void pauseNotification() {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -1,6 +1,7 @@
 # directory
 .idea/
 out/
+src/main/resources/highscore/
 
 # Compiled class file
 *.class

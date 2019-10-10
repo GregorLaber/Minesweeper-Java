@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 
 import javafx.animation.AnimationTimer;
@@ -28,7 +28,7 @@ class ModelMinesweeper {
     private static final String EMPTY = "EMPTY";
     private static final String OPENED = "OPENED";
     private boolean hintCooldownActive = true;
-    private long COOL_DOWN_TIME;
+    private long COOL_DOWN_TIME;    //Easy 15sek, Normal 30sek and Hard 60sek
     private AnimationTimer timer;
     private long seconds;
 
@@ -39,16 +39,16 @@ class ModelMinesweeper {
     }
 
     /**
-     * Methode für jeden Neustart der Anwendung.
-     * - Zeile und Spalten werden auf neuen Zustand gesetzt
-     * - Feldliste wird neu initialisiert
-     * - Flaggenliste wird neu initialisiert
-     * - Liste der bereits geöffneten Felder wird neu initialisiert
-     * - Anzahl der zu öffnenden Felder ergibt sich aus Zeile mal Spalte
-     * - Die beiden Listen für Zeile und Spalten der Bomben werden zurück gesetzt.
-     * - Danach wird das Spielfeld initialisiert. Anzahl der Minen wird berechnet und zufällig verteilt.
-     * - Der Timeout des Hinweises wird anhand des Schwierigkeitsgrades auf 15, 30 oder 60 Sekunden gesetzt.
-     * - Der Timer für den Timeout des Hinweises wird initialisiert.
+     * Methode für jeden Neustart der Anwendung.<br>
+     * - Zeile und Spalten werden auf neuen Zustand gesetzt<br>
+     * - Feldliste wird neu initialisiert<br>
+     * - Flaggenliste wird neu initialisiert<br>
+     * - Liste der bereits geöffneten Felder wird neu initialisiert<br>
+     * - Anzahl der zu öffnenden Felder ergibt sich aus Zeile mal Spalte<br>
+     * - Die beiden Listen für Zeile und Spalten der Bomben werden zurück gesetzt.<br>
+     * - Danach wird das Spielfeld initialisiert. Anzahl der Minen wird berechnet und zufällig verteilt.<br>
+     * - Der Timeout des Hinweises wird anhand des Schwierigkeitsgrades auf 15, 30 oder 60 Sekunden gesetzt.<br>
+     * - Der Timer für den Timeout des Hinweises wird initialisiert.<br>
      */
     void startSetup() {
 
@@ -183,13 +183,22 @@ class ModelMinesweeper {
     }
 
     /**
+     * Getter for Difficulty
+     *
+     * @return int 0 = beginner, 1 = advanced, 2 = professional
+     */
+    int getDifficulty() {
+        return difficulty;
+    }
+
+    /**
      * Getter für Anzahl der Zeilen (Spielfeld) abhängig vom Schwierigkeitsgrad
      *
      * @return Anzahl der Zeilen
      */
     private int getDifficultyRow() {
 
-        if (difficulty == 0) {
+        if (this.getDifficulty() == 0) {
             return 8;
         }
         return 16; // Case 1/2
@@ -202,7 +211,7 @@ class ModelMinesweeper {
      */
     private int getDifficultyCol() {
 
-        switch (difficulty) {
+        switch (this.getDifficulty()) {
             case 1:
                 return 16;
             case 2:
@@ -217,9 +226,9 @@ class ModelMinesweeper {
      *
      * @return Timeout in Seconds
      */
-    public long getCOOL_DOWN_TIME() {
+    private long getCOOL_DOWN_TIME() {
 
-        switch (difficulty) {
+        switch (this.getDifficulty()) {
             case 1:
                 return 30;
             case 2:
@@ -234,7 +243,7 @@ class ModelMinesweeper {
      */
     private void setNumberOfBombs() {
 
-        switch (difficulty) {
+        switch (this.getDifficulty()) {
             case 0:
                 numberOfBombs = 10;
                 break;

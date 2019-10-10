@@ -1,4 +1,4 @@
-package Minesweeper;
+package main.java.minesweeper;
 
 interface ViewListenerMinesweeper {
 
@@ -39,6 +39,16 @@ interface ViewListenerMinesweeper {
      * Click Action Button "Get Hint" clicked. Get Hint.
      */
     void hintClicked();
+
+    /**
+     * Click Action Button "Show Highscore" clicked. Show Highscore List.
+     */
+    void showHighscoreClicked(int difficulty);
+
+    /**
+     * Click Action Button "Delete Highscore" clicked. Delete specific table or all.
+     */
+    void deleteHighscoreClicked();
 
     /**
      * Click Action Button "Pause" clicked.
