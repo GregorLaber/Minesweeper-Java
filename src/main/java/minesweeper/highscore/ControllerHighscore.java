@@ -22,9 +22,19 @@ public class ControllerHighscore implements ViewListenerHighscore {
         String pathBeginner = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreBeginner.txt";
         String pathAdvanced = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreAdvanced.txt";
         String pathProfessional = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreProfessional.txt";
-        files.add(new File(pathBeginner));
-        files.add(new File(pathAdvanced));
-        files.add(new File(pathProfessional));
+        //Creates the files only if the files does not exist
+        File fileBeginner = new File(pathBeginner);
+        File fileAdvanced = new File(pathAdvanced);
+        File fileProfessional = new File(pathProfessional);
+        //noinspection ResultOfMethodCallIgnored    //dont want to use the result
+        fileBeginner.createNewFile();
+        //noinspection ResultOfMethodCallIgnored
+        fileAdvanced.createNewFile();
+        //noinspection ResultOfMethodCallIgnored
+        fileProfessional.createNewFile();
+        files.add(fileBeginner);
+        files.add(fileAdvanced);
+        files.add(fileProfessional);
         this.readFile();
         this.writeToHighscoreFile();
         view.addViewListener(this);
