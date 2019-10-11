@@ -7,7 +7,6 @@ import main.java.minesweeper.highscore.ControllerHighscore;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Enthält die Steuerung der Anwendung. Klassisch nach MVC Architektur
  */
@@ -685,6 +684,18 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             controllerHighscore.deleteHighscoreDialog();
             view.startToolbarTimer();
         }
+    }
+
+    /**
+     * Click Action Button "Change Mode" clicked.
+     *
+     * @param mode 0 = Normal <br>
+     *             1 = Girl
+     */
+    @Override
+    public void changeModeClicked(int mode) {
+
+        System.out.println("Mode: " + mode);
     }
 
     /**

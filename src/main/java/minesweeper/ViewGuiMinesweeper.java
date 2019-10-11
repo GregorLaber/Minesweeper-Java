@@ -41,6 +41,7 @@ class ViewGuiMinesweeper {
     private static int buttonID = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
     private MinesweeperSymbols symbols;
+    private int mode;
 
     private AnimationTimer timer;
     private final Label labelTimer = new Label("00:00");
@@ -60,6 +61,7 @@ class ViewGuiMinesweeper {
         this.numberOfBombs = numberOfBombs;
         this.buttonList = new Button[ROW][COL];
         this.bombNumberTextField = new TextField(); // Displays the number of Bombs in the Field
+        this.setMode(0);
 
         initButtonList();
     }
@@ -424,12 +426,15 @@ class ViewGuiMinesweeper {
         MenuItem highscoreItemAdvanced = new MenuItem("Show Advanced");
         MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
         MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
+        Menu modeMenu = new Menu("Mode");
+        RadioMenuItem modeItemNormal = new RadioMenuItem("Normal");
+        RadioMenuItem modeItemGirl = new RadioMenuItem("Girl");
 
         // Properties of Menu
-        ToggleGroup group = new ToggleGroup();
-        beginner.setToggleGroup(group);
-        advanced.setToggleGroup(group);
-        professional.setToggleGroup(group);
+        ToggleGroup groupDifficulty = new ToggleGroup();
+        beginner.setToggleGroup(groupDifficulty);
+        advanced.setToggleGroup(groupDifficulty);
+        professional.setToggleGroup(groupDifficulty);
         switch (difficulty) {
             case 0:
                 beginner.setSelected(true);
@@ -446,12 +451,25 @@ class ViewGuiMinesweeper {
         hintIcon.setGraphic(imageView);
         hintIcon.setPickOnBounds(true);
         hintMenu.setGraphic(hintIcon);
+        ToggleGroup groupMode = new ToggleGroup();
+        modeItemNormal.setToggleGroup(groupMode);
+        modeItemGirl.setToggleGroup(groupMode);
+        switch (this.getMode()) {
+            case 0:
+                modeItemNormal.setSelected(true);
+                break;
+            case 1:
+                modeItemGirl.setSelected(true);
+                break;
+        }
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyMenu.getItems().addAll(beginner, advanced, professional);
-        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional, highscoreItemDelete);
-        menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, highscoreMenu);
+        modeMenu.getItems().addAll(modeItemNormal, modeItemGirl);
+        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional,
+                highscoreItemDelete);
+        menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, modeMenu, highscoreMenu);
 
         // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
@@ -460,6 +478,8 @@ class ViewGuiMinesweeper {
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
         hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
+        modeItemNormal.setOnAction((ActionEvent event) -> changeModeClicked(0));
+        modeItemGirl.setOnAction((ActionEvent event) -> changeModeClicked(1));
         highscoreItemBeginner.setOnAction((ActionEvent event) -> showHighscoreClicked(0));
         highscoreItemAdvanced.setOnAction((ActionEvent event) -> showHighscoreClicked(1));
         highscoreItemProfessional.setOnAction((ActionEvent event) -> showHighscoreClicked(2));
@@ -642,6 +662,42 @@ class ViewGuiMinesweeper {
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.deleteHighscoreClicked();
         }
+    }
+
+    /**
+     * Interface Method. When triggered, the listener get notified.
+     *
+     * @param mode 0 = Normal
+     *             1 = Girl
+     */
+    private void changeModeClicked(int mode) {
+
+        this.setMode(mode);
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.changeModeClicked(mode);
+        }
+    }
+
+    /**
+     * Getter for Mode
+     *
+     * @return current Mode
+     * 0 = Normal
+     * 1 = Girl
+     */
+    int getMode() {
+        return mode;
+    }
+
+    /**
+     * Setter for Mode
+     *
+     * @param mode 0 = Normal
+     *             1 = Girl
+     */
+    void setMode(int mode) {
+        this.mode = mode;
     }
 
     /**
