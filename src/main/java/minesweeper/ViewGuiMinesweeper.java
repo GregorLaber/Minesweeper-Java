@@ -41,6 +41,10 @@ class ViewGuiMinesweeper {
     private static int buttonID = 0;
     private final List<ViewListenerMinesweeper> viewListenerList = new ArrayList<>();
     private MinesweeperSymbols symbols;
+    private int mode;
+    private String style;
+    private static final String BLACK = "-fx-background-color: #000000";
+    private static final String INDIAN_RED = "-fx-background-color: #CD5C5C";
 
     private AnimationTimer timer;
     private final Label labelTimer = new Label("00:00");
@@ -50,7 +54,7 @@ class ViewGuiMinesweeper {
     ViewGuiMinesweeper(int numberOfBombs) {
 
         try {
-            this.symbols = new MinesweeperSymbols();
+            this.symbols = new MinesweeperSymbols(0);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -60,6 +64,8 @@ class ViewGuiMinesweeper {
         this.numberOfBombs = numberOfBombs;
         this.buttonList = new Button[ROW][COL];
         this.bombNumberTextField = new TextField(); // Displays the number of Bombs in the Field
+        this.setMode(0);
+        style = BLACK;
 
         initButtonList();
     }
@@ -95,10 +101,9 @@ class ViewGuiMinesweeper {
         setSceneBeginner();
 
         // Window
-        window.getIcons().add(symbols.REDMINE);
+        setWindowIcon();
         window.setTitle("Minesweeper");
         window.setScene(sceneBeginner);
-//        window.setMaximized(true); // For Professional Difficulty also have to switch resizable to true
         window.setResizable(true);
         window.show();
 
@@ -111,7 +116,6 @@ class ViewGuiMinesweeper {
     private void setSceneBeginner() {
 
         BorderPane beginner = new BorderPane();
-        String style = "-fx-background-color: #000000";
         beginner.setStyle(style);
         initToolbarTimer();
         beginner.setTop(addMenu());
@@ -125,7 +129,6 @@ class ViewGuiMinesweeper {
      */
     private void setSceneAdvanced() {
 
-        String style = "-fx-background-color: #000000";
         BorderPane advanced = new BorderPane();
         advanced.setStyle(style);
         initToolbarTimer();
@@ -141,7 +144,6 @@ class ViewGuiMinesweeper {
     private void setSceneProfessional() {
 
         BorderPane professional = new BorderPane();
-        String style = "-fx-background-color: #000000";
         professional.setStyle(style);
         initToolbarTimer();
         professional.setTop(addMenu());
@@ -424,12 +426,15 @@ class ViewGuiMinesweeper {
         MenuItem highscoreItemAdvanced = new MenuItem("Show Advanced");
         MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
         MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
+        Menu modeMenu = new Menu("Mode");
+        RadioMenuItem modeItemNormal = new RadioMenuItem("Normal");
+        RadioMenuItem modeItemGirl = new RadioMenuItem("Girl");
 
         // Properties of Menu
-        ToggleGroup group = new ToggleGroup();
-        beginner.setToggleGroup(group);
-        advanced.setToggleGroup(group);
-        professional.setToggleGroup(group);
+        ToggleGroup groupDifficulty = new ToggleGroup();
+        beginner.setToggleGroup(groupDifficulty);
+        advanced.setToggleGroup(groupDifficulty);
+        professional.setToggleGroup(groupDifficulty);
         switch (difficulty) {
             case 0:
                 beginner.setSelected(true);
@@ -446,12 +451,25 @@ class ViewGuiMinesweeper {
         hintIcon.setGraphic(imageView);
         hintIcon.setPickOnBounds(true);
         hintMenu.setGraphic(hintIcon);
+        ToggleGroup groupMode = new ToggleGroup();
+        modeItemNormal.setToggleGroup(groupMode);
+        modeItemGirl.setToggleGroup(groupMode);
+        switch (this.getMode()) {
+            case 0:
+                modeItemNormal.setSelected(true);
+                break;
+            case 1:
+                modeItemGirl.setSelected(true);
+                break;
+        }
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyMenu.getItems().addAll(beginner, advanced, professional);
-        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional, highscoreItemDelete);
-        menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, highscoreMenu);
+        modeMenu.getItems().addAll(modeItemNormal, modeItemGirl);
+        highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional,
+                highscoreItemDelete);
+        menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, modeMenu, highscoreMenu);
 
         // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
@@ -460,6 +478,8 @@ class ViewGuiMinesweeper {
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
         hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
+        modeItemNormal.setOnAction((ActionEvent event) -> changeModeClicked(0));
+        modeItemGirl.setOnAction((ActionEvent event) -> changeModeClicked(1));
         highscoreItemBeginner.setOnAction((ActionEvent event) -> showHighscoreClicked(0));
         highscoreItemAdvanced.setOnAction((ActionEvent event) -> showHighscoreClicked(1));
         highscoreItemProfessional.setOnAction((ActionEvent event) -> showHighscoreClicked(2));
@@ -642,6 +662,82 @@ class ViewGuiMinesweeper {
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
             viewListener.deleteHighscoreClicked();
         }
+    }
+
+    /**
+     * Interface Method. When triggered, the listener get notified.
+     *
+     * @param mode 0 = Normal
+     *             1 = Girl
+     */
+    private void changeModeClicked(int mode) {
+
+        this.setMode(mode);
+
+        for (ViewListenerMinesweeper viewListener : viewListenerList) {
+            viewListener.changeModeClicked(mode);
+        }
+    }
+
+    /**
+     * Getter for Mode
+     *
+     * @return current Mode
+     * 0 = Normal
+     * 1 = Girl
+     */
+    private int getMode() {
+        return mode;
+    }
+
+    /**
+     * Setter for Mode
+     *
+     * @param mode 0 = Normal
+     *             1 = Girl
+     */
+    private void setMode(int mode) {
+        this.mode = mode;
+    }
+
+    /**
+     * Setter for Style (Background Color)
+     *
+     * @param style 0 = BLACK
+     *              1 = INDIAN_RED
+     */
+    void setStyle(int style) {
+
+        String color = null;
+        if (style == 0) {
+            color = BLACK;
+        } else if (style == 1) {
+            color = INDIAN_RED;
+        }
+        this.style = color;
+    }
+
+    /**
+     * Set the Images dependent on the style
+     *
+     * @param style 0 = Normal
+     *              1 = Girl
+     */
+    void setImages(int style) {
+
+        try {
+            this.symbols = new MinesweeperSymbols(style);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Set Window Icon
+     **/
+    private void setWindowIcon() {
+
+        window.getIcons().add(symbols.WINDOW_ICON);
     }
 
     /**

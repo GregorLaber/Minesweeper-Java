@@ -4,9 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.image.Image;
 import main.java.minesweeper.highscore.ControllerHighscore;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Enthält die Steuerung der Anwendung. Klassisch nach MVC Architektur
@@ -31,7 +31,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         view = new ViewGuiMinesweeper(model.getNumberOfBombs());
         try {
             this.controllerHighscore = new ControllerHighscore();
-            this.symbols = new MinesweeperSymbols();
+            this.symbols = new MinesweeperSymbols(0);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -627,7 +627,6 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         model.setDifficulty(difficulty);
         view.setDifficulty(difficulty);
         newClicked();
-        view.setScenes();
     }
 
     /**
@@ -685,6 +684,25 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             controllerHighscore.deleteHighscoreDialog();
             view.startToolbarTimer();
         }
+    }
+
+    /**
+     * Click Action Button "Change Mode" clicked.
+     *
+     * @param mode 0 = Normal <br>
+     *             1 = Girl
+     */
+    @Override
+    public void changeModeClicked(int mode) {
+
+        try {
+            this.symbols = new MinesweeperSymbols(mode);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        view.setStyle(mode);
+        view.setImages(mode);
+        newClicked();
     }
 
     /**

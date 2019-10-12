@@ -51,6 +51,14 @@ interface ViewListenerMinesweeper {
     void deleteHighscoreClicked();
 
     /**
+     * Click Action Button "Change Mode" clicked.
+     *
+     * @param mode 0 = Normal
+     *             1 = Girl
+     */
+    void changeModeClicked(int mode);
+
+    /**
      * Click Action Button "Pause" clicked.
      */
     void pauseClicked();
