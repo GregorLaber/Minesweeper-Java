@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Enthält das Aussehen der Anwendung. Klassisch nach MVC Architektur
@@ -847,11 +848,22 @@ class ViewGuiMinesweeper {
      */
     void bombFieldNotification() {
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Game over!");
         alert.setHeaderText(null);
+        alert.setGraphic(null);
         alert.setContentText("You clicked a Bomb. Good luck next time.");
-        alert.showAndWait();
+
+        ButtonType buttonTypePlayAgain = new ButtonType("Play again");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypePlayAgain) {
+            newClicked();
+        }  // ... user chose CANCEL or closed the dialog
+
     }
 
     /**
