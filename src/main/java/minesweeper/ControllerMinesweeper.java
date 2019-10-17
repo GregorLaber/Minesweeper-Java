@@ -1,10 +1,9 @@
-package main.java.minesweeper;
+package minesweeper;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
-import main.java.minesweeper.highscore.ControllerHighscore;
+import minesweeper.highscore.ControllerHighscore;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -697,7 +696,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
         try {
             this.symbols = new MinesweeperSymbols(mode);
-        } catch (FileNotFoundException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         view.setStyle(mode);

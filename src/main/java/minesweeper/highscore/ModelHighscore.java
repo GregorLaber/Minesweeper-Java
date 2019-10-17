@@ -1,4 +1,4 @@
-package main.java.minesweeper.highscore;
+package minesweeper.highscore;
 
 import java.util.ArrayList;
 import java.util.Arrays;

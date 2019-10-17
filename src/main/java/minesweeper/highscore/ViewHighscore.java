@@ -1,4 +1,4 @@
-package main.java.minesweeper.highscore;
+package minesweeper.highscore;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;

@@ -2,6 +2,7 @@
 .idea/
 out/
 src/main/resources/highscore/
+target/
 
 # Compiled class file
 *.class
@@ -30,3 +31,4 @@ out/production/07 Minesweeper/Minesweeper/ViewGuiMinesweeper.class
 out/production/07 Minesweeper/Minesweeper/ViewGuiMinesweeper$1.class
 out/production/07 Minesweeper/Minesweeper/ModelMinesweeper.class
 .idea/workspace.xml
+*.iml
