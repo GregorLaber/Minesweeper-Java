@@ -1,4 +1,4 @@
-package main.java.minesweeper;
+package minesweeper;
 
 
 import javafx.animation.AnimationTimer;
@@ -18,7 +18,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +54,7 @@ class ViewGuiMinesweeper {
 
         try {
             this.symbols = new MinesweeperSymbols(0);
-        } catch (FileNotFoundException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         setDifficulty(0);
@@ -727,7 +726,7 @@ class ViewGuiMinesweeper {
 
         try {
             this.symbols = new MinesweeperSymbols(style);
-        } catch (FileNotFoundException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }

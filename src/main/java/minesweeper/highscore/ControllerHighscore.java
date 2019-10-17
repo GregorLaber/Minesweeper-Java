@@ -1,9 +1,10 @@
-package main.java.minesweeper.highscore;
+package minesweeper.highscore;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -19,9 +20,25 @@ public class ControllerHighscore implements ViewListenerHighscore {
 
     public ControllerHighscore() throws Exception {
 
-        String pathBeginner = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreBeginner.txt";
-        String pathAdvanced = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreAdvanced.txt";
-        String pathProfessional = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreProfessional.txt";
+        String protocol = getClass().getResource("ControllerHighscore.class").toString();
+        String pathBeginner;
+        String pathAdvanced;
+        String pathProfessional;
+        if (protocol.startsWith("jar")) { // JAR Mode
+            String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            String finishedPath = URLDecoder.decode(path, "UTF-8");
+            finishedPath = finishedPath.substring(0, finishedPath.lastIndexOf("/"));
+            finishedPath = finishedPath.substring(1);
+
+            pathBeginner = finishedPath + "\\highscoreBeginner.txt";
+            pathAdvanced = finishedPath + "\\highscoreAdvanced.txt";
+            pathProfessional = finishedPath + "\\highscoreProfessional.txt";
+
+        } else { // IDE Mode
+            pathBeginner = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreBeginner.txt";
+            pathAdvanced = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreAdvanced.txt";
+            pathProfessional = System.getProperty("user.dir") + "\\src\\main\\resources\\highscore\\highscoreProfessional.txt";
+        }
         //Creates the files only if the files does not exist
         File fileBeginner = new File(pathBeginner);
         File fileAdvanced = new File(pathAdvanced);

@@ -1,4 +1,4 @@
-package main.java.minesweeper.highscore;
+package minesweeper.highscore;
 
 interface ViewListenerHighscore {
 

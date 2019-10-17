@@ -1,4 +1,4 @@
-package main.java.minesweeper.highscore;
+package minesweeper.highscore;
 
 /**
  * Class for storing in Highscore File

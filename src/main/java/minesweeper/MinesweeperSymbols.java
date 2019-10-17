@@ -1,9 +1,8 @@
-package main.java.minesweeper;
+package minesweeper;
 
 import javafx.scene.image.Image;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.util.Objects;
 
 /**
  * Symbols
@@ -24,23 +23,20 @@ class MinesweeperSymbols {
      * Constructor for Symbols
      *
      * @param style 0 = Normal, 1 = Girl
-     * @throws FileNotFoundException if the images are missing
      */
-    MinesweeperSymbols(int style) throws FileNotFoundException {
+    MinesweeperSymbols(int style) {
 
-        String path = System.getProperty("user.dir") + "\\out\\production\\07 Minesweeper\\main\\resources\\images\\";
         if (style == 0) {
-            this.MINE = new Image(new FileInputStream(path + "mine.png"));
-            this.REDMINE = new Image(new FileInputStream(path + "redmine.png"));
-            this.FLAG = new Image(new FileInputStream(path + "flag.png"));
-            this.QUESTION_MARK = new Image(new FileInputStream(path + "question-mark.png"));
+            this.MINE = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/mine.png")));
+            this.REDMINE = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/redmine.png")));
+            this.FLAG = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/flag.png")));
         } else {
-            this.MINE = new Image(new FileInputStream(path + "unicorn.png"));
-            this.REDMINE = new Image(new FileInputStream(path + "inflatable.png"));
-            this.FLAG = new Image(new FileInputStream(path + "lgtb.png"));
-            this.QUESTION_MARK = new Image(new FileInputStream(path + "question-mark.png"));
+            this.MINE = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/unicorn.png")));
+            this.REDMINE = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/inflatable.png")));
+            this.FLAG = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/lgtb.png")));
         }
 
-        this.WINDOW_ICON = new Image(new FileInputStream(path + "redmine.png"));
+        this.WINDOW_ICON = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/redmine.png")));
+        this.QUESTION_MARK = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("images/question-mark.png")));
     }
 }
