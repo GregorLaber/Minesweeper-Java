@@ -848,11 +848,36 @@ class ViewGuiMinesweeper {
      */
     void bombFieldNotification() {
 
+        String content = "You clicked a Bomb. Good luck next time.";
+
+        playAgainNotification("Game over!", content);
+    }
+
+    /**
+     * Gewinner Benachrichtigung
+     */
+    void winningNotification() {
+
+        String content = "Congratulations. You won the Game. \n" +
+                "But you are not in Highscore. \n" +
+                "Next time, you can do it.";
+
+        playAgainNotification("You won!", content);
+    }
+
+    /**
+     * Standard Notification Dialog for Replay
+     *
+     * @param title       Title of the Dialog
+     * @param contentText Text of the Dialog
+     */
+    private void playAgainNotification(String title, String contentText) {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Game over!");
-        alert.setHeaderText(null);
+        alert.setTitle(title);
         alert.setGraphic(null);
-        alert.setContentText("You clicked a Bomb. Good luck next time.");
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
 
         ButtonType buttonTypePlayAgain = new ButtonType("Play again");
         ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -863,22 +888,6 @@ class ViewGuiMinesweeper {
         if (result.get() == buttonTypePlayAgain) {
             newClicked();
         }  // ... user chose CANCEL or closed the dialog
-
-    }
-
-    /**
-     * Gewinner Benachrichtigung
-     */
-    void winningNotification() {
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("You won!");
-        alert.setHeaderText(null);
-        alert.setContentText(
-                "Congratulations. You won the Game. \n" +
-                        "But you are not in Highscore. \n" +
-                        "Next time, you can do it.");
-        alert.showAndWait();
     }
 
     /**
