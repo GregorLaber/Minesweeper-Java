@@ -246,7 +246,7 @@ class ModelMinesweeper {
      *
      * @return bool
      */
-    public boolean isGameRunning() {
+    boolean isGameRunning() {
         return isGameRunning;
     }
 
@@ -255,7 +255,7 @@ class ModelMinesweeper {
      *
      * @param gameRunning bool
      */
-    public void setIsGameRunning(boolean gameRunning) {
+    void setIsGameRunning(boolean gameRunning) {
         isGameRunning = gameRunning;
     }
 

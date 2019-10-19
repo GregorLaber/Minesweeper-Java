@@ -622,12 +622,26 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
     /**
      * Methode overridden vom Interface. Schließt die Anwendung.
+     * Wenn das Spiel läuft wird der User um Bestätigung gebeten
      */
     @Override
     public void exitClicked() {
 
-        Platform.exit();
-        System.exit(0);
+        if (model.isGameRunning()) {
+
+            view.stopToolbarTimer();
+            boolean confirmation = view.confirmationDialogExitClicked();
+            if (confirmation) {
+                model.setIsGameRunning(false);
+                exitClicked();
+            } else {
+                view.startToolbarTimer();
+            }
+
+        } else {
+            Platform.exit();
+            System.exit(0);
+        }
     }
 
     /**

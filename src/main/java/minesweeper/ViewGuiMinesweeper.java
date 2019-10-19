@@ -923,7 +923,7 @@ class ViewGuiMinesweeper {
     }
 
     /**
-     * If the "New Game" Button is pressed the User have to confirm to start a
+     * If the "New Game" Button is pressed the User have to confirm to start a new Game
      *
      * @return bool if the User have confirmed then its true
      */
@@ -937,6 +937,28 @@ class ViewGuiMinesweeper {
 
         ButtonType buttonTypePlayAgain = new ButtonType("Start new Game");
         ButtonType buttonTypeCancel = new ButtonType("Stay in old one", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result.orElse(null) == buttonTypePlayAgain;
+    }
+
+    /**
+     * If the "Exit Game" Button is pressed the User have to confirm it.
+     *
+     * @return true if the User confirmed
+     */
+    boolean confirmationDialogExitClicked() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Are u sure u want quit the game?");
+
+        ButtonType buttonTypePlayAgain = new ButtonType("Yes, quit the game.");
+        ButtonType buttonTypeCancel = new ButtonType("Stay", ButtonBar.ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
         Optional<ButtonType> result = alert.showAndWait();
