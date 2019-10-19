@@ -31,6 +31,7 @@ class ModelMinesweeper {
     private long COOL_DOWN_TIME;    //Easy 15sek, Normal 30sek and Hard 60sek
     private AnimationTimer timer;
     private long seconds;
+    private boolean isGameRunning;
 
     ModelMinesweeper() {
 
@@ -49,6 +50,7 @@ class ModelMinesweeper {
      * - Danach wird das Spielfeld initialisiert. Anzahl der Minen wird berechnet und zufällig verteilt.<br>
      * - Der Timeout des Hinweises wird anhand des Schwierigkeitsgrades auf 15, 30 oder 60 Sekunden gesetzt.<br>
      * - Der Timer für den Timeout des Hinweises wird initialisiert.<br>
+     * - Start Zustand für isGameRunning ist false.
      */
     void startSetup() {
 
@@ -66,6 +68,7 @@ class ModelMinesweeper {
         setHintCooldownActive(true);
         this.COOL_DOWN_TIME = getCOOL_DOWN_TIME();
         this.initCooldownTimer();
+        this.setIsGameRunning(false);
     }
 
     /**
@@ -236,6 +239,24 @@ class ModelMinesweeper {
             default:
                 return 15;
         }
+    }
+
+    /**
+     * Getter for isGameRunning
+     *
+     * @return bool
+     */
+    public boolean isGameRunning() {
+        return isGameRunning;
+    }
+
+    /**
+     * Setter for isGameRunning
+     *
+     * @param gameRunning bool
+     */
+    public void setIsGameRunning(boolean gameRunning) {
+        isGameRunning = gameRunning;
     }
 
     /**

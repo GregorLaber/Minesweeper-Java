@@ -885,7 +885,7 @@ class ViewGuiMinesweeper {
         alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypePlayAgain) {
+        if (result.orElse(null) == buttonTypePlayAgain) {
             newClicked();
         }  // ... user chose CANCEL or closed the dialog
     }
@@ -920,6 +920,28 @@ class ViewGuiMinesweeper {
         alert.setContentText("Pause");
         alert.showAndWait();
         timer.start();
+    }
+
+    /**
+     * If the "New Game" Button is pressed the User have to confirm to start a
+     *
+     * @return bool if the User have confirmed then its true
+     */
+    boolean confirmationDialogNewClicked() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Are u sure u want to start a new game?");
+
+        ButtonType buttonTypePlayAgain = new ButtonType("Start new Game");
+        ButtonType buttonTypeCancel = new ButtonType("Stay in old one", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result.orElse(null) == buttonTypePlayAgain;
     }
 
 }

@@ -69,6 +69,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             view.enablePauseButton();
             view.startToolbarTimer();
             model.startCooldownTimer();
+            model.setIsGameRunning(true);
         }
 
         // Primary Click to open up the tiles
@@ -91,6 +92,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
                 } else { // Bomb is hit
                     model.stopCooldownTimer();
+                    model.setIsGameRunning(false);
                     view.stopToolbarTimer();
                     view.disableAllButtons();
                     openAllTiles(true, row, col);
@@ -147,6 +149,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         }
         if (model.checkWin()) {
             model.stopCooldownTimer();
+            model.setIsGameRunning(false);
             String time = view.getLabelTimer();
             view.stopToolbarTimer();
             view.disableAllButtons();
@@ -582,23 +585,38 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     }
 
     /**
-     * Methode overridden vom Interface. Wenn durch den NEW GAME ein neues Spiel angefordert wurde, setzt die
-     * Methode die View und das Model wieder auf Ausgangszustand für ein neues Spiel.
+     * Methode overridden vom Interface. Wenn durch den NEW GAME Button ein neues Spiel angefordert wird und das Spiel
+     * noch läuft wird der User um Bestätigung gebeten.
+     * Gibt er diese setzt die Methode die View und das Model wieder auf Ausgangszustand für ein neues Spiel.
      */
     @Override
     public void newClicked() {
 
-        firstClickDone = true;
-        model.stopCooldownTimer();
-        model.startSetup();
-        view.startSetup(model.getNumberOfBombs());
-        displayBombNumber = model.getNumberOfBombs();
-        view.enableAllButtons();
-        view.stopToolbarTimerReset();
-        view.setScenes();
-        view.disablePauseButton();
-        if (debug) {
-            showAllBombs(false, 0, 0); // For Debug purpose
+        if (model.isGameRunning()) {
+
+            view.stopToolbarTimer();
+            boolean confirmation = view.confirmationDialogNewClicked();
+            if (confirmation) {
+                model.setIsGameRunning(false);
+                newClicked();
+            } else {
+                view.startToolbarTimer();
+            }
+
+        } else {
+
+            firstClickDone = true;
+            model.stopCooldownTimer();
+            model.startSetup();
+            view.startSetup(model.getNumberOfBombs());
+            displayBombNumber = model.getNumberOfBombs();
+            view.enableAllButtons();
+            view.stopToolbarTimerReset();
+            view.setScenes();
+            view.disablePauseButton();
+            if (debug) {
+                showAllBombs(false, 0, 0); // For Debug purpose
+            }
         }
     }
 
