@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Enthält das Aussehen der Anwendung. Klassisch nach MVC Architektur
@@ -847,11 +848,9 @@ class ViewGuiMinesweeper {
      */
     void bombFieldNotification() {
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Game over!");
-        alert.setHeaderText(null);
-        alert.setContentText("You clicked a Bomb. Good luck next time.");
-        alert.showAndWait();
+        String content = "You clicked a Bomb. Good luck next time.";
+
+        playAgainNotification("Game over!", content);
     }
 
     /**
@@ -859,14 +858,36 @@ class ViewGuiMinesweeper {
      */
     void winningNotification() {
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("You won!");
+        String content = "Congratulations. You won the Game. \n" +
+                "But you are not in Highscore. \n" +
+                "Next time, you can do it.";
+
+        playAgainNotification("You won!", content);
+    }
+
+    /**
+     * Standard Notification Dialog for Replay
+     *
+     * @param title       Title of the Dialog
+     * @param contentText Text of the Dialog
+     */
+    private void playAgainNotification(String title, String contentText) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setGraphic(null);
         alert.setHeaderText(null);
-        alert.setContentText(
-                "Congratulations. You won the Game. \n" +
-                        "But you are not in Highscore. \n" +
-                        "Next time, you can do it.");
-        alert.showAndWait();
+        alert.setContentText(contentText);
+
+        ButtonType buttonTypePlayAgain = new ButtonType("Play again");
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.orElse(null) == buttonTypePlayAgain) {
+            newClicked();
+        }  // ... user chose CANCEL or closed the dialog
     }
 
     /**
@@ -899,6 +920,50 @@ class ViewGuiMinesweeper {
         alert.setContentText("Pause");
         alert.showAndWait();
         timer.start();
+    }
+
+    /**
+     * If the "New Game" Button is pressed the User have to confirm to start a new Game
+     *
+     * @return bool if the User have confirmed then its true
+     */
+    boolean confirmationDialogNewClicked() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Are u sure u want to start a new game?");
+
+        ButtonType buttonTypePlayAgain = new ButtonType("Start new Game");
+        ButtonType buttonTypeCancel = new ButtonType("Stay in old one", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result.orElse(null) == buttonTypePlayAgain;
+    }
+
+    /**
+     * If the "Exit Game" Button is pressed the User have to confirm it.
+     *
+     * @return true if the User confirmed
+     */
+    boolean confirmationDialogExitClicked() {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setGraphic(null);
+        alert.setHeaderText(null);
+        alert.setContentText("Are u sure u want quit the game?");
+
+        ButtonType buttonTypePlayAgain = new ButtonType("Yes, quit the game.");
+        ButtonType buttonTypeCancel = new ButtonType("Stay", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+        alert.getButtonTypes().setAll(buttonTypePlayAgain, buttonTypeCancel);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        return result.orElse(null) == buttonTypePlayAgain;
     }
 
 }
