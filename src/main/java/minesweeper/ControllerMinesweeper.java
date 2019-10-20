@@ -725,12 +725,15 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
     /**
      * Click Action Button "Change Mode" clicked.
+     * If in Method newClicked the User dont confirm to start a new Game. The Mode is changed to previous one.
      *
      * @param mode 0 = Normal <br>
      *             1 = Girl
      */
     @Override
     public void changeModeClicked(int mode) {
+
+        boolean tmp = (mode != 0);
 
         try {
             this.symbols = new MinesweeperSymbols(mode);
@@ -740,6 +743,20 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         view.setStyle(mode);
         view.setImages(mode);
         newClicked();
+
+        if (!firstClickDone) {
+            mode = (!tmp) ? 1 : 0;
+            try {
+                this.symbols = new MinesweeperSymbols(mode);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            view.setStyle(mode);
+            view.setImages(mode);
+            view.setMode(mode);
+            view.setSelectedMode();
+        }
+
     }
 
     /**

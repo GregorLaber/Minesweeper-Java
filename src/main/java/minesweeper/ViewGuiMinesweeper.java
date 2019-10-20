@@ -51,6 +51,8 @@ class ViewGuiMinesweeper {
     private final Label labelTimer = new Label("00:00");
     private int minutes;
     private int seconds;
+    private RadioMenuItem modeItemNormal;
+    private RadioMenuItem modeItemGirl;
 
     ViewGuiMinesweeper(int numberOfBombs) {
 
@@ -108,7 +110,7 @@ class ViewGuiMinesweeper {
         window.setResizable(true);
         window.show();
 
-        window.setOnCloseRequest(event -> exitClicked(event));
+        window.setOnCloseRequest(this::exitClicked);
     }
 
     /**
@@ -428,8 +430,8 @@ class ViewGuiMinesweeper {
         MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
         MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
         Menu modeMenu = new Menu("Mode");
-        RadioMenuItem modeItemNormal = new RadioMenuItem("Normal");
-        RadioMenuItem modeItemGirl = new RadioMenuItem("Girl");
+        this.modeItemNormal = new RadioMenuItem("Normal");
+        this.modeItemGirl = new RadioMenuItem("Girl");
 
         // Properties of Menu
         ToggleGroup groupDifficulty = new ToggleGroup();
@@ -455,14 +457,7 @@ class ViewGuiMinesweeper {
         ToggleGroup groupMode = new ToggleGroup();
         modeItemNormal.setToggleGroup(groupMode);
         modeItemGirl.setToggleGroup(groupMode);
-        switch (this.getMode()) {
-            case 0:
-                modeItemNormal.setSelected(true);
-                break;
-            case 1:
-                modeItemGirl.setSelected(true);
-                break;
-        }
+        setSelectedMode();
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
@@ -697,8 +692,23 @@ class ViewGuiMinesweeper {
      * @param mode 0 = Normal
      *             1 = Girl
      */
-    private void setMode(int mode) {
+    void setMode(int mode) {
         this.mode = mode;
+    }
+
+    /**
+     * Selects the right MenuItem depending on the Mode
+     */
+    void setSelectedMode() {
+
+        switch (this.getMode()) {
+            case 0:
+                modeItemNormal.setSelected(true);
+                break;
+            case 1:
+                modeItemGirl.setSelected(true);
+                break;
+        }
     }
 
     /**
