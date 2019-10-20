@@ -660,10 +660,17 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
-        model.stopCooldownTimer();
+        int tmp = model.getDifficulty();
+
         model.setDifficulty(difficulty);
         view.setDifficulty(difficulty);
         newClicked();
+
+        if (!firstClickDone) {
+            model.setDifficulty(tmp);
+            view.setDifficulty(tmp);
+            view.setSelectedDifficulty();
+        }
     }
 
     /**

@@ -53,6 +53,9 @@ class ViewGuiMinesweeper {
     private int seconds;
     private RadioMenuItem modeItemNormal;
     private RadioMenuItem modeItemGirl;
+    private RadioMenuItem beginner;
+    private RadioMenuItem advanced;
+    private RadioMenuItem professional;
 
     ViewGuiMinesweeper(int numberOfBombs) {
 
@@ -420,9 +423,9 @@ class ViewGuiMinesweeper {
         MenuItem newGameItem = new MenuItem("New Game");
         MenuItem exitItem = new MenuItem("Exit Game");
         Menu difficultyMenu = new Menu("Difficulty");
-        RadioMenuItem beginner = new RadioMenuItem("Beginner");
-        RadioMenuItem advanced = new RadioMenuItem("Advanced");
-        RadioMenuItem professional = new RadioMenuItem("Professional");
+        this.beginner = new RadioMenuItem("Beginner");
+        this.advanced = new RadioMenuItem("Advanced");
+        this.professional = new RadioMenuItem("Professional");
         Menu hintMenu = new Menu(); //Only Dummy for ICON
         Menu highscoreMenu = new Menu("Highscore");
         MenuItem highscoreItemBeginner = new MenuItem("Show Beginner");
@@ -435,20 +438,10 @@ class ViewGuiMinesweeper {
 
         // Properties of Menu
         ToggleGroup groupDifficulty = new ToggleGroup();
-        beginner.setToggleGroup(groupDifficulty);
-        advanced.setToggleGroup(groupDifficulty);
-        professional.setToggleGroup(groupDifficulty);
-        switch (difficulty) {
-            case 0:
-                beginner.setSelected(true);
-                break;
-            case 1:
-                advanced.setSelected(true);
-                break;
-            case 2:
-                professional.setSelected(true);
-                break;
-        }
+        this.beginner.setToggleGroup(groupDifficulty);
+        this.advanced.setToggleGroup(groupDifficulty);
+        this.professional.setToggleGroup(groupDifficulty);
+        setSelectedDifficulty();
         ImageView imageView = new ImageView(symbols.QUESTION_MARK);
         Label hintIcon = new Label();
         hintIcon.setGraphic(imageView);
@@ -707,6 +700,24 @@ class ViewGuiMinesweeper {
                 break;
             case 1:
                 modeItemGirl.setSelected(true);
+                break;
+        }
+    }
+
+    /**
+     * Selects the right MenuItem depending on the Difficulty
+     */
+    void setSelectedDifficulty() {
+
+        switch (difficulty) {
+            case 0:
+                beginner.setSelected(true);
+                break;
+            case 1:
+                advanced.setSelected(true);
+                break;
+            case 2:
+                professional.setSelected(true);
                 break;
         }
     }
