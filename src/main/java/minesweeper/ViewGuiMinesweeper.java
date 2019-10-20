@@ -52,7 +52,7 @@ class ViewGuiMinesweeper {
     private int minutes;
     private int seconds;
     private RadioMenuItem modeItemNormal;
-    private RadioMenuItem modeItemGirl;
+    private RadioMenuItem modeItemUnicorn;
     private RadioMenuItem beginner;
     private RadioMenuItem advanced;
     private RadioMenuItem professional;
@@ -434,7 +434,7 @@ class ViewGuiMinesweeper {
         MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
         Menu modeMenu = new Menu("Mode");
         this.modeItemNormal = new RadioMenuItem("Normal");
-        this.modeItemGirl = new RadioMenuItem("Girl");
+        this.modeItemUnicorn = new RadioMenuItem("Unicorn");
 
         // Properties of Menu
         ToggleGroup groupDifficulty = new ToggleGroup();
@@ -449,13 +449,13 @@ class ViewGuiMinesweeper {
         hintMenu.setGraphic(hintIcon);
         ToggleGroup groupMode = new ToggleGroup();
         modeItemNormal.setToggleGroup(groupMode);
-        modeItemGirl.setToggleGroup(groupMode);
+        modeItemUnicorn.setToggleGroup(groupMode);
         setSelectedMode();
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
         difficultyMenu.getItems().addAll(beginner, advanced, professional);
-        modeMenu.getItems().addAll(modeItemNormal, modeItemGirl);
+        modeMenu.getItems().addAll(modeItemNormal, modeItemUnicorn);
         highscoreMenu.getItems().addAll(highscoreItemBeginner, highscoreItemAdvanced, highscoreItemProfessional,
                 highscoreItemDelete);
         menuBar.getMenus().addAll(fileMenu, difficultyMenu, hintMenu, modeMenu, highscoreMenu);
@@ -468,7 +468,7 @@ class ViewGuiMinesweeper {
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
         hintIcon.setOnMouseClicked(mouseEvent -> hintClicked());
         modeItemNormal.setOnAction((ActionEvent event) -> changeModeClicked(0));
-        modeItemGirl.setOnAction((ActionEvent event) -> changeModeClicked(1));
+        modeItemUnicorn.setOnAction((ActionEvent event) -> changeModeClicked(1));
         highscoreItemBeginner.setOnAction((ActionEvent event) -> showHighscoreClicked(0));
         highscoreItemAdvanced.setOnAction((ActionEvent event) -> showHighscoreClicked(1));
         highscoreItemProfessional.setOnAction((ActionEvent event) -> showHighscoreClicked(2));
@@ -657,7 +657,7 @@ class ViewGuiMinesweeper {
      * Interface Method. When triggered, the listener get notified.
      *
      * @param mode 0 = Normal
-     *             1 = Girl
+     *             1 = Unicorn
      */
     private void changeModeClicked(int mode) {
 
@@ -673,7 +673,7 @@ class ViewGuiMinesweeper {
      *
      * @return current Mode
      * 0 = Normal
-     * 1 = Girl
+     * 1 = Unicorn
      */
     private int getMode() {
         return mode;
@@ -683,7 +683,7 @@ class ViewGuiMinesweeper {
      * Setter for Mode
      *
      * @param mode 0 = Normal
-     *             1 = Girl
+     *             1 = Unicorn
      */
     void setMode(int mode) {
         this.mode = mode;
@@ -699,7 +699,7 @@ class ViewGuiMinesweeper {
                 modeItemNormal.setSelected(true);
                 break;
             case 1:
-                modeItemGirl.setSelected(true);
+                modeItemUnicorn.setSelected(true);
                 break;
         }
     }
@@ -743,7 +743,7 @@ class ViewGuiMinesweeper {
      * Set the Images dependent on the style
      *
      * @param style 0 = Normal
-     *              1 = Girl
+     *              1 = Unicorn
      */
     void setImages(int style) {
 

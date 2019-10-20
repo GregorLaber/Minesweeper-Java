@@ -22,7 +22,7 @@ class MinesweeperSymbols {
     /**
      * Constructor for Symbols
      *
-     * @param style 0 = Normal, 1 = Girl
+     * @param style 0 = Normal, 1 = Unicorn
      */
     MinesweeperSymbols(int style) {
 

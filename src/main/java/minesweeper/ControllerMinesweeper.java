@@ -735,7 +735,7 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
      * If in Method newClicked the User dont confirm to start a new Game. The Mode is changed to previous one.
      *
      * @param mode 0 = Normal <br>
-     *             1 = Girl
+     *             1 = Unicorn
      */
     @Override
     public void changeModeClicked(int mode) {
