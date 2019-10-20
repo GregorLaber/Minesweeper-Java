@@ -58,7 +58,7 @@ interface ViewListenerMinesweeper {
      * Click Action Button "Change Mode" clicked.
      *
      * @param mode 0 = Normal
-     *             1 = Girl
+     *             1 = Unicorn
      */
     void changeModeClicked(int mode);
 
