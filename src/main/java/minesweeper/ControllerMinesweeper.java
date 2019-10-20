@@ -2,6 +2,7 @@ package minesweeper;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.stage.WindowEvent;
 import minesweeper.highscore.ControllerHighscore;
 
 import java.util.ArrayList;
@@ -623,9 +624,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     /**
      * Methode overridden vom Interface. Schließt die Anwendung.
      * Wenn das Spiel läuft wird der User um Bestätigung gebeten
+     *
+     * @param event WindowEvent onClosing (can be null, is secured)
      */
     @Override
-    public void exitClicked() {
+    public void exitClicked(WindowEvent event) {
 
         if (model.isGameRunning()) {
 
@@ -633,8 +636,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             boolean confirmation = view.confirmationDialogExitClicked();
             if (confirmation) {
                 model.setIsGameRunning(false);
-                exitClicked();
+                exitClicked(event);
             } else {
+                if (event != null) {
+                    event.consume();
+                }
                 view.startToolbarTimer();
             }
 

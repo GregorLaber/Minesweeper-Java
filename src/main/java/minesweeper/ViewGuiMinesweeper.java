@@ -17,6 +17,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +108,7 @@ class ViewGuiMinesweeper {
         window.setResizable(true);
         window.show();
 
-        window.setOnCloseRequest(e -> exitClicked());
+        window.setOnCloseRequest(event -> exitClicked(event));
     }
 
     /**
@@ -473,7 +474,7 @@ class ViewGuiMinesweeper {
 
         // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
-        exitItem.setOnAction((ActionEvent event) -> exitClicked());
+        exitItem.setOnAction((ActionEvent event) -> exitClicked(null));
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
@@ -615,10 +616,10 @@ class ViewGuiMinesweeper {
     /**
      * Interface Methode. Wenn EXIT GAME geklickt wird, wird der Listener benachrichtigt.
      */
-    private void exitClicked() {
+    private void exitClicked(WindowEvent event) {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
-            viewListener.exitClicked();
+            viewListener.exitClicked(event);
         }
     }
 
