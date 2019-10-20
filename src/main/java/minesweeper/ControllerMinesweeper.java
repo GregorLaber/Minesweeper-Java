@@ -2,6 +2,7 @@ package minesweeper;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.stage.WindowEvent;
 import minesweeper.highscore.ControllerHighscore;
 
 import java.util.ArrayList;
@@ -623,9 +624,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     /**
      * Methode overridden vom Interface. Schließt die Anwendung.
      * Wenn das Spiel läuft wird der User um Bestätigung gebeten
+     *
+     * @param event WindowEvent onClosing (can be null, is secured)
      */
     @Override
-    public void exitClicked() {
+    public void exitClicked(WindowEvent event) {
 
         if (model.isGameRunning()) {
 
@@ -633,8 +636,11 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
             boolean confirmation = view.confirmationDialogExitClicked();
             if (confirmation) {
                 model.setIsGameRunning(false);
-                exitClicked();
+                exitClicked(event);
             } else {
+                if (event != null) {
+                    event.consume();
+                }
                 view.startToolbarTimer();
             }
 
@@ -654,10 +660,17 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
     @Override
     public void changeDifficultyClicked(int difficulty) {
 
-        model.stopCooldownTimer();
+        int tmp = model.getDifficulty();
+
         model.setDifficulty(difficulty);
         view.setDifficulty(difficulty);
         newClicked();
+
+        if (!firstClickDone) {
+            model.setDifficulty(tmp);
+            view.setDifficulty(tmp);
+            view.setSelectedDifficulty();
+        }
     }
 
     /**
@@ -719,12 +732,15 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
 
     /**
      * Click Action Button "Change Mode" clicked.
+     * If in Method newClicked the User dont confirm to start a new Game. The Mode is changed to previous one.
      *
      * @param mode 0 = Normal <br>
      *             1 = Girl
      */
     @Override
     public void changeModeClicked(int mode) {
+
+        boolean tmp = (mode != 0);
 
         try {
             this.symbols = new MinesweeperSymbols(mode);
@@ -734,6 +750,20 @@ public class ControllerMinesweeper implements ViewListenerMinesweeper {
         view.setStyle(mode);
         view.setImages(mode);
         newClicked();
+
+        if (!firstClickDone) {
+            mode = (!tmp) ? 1 : 0;
+            try {
+                this.symbols = new MinesweeperSymbols(mode);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+            view.setStyle(mode);
+            view.setImages(mode);
+            view.setMode(mode);
+            view.setSelectedMode();
+        }
+
     }
 
     /**

@@ -1,5 +1,7 @@
 package minesweeper;
 
+import javafx.stage.WindowEvent;
+
 interface ViewListenerMinesweeper {
 
     /**
@@ -25,8 +27,10 @@ interface ViewListenerMinesweeper {
 
     /**
      * Click Action Button "Exit Game". Exit the Game.
+     *
+     * @param event WindowEvent onClosing
      */
-    void exitClicked();
+    void exitClicked(WindowEvent event);
 
     /**
      * @param difficulty 0 = beginner

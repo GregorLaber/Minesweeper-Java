@@ -17,6 +17,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,11 @@ class ViewGuiMinesweeper {
     private final Label labelTimer = new Label("00:00");
     private int minutes;
     private int seconds;
+    private RadioMenuItem modeItemNormal;
+    private RadioMenuItem modeItemGirl;
+    private RadioMenuItem beginner;
+    private RadioMenuItem advanced;
+    private RadioMenuItem professional;
 
     ViewGuiMinesweeper(int numberOfBombs) {
 
@@ -107,7 +113,7 @@ class ViewGuiMinesweeper {
         window.setResizable(true);
         window.show();
 
-        window.setOnCloseRequest(e -> exitClicked());
+        window.setOnCloseRequest(this::exitClicked);
     }
 
     /**
@@ -417,9 +423,9 @@ class ViewGuiMinesweeper {
         MenuItem newGameItem = new MenuItem("New Game");
         MenuItem exitItem = new MenuItem("Exit Game");
         Menu difficultyMenu = new Menu("Difficulty");
-        RadioMenuItem beginner = new RadioMenuItem("Beginner");
-        RadioMenuItem advanced = new RadioMenuItem("Advanced");
-        RadioMenuItem professional = new RadioMenuItem("Professional");
+        this.beginner = new RadioMenuItem("Beginner");
+        this.advanced = new RadioMenuItem("Advanced");
+        this.professional = new RadioMenuItem("Professional");
         Menu hintMenu = new Menu(); //Only Dummy for ICON
         Menu highscoreMenu = new Menu("Highscore");
         MenuItem highscoreItemBeginner = new MenuItem("Show Beginner");
@@ -427,25 +433,15 @@ class ViewGuiMinesweeper {
         MenuItem highscoreItemProfessional = new MenuItem("Show Professional");
         MenuItem highscoreItemDelete = new MenuItem("Delete Highscore");
         Menu modeMenu = new Menu("Mode");
-        RadioMenuItem modeItemNormal = new RadioMenuItem("Normal");
-        RadioMenuItem modeItemGirl = new RadioMenuItem("Girl");
+        this.modeItemNormal = new RadioMenuItem("Normal");
+        this.modeItemGirl = new RadioMenuItem("Girl");
 
         // Properties of Menu
         ToggleGroup groupDifficulty = new ToggleGroup();
-        beginner.setToggleGroup(groupDifficulty);
-        advanced.setToggleGroup(groupDifficulty);
-        professional.setToggleGroup(groupDifficulty);
-        switch (difficulty) {
-            case 0:
-                beginner.setSelected(true);
-                break;
-            case 1:
-                advanced.setSelected(true);
-                break;
-            case 2:
-                professional.setSelected(true);
-                break;
-        }
+        this.beginner.setToggleGroup(groupDifficulty);
+        this.advanced.setToggleGroup(groupDifficulty);
+        this.professional.setToggleGroup(groupDifficulty);
+        setSelectedDifficulty();
         ImageView imageView = new ImageView(symbols.QUESTION_MARK);
         Label hintIcon = new Label();
         hintIcon.setGraphic(imageView);
@@ -454,14 +450,7 @@ class ViewGuiMinesweeper {
         ToggleGroup groupMode = new ToggleGroup();
         modeItemNormal.setToggleGroup(groupMode);
         modeItemGirl.setToggleGroup(groupMode);
-        switch (this.getMode()) {
-            case 0:
-                modeItemNormal.setSelected(true);
-                break;
-            case 1:
-                modeItemGirl.setSelected(true);
-                break;
-        }
+        setSelectedMode();
 
         // Add all together
         fileMenu.getItems().addAll(newGameItem, exitItem);
@@ -473,7 +462,7 @@ class ViewGuiMinesweeper {
 
         // Click Events
         newGameItem.setOnAction((ActionEvent event) -> newClicked());
-        exitItem.setOnAction((ActionEvent event) -> exitClicked());
+        exitItem.setOnAction((ActionEvent event) -> exitClicked(null));
         beginner.setOnAction((ActionEvent event) -> changeDifficultyClicked(0));
         advanced.setOnAction((ActionEvent event) -> changeDifficultyClicked(1));
         professional.setOnAction((ActionEvent event) -> changeDifficultyClicked(2));
@@ -615,10 +604,10 @@ class ViewGuiMinesweeper {
     /**
      * Interface Methode. Wenn EXIT GAME geklickt wird, wird der Listener benachrichtigt.
      */
-    private void exitClicked() {
+    private void exitClicked(WindowEvent event) {
 
         for (ViewListenerMinesweeper viewListener : viewListenerList) {
-            viewListener.exitClicked();
+            viewListener.exitClicked(event);
         }
     }
 
@@ -696,8 +685,41 @@ class ViewGuiMinesweeper {
      * @param mode 0 = Normal
      *             1 = Girl
      */
-    private void setMode(int mode) {
+    void setMode(int mode) {
         this.mode = mode;
+    }
+
+    /**
+     * Selects the right MenuItem depending on the Mode
+     */
+    void setSelectedMode() {
+
+        switch (this.getMode()) {
+            case 0:
+                modeItemNormal.setSelected(true);
+                break;
+            case 1:
+                modeItemGirl.setSelected(true);
+                break;
+        }
+    }
+
+    /**
+     * Selects the right MenuItem depending on the Difficulty
+     */
+    void setSelectedDifficulty() {
+
+        switch (difficulty) {
+            case 0:
+                beginner.setSelected(true);
+                break;
+            case 1:
+                advanced.setSelected(true);
+                break;
+            case 2:
+                professional.setSelected(true);
+                break;
+        }
     }
 
     /**
