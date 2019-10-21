@@ -1,2 +1,9 @@
-The classic Windows Game Minesweeper. <br>
-Written in Java with Model-View-Controller Architecture
+---
+
+
+---
+
+<blockquote>
+<p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote>
+
