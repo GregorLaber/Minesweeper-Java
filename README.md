@@ -14,7 +14,7 @@ If you want to contribute, you only have to clone or fork my Code. Then make you
 ### Just Playing
 You have to install [Java](https://java.com/de/download/help/download_options.xml). 
 After this, you can download the executable Programm. The File is located in the "Executable Game" Folder.
-Or you only click [here](https://github.com/fatAdmiralTot/Minesweeper-Java/raw/master/Executable%20Game/Minesweeper-Java.jar) to directly download it.
+Or you only click [here](https://github.com/fatAdmiralTot/Minesweeper-Java/releases/download/v1.0.0/Minesweeper-Java.jar) to directly download it.
 Now you are ready to start playing. Have fun!
 
 Please note that at the location where you put the File on your PC, the program creates three Text Files. They are required for the Game to save your Highscore.
