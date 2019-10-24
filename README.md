@@ -1,6 +1,7 @@
 # The classic Windows Game Minesweeper 
 Written in Java with Model-View-Controller Architecture
 
+![Downloads](https://img.shields.io/github/downloads/fatadmiraltot/minesweeper-java/total)
 ### Table of Contents
 - [How to start](#how-to-start)
 - [New Features](#new-features)
