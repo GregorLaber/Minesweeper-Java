@@ -3,6 +3,11 @@ Written in Java with Model-View-Controller Architecture
 
 [![Downloads](https://img.shields.io/github/downloads/fatadmiraltot/minesweeper-java/total)](#)
 
+<p align="middle">
+    <img src="pictures/screenshot.png" width="400">
+    <img src="pictures/screenshot_unicorn.png" width="400">
+</p>
+
 ### Table of Contents
 
 * [How to start](#how-to-start)
@@ -32,6 +37,10 @@ If you find any bug in the code or have any improvements in mind then feel free 
 * Pause button
 * Hint function
 * Two different Modes: Normal and Unicorn
+
+<p align="middle">
+    <img src="pictures/screenshot_highscore.png" width="400">    
+</p>
 
 ## Rules
 
