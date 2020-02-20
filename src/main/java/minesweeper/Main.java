@@ -15,7 +15,7 @@ public class Main extends Application {
     }
 
     /**
-     * Erste Methode die zu Spielbeginn gerufen wird. Initialer Startpunkt.
+     * Erste Methode die zu Spielbeggffgghfinn gerufen wird. Initialer Startpunkt.
      *
      * @param primaryStage setzt das Window
      */
